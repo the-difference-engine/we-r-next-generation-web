@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import header from '@/components/header'
 import footer from '@/components/footer'
-import landing from '@/components/landing'
 import campInfo from '@/components/campInfo'
 import login from '@/components/login'
+import signup from '@/components/signup'
+import profile from '@/components/profile'
 import nullComp from '@/components/nullComp'
 
 Vue.use(Router)
@@ -15,7 +16,7 @@ export default new Router({
       path: '/',
       name: 'Root',
       components: {
-        default: landing,
+        default: campInfo,
         header: header,
         footer: footer
       }
@@ -30,13 +31,22 @@ export default new Router({
       }
     },
     {
-      path: '/info',
-      name: 'campInfo',
+      path: '/signup',
+      name: 'signup',
       components: {
-        default: campInfo,
+        default: signup,
+        header: nullComp,
+        footer: nullComp
+      }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      components: {
+        default: profile,
         header: header,
         footer: footer
       }
-    }
+    },
   ]
 })
