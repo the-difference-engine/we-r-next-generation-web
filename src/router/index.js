@@ -4,6 +4,8 @@ import header from '@/components/header'
 import footer from '@/components/footer'
 import landing from '@/components/landing'
 import campInfo from '@/components/campInfo'
+import login from '@/components/login'
+import nullComp from '@/components/nullComp'
 
 Vue.use(Router)
 
@@ -16,6 +18,15 @@ export default new Router({
         default: landing,
         header: header,
         footer: footer
+      }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      components: {
+        default: login,
+        header: nullComp,
+        footer: nullComp
       }
     },
     {

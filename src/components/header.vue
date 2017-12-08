@@ -8,7 +8,7 @@
         <ul id="header_menu">
           <li><router-link to="/info">The Camp</router-link></li>
           <li><a href="">Get Involved</a></li>
-          <li><a href="">Log In</a></li>
+          <li><router-link to="/login">Log In</router-link></li>
           <li><a href="">Sign Up</a></li>
           <li ><a href="" id="donate">Donate</a></li>
           <li><a href="" v-html="profileImage"></a></li>
