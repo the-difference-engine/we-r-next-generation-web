@@ -6,6 +6,9 @@ import campInfo from '@/components/campInfo'
 import login from '@/components/login'
 import signup from '@/components/signup'
 import profile from '@/components/profile'
+import volunteer from '@/components/volunteer'
+import faq from '@/components/faq'
+import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
 
 Vue.use(Router)
@@ -44,6 +47,33 @@ export default new Router({
       name: 'profile',
       components: {
         default: profile,
+        header: header,
+        footer: footer
+      }
+    },
+    {
+      path: '/volunteer',
+      name: 'volunteer',
+      components: {
+        default: volunteer,
+        header: header,
+        footer: footer
+      }
+    },
+    {
+      path: '/faq',
+      name: 'faq',
+      components: {
+        default: faq,
+        header: header,
+        footer: footer
+      }
+    },
+    {
+      path: '/donate',
+      name: 'donate',
+      components: {
+        default: donate,
         header: header,
         footer: footer
       }

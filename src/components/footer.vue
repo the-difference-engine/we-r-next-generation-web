@@ -15,12 +15,12 @@
           <div id="footer_center" class="col-sm-12 col-lg-4">
             <h4>The Company</h4>
             <ul>
-              <li><a href="">Home</a></li>
-              <li><a href="">Participate</a></li>
-              <li><a href="">Sign Up</a></li>
-              <li><a href="">Login</a></li>
-              <li><a href="">Donate</a></li>
-              <li><a href="">FAQ</a></li>
+              <li><router-link to="/">Home</router-link></li>
+              <li><router-link to="/volunteer">Participate</router-link></li>
+              <li><router-link to="/signup">Sign Up</router-link></li>
+              <li><router-link to="/login">Login</router-link></li>
+              <li><router-link to="/donate">Donate</router-link></li>
+              <li><router-link to="/faq">FAQ</router-link></li>
             </ul>
           </div>
           <div id="footer_right" class="col-sm-12 col-lg-4">
@@ -54,21 +54,6 @@
 <style scoped>
   a{
     color: black;
-  }
-
-  /*Header Styling*/
-  #header_menu{
-    list-style: none;
-  }
-
-  #header_menu>li{
-    display: inline-block;
-    margin: 10px 15px;
-  }
-
-
-  #donate{
-    color: #FFC843;
   }
 
   /*Footer Styling*/
