@@ -10,6 +10,7 @@ import volunteer from '@/components/volunteer'
 import faq from '@/components/faq'
 import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
+import homePage from '@/components/homePage'
 
 Vue.use(Router)
 
@@ -78,5 +79,13 @@ export default new Router({
         footer: footer
       }
     },
+    {
+      path: '/home',
+      name: 'homePage',
+      components: {
+        default: homePage,
+        header: header
+      }
+    }
   ]
 })
