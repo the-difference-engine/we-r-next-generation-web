@@ -60,8 +60,6 @@
   #footer{
     background-color:#CAC8C8;
     color: white;
-    position : fixed;
-    bottom: 0;
     height: auto;
     width: 100%;
   }
