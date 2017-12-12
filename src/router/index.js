@@ -38,8 +38,8 @@ export default new Router({
       name: 'signup',
       components: {
         default: signup,
-        header: nullComp,
-        footer: nullComp
+        header: header,
+        footer: footer
       }
     },
     {
