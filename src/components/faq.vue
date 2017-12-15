@@ -5,7 +5,7 @@
     <p>Please select which category your question is regarding</p>
     <div class="row">
       <div id="category_buttons" class="col-sm-12 col-lg-6 col-lg-offset-3">
-        <button v-for="category in categories" v-on:click="curr_category = category">{{ category }}</button>
+        <button type="button" class="btn btn-default" v-for="category in categories" v-on:click="curr_category = category">{{ category }}</button>
       </div>
     </div>
     <div class="question row" v-for="faq in faqs" v-if="curr_category==faq.category || curr_category=='all'">
