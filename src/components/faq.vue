@@ -1,5 +1,6 @@
 <template>
   <div class="faq">
+    <img src="src/assets/faq_page_image.jpg" alt="Group photo of active campers and volunteer" width="80%">
     <h1>Frequently Asked Questions</h1>
     <p>Please select which category your question is regarding</p>
     <div class="row">
