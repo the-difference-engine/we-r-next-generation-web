@@ -4,26 +4,34 @@
     <span id="sign-up">Aren't a member yet?</span>
     <button id="sign-up-btn">Sign Up</button>
     <br>
-    {{ msg }}
+    {{ sessionID }}
     <br>
-    <form id="login-form">
+    <form v-on:submit.prevent="submitLogin" id="login-form">
       <span id="email-tag">Email</span>
-      <input id="email" />
+      <input name="email" id="email" />
       <span id="password-tag">Password</span>
-      <input id="password" />
+      <input name="password" id="password" type="password" />
       <a id="password-reminder" href="#">I forgot my password</a>
       <input id="login-submit" type="submit" value="Log In" />
     </form>
+  <!-- <button v-on:click="removeSession">Remove Session Dummy</button> -->
   </div>
 </template>
 
 <script>
   export default {
     name: 'login',
-    data () {
-      return {
-        msg: 'Testing the Login Page'
+    methods: {
+      submitLogin: function(evt) {
+        this.$store.dispatch('login', {
+          email: evt.target.email.value,
+          password: evt.target.password.value,
+          router: this.$router
+          })
       }
+    },
+    data () {
+      return {}
     }
   }
 </script>
