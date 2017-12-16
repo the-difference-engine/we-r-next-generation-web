@@ -4,8 +4,6 @@
     <span id="sign-up">Aren't a member yet?</span>
     <button id="sign-up-btn">Sign Up</button>
     <br>
-    {{ sessionID }}
-    <br>
     <form v-on:submit.prevent="submitLogin" id="login-form">
       <span id="email-tag">Email</span>
       <input name="email" id="email" />
