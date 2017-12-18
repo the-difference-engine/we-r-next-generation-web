@@ -85,7 +85,7 @@ export default new Router({
       components: {
         default: homePage,
         header: header,
-        footer: null
+        footer: footer
       }
     }
   ]
