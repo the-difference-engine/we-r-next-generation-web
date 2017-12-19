@@ -27,7 +27,7 @@
     <carousel navigationEnabled="true" perPage="3">
       <slide v-for="(text, imageUrl, index) in testimonials" :key="index">
         <div class="pad-slide">
-          <p>{{text}}</p>
+          <p class="testimonial-text">{{text}}</p>
           <img :src="imageUrl" class="fit-image"/>
         </div>
       </slide>
@@ -65,12 +65,12 @@
         heroImage: `https://s3.us-east-2.amazonaws.com/wernextheneration/StJohnHomePANA.jpg`,
         heroText: `We R NextGeneration, Inc. | Every Child Needs an Audience`,
         whoWeAreText: `It’s amazing what a child can do, and even more amazing, who the child can be, when the child believes in his or her self. However, in our community, for a child beneath the invisible shadow of norms or indiscipline, the odds of being amazing, are barely obtainable when that child’s ability, needed for growing her or his innate creativity (referred as iCreativity), has been neglected.
-We R NextGeneration is a 501(C)(3) charity that inspires. We help every10-12yr-old dreamers, of our community’s primary schools, with being inspired by her or his own innate creativity (iCreativity) to create fulfilling life.
-We believe recognizing a child’s unnoticed dreams and helping the child to appreciate her or his innate creativity (iCreativity) are the most precious gift for every young dreamer to thrive as a young citizen.`,
-        actionCarousel: [`https://s3.us-east-2.amazonaws.com/wernextheneration/expressingYCs+copy.jpg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/our_cause_YD1.jpg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0509.JPG`, `https://s3.us-east-2.amazonaws.com/wernextheneration/_MG_2086.jpg`],
-        testimonials: {'https://s3.us-east-2.amazonaws.com/wernextheneration/_DSC0041.JPG':`“I am so glad and I appreciate all the effort that brought positive change and confidence to my children.” – Mr. Blessing Adiele (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0026.jpg':`“My daughter is so excited about expressing her ideas, and nonstop about finding resources and building ideas.” – Mrs. Bakare-Kolawole (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/ourTeam.jpg':`“Thank you, We'R'NextGeneration for being such a good listener to me; helping me to understand who I am, my dreams and myself.” – Rafael, 12 (iCreativity Camp Participant)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0936.JPG':`“What a great contribution iCreativity Camp is to Young Dreamers and our community. Thank you, Child Inspirer.” – Mr. Conor Gallogly (a community member)`},
+We R NextGeneration is a 501(C)(3) charity that inspires. We help every 10-12 yr-old dreamers, of our community’s primary schools, with being inspired by her or his own innate creativity (iCreativity) to create fulfilling life.
+We believe recognizing a child’s unnoticed dreams and helping the child to appreciate her or his innate creativity (iCreativity) is the most precious gift for every young dreamer to thrive as a young citizen.`,
+        actionCarousel: [`https://s3.us-east-2.amazonaws.com/wernextheneration/expressingYCs+copy.jpeg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/our_cause_YD1.jpg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0509.JPG`, `https://s3.us-east-2.amazonaws.com/wernextheneration/_MG_2086.jpg`],
+        testimonials: {'https://s3.us-east-2.amazonaws.com/wernextheneration/_DSC0041.JPG':`“I am so glad and I appreciate all the effort that brought positive change and confidence to my children.” – Mr. Blessing Adiele (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0026.jpg':`“My daughter is so excited about expressing her ideas, and nonstop about finding resources and building ideas.” – Mrs. Bakare-Kolawole (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/ourTeam.jpeg':`“Thank you, We'R'NextGeneration for being such a good listener to me; helping me to understand who I am, my dreams and myself.” – Rafael, 12 (iCreativity Camp Participant)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0936.JPG':`“What a great contribution iCreativity Camp is to Young Dreamers and our community. Thank you, Child Inspirer.” – Mr. Conor Gallogly (a community member)                                                    `},
         partners: [`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`],
-        signupPic: `https://s3.us-east-2.amazonaws.com/wernextheneration/safeplace_YD1.jpg`
+        signupPic: `https://s3.us-east-2.amazonaws.com/wernextheneration/safeplace_YD1.jpeg`
       }
     }
   }
@@ -82,8 +82,8 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
   }
   h2 {
     position: absolute;
-    top: 100px;
-    left: 35%;
+    top: 45px;
+    left: 33%;
   }
   h2 span {
     color: white;
@@ -106,7 +106,7 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
     padding: 10px 0px;
   }
   #read-button {
-    background-color:#FF4500;
+    background-color:#EF7C27;
   }
 
   #action-carousel {
@@ -118,6 +118,9 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
     width:80%;
     margin: auto;
     text-align: center;
+  }
+  .testimonial-text {
+    min-height: 100px;
   }
   .pad-slide {
     width: 90%;
@@ -138,7 +141,7 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
   }
   #signup-button {
     position: absolute;
-    bottom: 100px;
-    background-color:#FF4500;
+    bottom: 12px;
+    background-color:#EF7C27;
   }
 </style>
