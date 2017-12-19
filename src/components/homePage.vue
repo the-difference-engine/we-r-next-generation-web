@@ -64,7 +64,7 @@
       return {
         heroImage: `https://s3.us-east-2.amazonaws.com/wernextheneration/StJohnHomePANA.jpg`,
         heroText: `We R NextGeneration, Inc. | Every Child Needs an Audience`,
-        whoWeAreText: `It’s amazing what a child can do, and even more amazing, who the child can be, when the child believes in his or her self. However, in our community, for a child beneath the invisible shadow of norms or indiscipline, the odds of being amazing, are barely obtainable when that child’s ability, needed for growing her or his innate creativity (referred as iCreativity), has been neglected.
+        whoWeAreText: `It’s amazing what a child can do, and even more amazing, who the child can be, when the child believes in his or her self. However, in our community, for a child beneath the invisible shadow of norms or indiscipline, the odds of being amazing are barely obtainable when that child’s ability, needed for growing her or his innate creativity (referred as iCreativity), has been neglected.
 We R NextGeneration is a 501(C)(3) charity that inspires. We help every 10-12 yr-old dreamers, of our community’s primary schools, with being inspired by her or his own innate creativity (iCreativity) to create fulfilling life.
 We believe recognizing a child’s unnoticed dreams and helping the child to appreciate her or his innate creativity (iCreativity) is the most precious gift for every young dreamer to thrive as a young citizen.`,
         actionCarousel: [`https://s3.us-east-2.amazonaws.com/wernextheneration/expressingYCs+copy.jpeg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/our_cause_YD1.jpg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0509.JPG`, `https://s3.us-east-2.amazonaws.com/wernextheneration/_MG_2086.jpg`],
@@ -79,10 +79,13 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
 <style scoped>
   #hero-image {
     position: relative;
+    width: 95%;
+    text-align: center;
+    margin: auto;
   }
   h2 {
     position: absolute;
-    top: 45px;
+    top: 40px;
     left: 33%;
   }
   h2 span {
@@ -138,10 +141,15 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
   }
   #signup {
     position: relative;
+    margin: auto;
+    width: 95%;
+    margin-bottom: 20px;
   }
   #signup-button {
     position: absolute;
     bottom: 12px;
     background-color:#EF7C27;
+    font-size: 24px;
+    font-weight: 700;
   }
 </style>
