@@ -30,7 +30,7 @@ export default new Router({
       name: 'login',
       components: {
         default: login,
-        header: nullComp,
+        header: header,
         footer: nullComp
       }
     },
