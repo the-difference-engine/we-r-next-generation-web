@@ -4,4 +4,7 @@ export default {
   [types.LOGIN](state, data) {
     state.userInfo = Object.assign({}, data)
   },
+  [types.LOGOUT](state) {
+    state.userInfo = {}
+  }
 }

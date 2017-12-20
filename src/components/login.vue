@@ -12,7 +12,6 @@
       <a id="password-reminder" href="#">I forgot my password</a>
       <input id="login-submit" type="submit" value="Log In" />
     </form>
-  <!-- <button v-on:click="removeSession">Remove Session Dummy</button> -->
   </div>
 </template>
 

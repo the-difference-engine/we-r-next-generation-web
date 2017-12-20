@@ -8,14 +8,22 @@ localforage.config({name: 'WeRNextGeneration'})
 export const login = ({commit}, {email, password, router}) =>
   //Add async request to get profile information before session creation
   axios.post(baseUrl + 'api/v1/sessions', email, password)
-  .then(session => {
-    console.log('received session is: ', session || 'no id!')
-    localforage.setItem('X_TOKEN', session.data.X_TOKEN)
-    commit(types.LOGIN, session.data.X_TOKEN)
+  .then(res => {
+    console.log('received session is: ', res)
+    commit(types.LOGIN, {email: 'test@test.com', name: 'Adobe :)'})
+    localforage.setItem('X_TOKEN', res.data.X_TOKEN)
+    .then(() => {
+      router.push('/')
+      console.log('navigation to root component triggered after successful session post')
+    })
   })
   .catch(err => console.error(err))
 
-export const logout = () =>
+export const logout = ({commit}, {router}) =>
   localforage.removeItem('X_TOKEN')
-  .then(() => console.log('client storage token removed!'))
+  .then(() => {
+    commit(types.LOGOUT)
+    router.push('/login')
+    console.log('client storage token removed!')
+  })
   .catch(err => console.error(err))
