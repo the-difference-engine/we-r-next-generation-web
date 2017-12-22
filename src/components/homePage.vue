@@ -9,7 +9,9 @@
     <p id="who-paragraph">{{whoWeAreText}} </p>
   </div>
   <div id="read-button-div" class='row'>
-    <button id="read-button" type="button" class="btn btn-primary btn-lg">Read more</button>
+    <router-link to="/campinfo" >
+      <button id="read-button" type="button" class="btn btn-primary btn-lg">Read more</button>
+    </router-link>
   </div>
   <div id='action-carousel' class='row'>
     <carousel navigationEnabled="true" perPage="1">
@@ -44,7 +46,9 @@
     </div>
     <div class='row' id='signup'>
       <img :src="signupPic" class="fit-image"/>
-      <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
+      <router-link to="/signup">
+        <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
+      </router-link>
     </div>
   </div>
 

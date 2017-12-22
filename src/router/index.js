@@ -15,6 +15,13 @@ import homePage from '@/components/homePage'
 Vue.use(Router)
 
 export default new Router({
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       path: '/',
@@ -84,6 +91,15 @@ export default new Router({
       name: 'homePage',
       components: {
         default: homePage,
+        header: header,
+        footer: footer
+      }
+    },
+    {
+      path: '/campInfo',
+      name: 'CampInfo',
+      components: {
+        default: campInfo,
         header: header,
         footer: footer
       }
