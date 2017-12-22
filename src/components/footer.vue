@@ -6,7 +6,7 @@
           <div id="footer_left" class="col-sm-12 col-lg-4">
             <h4>The Company</h4>
             <ul>
-              <li><router-link to="/">Home</router-link></li>
+              <li><router-link to="/home">Home</router-link></li>
               <li><router-link to="/volunteer">Participate</router-link></li>
               <li><router-link to="/signup">Sign Up</router-link></li>
               <li><router-link to="/login">Login</router-link></li>
