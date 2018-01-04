@@ -1,12 +1,12 @@
 <template>
 <div class='container'>
   <div id='hero-image' class='row'>
-    <img :src="heroImage" class="fit-image">
-    <h2 id="hero-words-positioning"><span id="hero-words">{{heroText}}</span></h2>
+    <img :src="homePageData.heroImage" class="fit-image">
+    <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
   </div>
   <div class='row'>
     <h1>Who we are/ Why/ Cause</h1>
-    <p id="who-paragraph">{{whoWeAreText}} </p>
+    <p id="who-paragraph">{{homePageData.whoWeAreText}} </p>
   </div>
   <div id="read-button-div" class='row'>
     <router-link to="/campinfo" >
@@ -15,7 +15,7 @@
   </div>
   <div id='action-carousel' class='row'>
     <carousel navigationEnabled="true" perPage="1">
-      <slide v-for="(action, index) in actionCarousel" :key="index">
+      <slide v-for="(index, action) in homePageData.actionCarousel" :key="index">
         <div class="pad-slide">
           <img :src="action" class="fit-image"/>
         </div>
@@ -40,12 +40,12 @@
       <h1>Partners</h1>
     </div>
     <div class='row' id='partners-images'>
-      <div v-for="(partner, index) in partners" :key="index" class="partners">
+      <div v-for="(index, partner) in homePageData.partners" :key="index" class="partners">
         <img :src="partner" class="fit-image"/>
       </div>
     </div>
     <div class='row' id='signup'>
-      <img :src="signupPic" class="fit-image"/>
+      <img :src="homePageData.signupPic" class="fit-image"/>
       <router-link to="/signup">
         <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
       </router-link>
@@ -58,6 +58,7 @@
 
 <script>
   import { Carousel, Slide } from 'vue-carousel';
+  import axios from 'axios';
   export default {
     name: 'homePage',
     components: {
@@ -66,6 +67,7 @@
     },
     data () {
       return {
+        homePageData: {},
         heroImage: `https://s3.us-east-2.amazonaws.com/wernextheneration/StJohnHomePANA.jpg`,
         heroText: `We R NextGeneration, Inc. | Every Child Needs an Audience`,
         whoWeAreText: `It’s amazing what a child can do, and even more amazing, who the child can be, when the child believes in his or her self. However, in our community, for a child beneath the invisible shadow of norms or indiscipline, the odds of being amazing are barely obtainable when that child’s ability, needed for growing her or his innate creativity (referred as iCreativity), has been neglected.
@@ -76,6 +78,13 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
         partners: [`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`],
         signupPic: `https://s3.us-east-2.amazonaws.com/wernextheneration/safeplace_YD1.jpeg`
       }
+    },
+    created() {
+      axios.get('http://localhost:4567/api/v1/resources/homepage')
+      .then(res => {
+        this.homePageData = res.data
+      })
+      .catch(error => console.log)
     }
   }
 </script>
