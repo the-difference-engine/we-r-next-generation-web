@@ -2,7 +2,9 @@
   <div class="header">
     <div id="header" class="row">
       <div id="header_left" class="col-sm-12 col-lg-4">
+        <router-link to="/home">
         <img src="src/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" width="200px">
+        </router-link>
       </div>
       <div id="header_right" class="col-sm-12 col-lg-6 col-lg-offset-2">
         <ul id="header_menu">
@@ -44,6 +46,9 @@
 <style scoped>
   a{
     color: black;
+  }
+  #header {
+    padding-bottom: 10px;
   }
 
   /*Header Styling*/
