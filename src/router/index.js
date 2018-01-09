@@ -10,10 +10,7 @@ import volunteer from '@/components/volunteer'
 import faq from '@/components/faq'
 import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
-
-import localforage from 'localforage'
-import axios from 'axios'
-const baseUrl = 'http://localhost:4567/'
+import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
 
@@ -26,24 +23,6 @@ export default new Router({
         default: campInfo,
         header: header,
         footer: footer
-      },
-      beforeEnter: (to, from, next) => {
-        localforage.getItem('X_TOKEN')
-        .then(session => {
-          console.log('session retrieved in ROOT beforeEnter: ', session)
-          if (session) {
-            axios.get(`${baseUrl}api/v1/sessions/:${session}`)
-            .then(res => {
-              if (res.data.X_TOKEN) { next(to.path) }
-              else {
-                localforage.removeItem('X_TOKEN')
-                .then(() => next({path: '/login'}))
-                .catch(err => console.error(err))
-              }
-            }).catch(err => console.error(err))
-          }
-          else { next('/login') }
-        }).catch(err => console.error(err))
       }
     },
     {
@@ -53,7 +32,8 @@ export default new Router({
         default: login,
         header: nullComp,
         footer: nullComp
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/signup',
@@ -62,7 +42,8 @@ export default new Router({
         default: signup,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/profile',
@@ -71,7 +52,8 @@ export default new Router({
         default: profile,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/volunteer',
@@ -80,7 +62,8 @@ export default new Router({
         default: volunteer,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/faq',

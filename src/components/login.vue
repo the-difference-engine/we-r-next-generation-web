@@ -21,7 +21,7 @@
     methods: {
       submitLogin: function(evt) {
         this.$store.dispatch('login', {
-          email: evt.target.email.value,
+          user_name: evt.target.email.value,
           password: evt.target.password.value,
           router: this.$router
           })
