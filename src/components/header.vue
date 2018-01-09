@@ -14,6 +14,11 @@
           <li><router-link to="/signup">Sign Up</router-link></li>
           <li ><router-link to="/donate" id="donate">Donate</router-link></li>
           <li><router-link to="/profile" v-html="profileImage"></router-link></li>
+          <li v-if="loggedIn"><button
+            id="logout-btn"
+            class="btn btn-primary"
+            v-on:click.prevent="submitLogout">Logout
+          </button></li>
         </ul>
       </div>
     </div>
@@ -23,8 +28,14 @@
 <script>
   export default {
     name: 'header',
+    methods :{
+      submitLogout: function (evt) {
+        this.$store.dispatch('logout', {router: this.$router})
+      }
+    },
     data () {
       return {
+        loggedIn: this.$store.state.userInfo.loggedIn,
         profileImage: '<span class="glyphicon glyphicon-user"></span>'
       }
     }
