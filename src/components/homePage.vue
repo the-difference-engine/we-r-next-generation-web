@@ -1,23 +1,41 @@
 <template>
 <div class='container'>
   <div id='hero-image' class='row'>
-    <img :src="heroImage" class="fit-image">
-    <h2 id="hero-words-positioning"><span id="hero-words">{{heroText}}</span></h2>
+    <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
+    <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
   </div>
   <div class='row'>
     <h1>Who we are/ Why/ Cause</h1>
-    <p id="who-paragraph">{{whoWeAreText}} </p>
+    <p id="who-we-are-paragraph">{{homePageData.whoWeAreText}} </p>
   </div>
   <div id="read-button-div" class='row'>
     <router-link to="/campinfo" >
-      <button id="read-button" type="button" class="btn btn-primary btn-lg">Read more</button>
+      <button type="button" class="btn btn-primary btn-lg read-button">Read more</button>
     </router-link>
   </div>
+  <div class='row' id='success-carousel'>
+    <carousel :navigationEnabled="true" :perPage="1">
+      <slide v-for="(sStory, index) in sStories" :key="index">
+        <div class="container-fluid">
+          <div class="row" id="success-row">
+            <div class="col-6" id="success-left">
+              <h1>Success Stories</h1>
+              <p class="">{{sStory.text}}</p>
+              <button type="button" class="btn btn-primary btn-md read-button">Read more</button>
+            </div>
+            <div class="col-6" id="success-right">
+              <img :src="sStory.imageUrl" :alt="'success story image 1' + index" class="fit-image"/>
+            </div>
+          </div>
+        </div>
+      </slide>
+    </carousel>
+  </div>
   <div id='action-carousel' class='row'>
-    <carousel navigationEnabled="true" perPage="1">
-      <slide v-for="(action, index) in actionCarousel" :key="index">
+    <carousel :navigationEnabled="true" :perPage="1">
+      <slide v-for="(action, index) in homePageData.actionCarousel" :key="index">
         <div class="pad-slide">
-          <img :src="action" class="fit-image"/>
+          <img :src="action" :alt="'carousel image 1' + index" class="fit-image"/>
         </div>
       </slide>
     </carousel>
@@ -26,11 +44,11 @@
     <h1>Testimonials</h1>
   </div>
   <div class='row' id='testimonial-carousel'>
-    <carousel navigationEnabled="true" perPage="3">
-      <slide v-for="(text, imageUrl, index) in testimonials" :key="index">
+    <carousel :navigationEnabled="true" :perPage="3">
+      <slide v-for="(testimonial, index) in homePageData.testimonials" :key="index">
         <div class="pad-slide">
-          <p class="testimonial-text">{{text}}</p>
-          <img :src="imageUrl" class="fit-image"/>
+          <p class="testimonial-text">{{testimonial.text}}</p>
+          <img :src="testimonial.imageUrl" :alt="'testimonial image 1' + index" class="fit-image"/>
         </div>
       </slide>
     </carousel>
@@ -40,12 +58,12 @@
       <h1>Partners</h1>
     </div>
     <div class='row' id='partners-images'>
-      <div v-for="(partner, index) in partners" :key="index" class="partners">
-        <img :src="partner" class="fit-image"/>
+      <div v-for="(partner, index) in homePageData.partners" :key="index" class="partners">
+        <img :src="partner" :alt="'partner image 1' + index" class="fit-image"/>
       </div>
     </div>
     <div class='row' id='signup'>
-      <img :src="signupPic" class="fit-image"/>
+      <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image"/>
       <router-link to="/signup">
         <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
       </router-link>
@@ -58,6 +76,7 @@
 
 <script>
   import { Carousel, Slide } from 'vue-carousel';
+  import axios from 'axios';
   export default {
     name: 'homePage',
     components: {
@@ -66,16 +85,16 @@
     },
     data () {
       return {
-        heroImage: `https://s3.us-east-2.amazonaws.com/wernextheneration/StJohnHomePANA.jpg`,
-        heroText: `We R NextGeneration, Inc. | Every Child Needs an Audience`,
-        whoWeAreText: `It’s amazing what a child can do, and even more amazing, who the child can be, when the child believes in his or her self. However, in our community, for a child beneath the invisible shadow of norms or indiscipline, the odds of being amazing are barely obtainable when that child’s ability, needed for growing her or his innate creativity (referred as iCreativity), has been neglected.
-We R NextGeneration is a 501(C)(3) charity that inspires. We help every 10-12 yr-old dreamers, of our community’s primary schools, with being inspired by her or his own innate creativity (iCreativity) to create fulfilling life.
-We believe recognizing a child’s unnoticed dreams and helping the child to appreciate her or his innate creativity (iCreativity) is the most precious gift for every young dreamer to thrive as a young citizen.`,
-        actionCarousel: [`https://s3.us-east-2.amazonaws.com/wernextheneration/expressingYCs+copy.jpeg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/our_cause_YD1.jpg`, `https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0509.JPG`, `https://s3.us-east-2.amazonaws.com/wernextheneration/_MG_2086.jpg`],
-        testimonials: {'https://s3.us-east-2.amazonaws.com/wernextheneration/_DSC0041.JPG':`“I am so glad and I appreciate all the effort that brought positive change and confidence to my children.” – Mr. Blessing Adiele (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0026.jpg':`“My daughter is so excited about expressing her ideas, and nonstop about finding resources and building ideas.” – Mrs. Bakare-Kolawole (iCreativity Camp Participant’s Parent)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/ourTeam.jpeg':`“Thank you, We'R'NextGeneration for being such a good listener to me; helping me to understand who I am, my dreams and myself.” – Rafael, 12 (iCreativity Camp Participant)`,'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0936.JPG':`“What a great contribution iCreativity Camp is to Young Dreamers and our community. Thank you, Child Inspirer.” – Mr. Conor Gallogly (a community member)                                                    `},
-        partners: [`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`,`https://i.ytimg.com/vi/EjexPWJTaGo/hqdefault.jpg`],
-        signupPic: `https://s3.us-east-2.amazonaws.com/wernextheneration/safeplace_YD1.jpeg`
+        homePageData: {},
+        sStories: [{text: 'Their Smile. Their Confidence. The New Way to see their World. Growing into the Leader they want.', imageUrl: 'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0104.JPG'}]
       }
+    },
+    created() {
+      axios.get('http://localhost:4567/api/v1/resources/homepage')
+      .then(res => {
+        this.homePageData = res.data
+      })
+      .catch(error => console.log)
     }
   }
 </script>
@@ -103,7 +122,7 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
   /* h2 span.spacer{
     padding:0 5px;
   } */
-  #who-paragraph {
+  #who-we-are-paragraph {
     margin: auto;
     width: 80%;
   }
@@ -112,10 +131,28 @@ We believe recognizing a child’s unnoticed dreams and helping the child to app
     margin-right: 150px;
     padding: 10px 0px;
   }
-  #read-button {
+  .read-button {
     background-color:#EF7C27;
   }
-
+  #success-carousel{
+    margin: 10px auto;
+  }
+  #success-row{
+    text-align: left;
+  }
+  #success-left {
+    padding-left:5%;
+    display: inline-block;
+    text-align: left;
+    width: 40%;
+  }
+  #success-right{
+    display: inline-block;
+    text-align: right;
+    padding-right: 5%;
+    width: 30%;
+    margin-left:10%;
+  }
   #action-carousel {
     width: 80%;
     margin: auto;
