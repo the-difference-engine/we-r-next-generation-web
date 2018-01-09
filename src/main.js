@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import {sync} from 'vuex-router-sync'
+import axios from 'axios'
+
+axios.defaults.baseURL = process.env.BASE_URL
 
 sync(store, router)
 

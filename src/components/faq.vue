@@ -49,14 +49,14 @@
       return {
         category_set: new Set(),
         curr_category: "all",
-        faqs: []
+        faqs: [],
       }
     },
     generate_categories() {
 
     },
     created() {
-      axios.get('http://localhost:4567/api/v1/faq').then(response => {
+      axios.get('/api/v1/faq').then(response => {
         this.faqs = response.data
         for (let faq of response.data) {
           this.category_set.add(faq.category)
