@@ -12,7 +12,6 @@
       <a id="password-reminder" href="#">I forgot my password</a>
       <input id="login-submit" type="submit" value="Log In" />
     </form>
-  <!-- <button v-on:click="removeSession">Remove Session Dummy</button> -->
   </div>
 </template>
 
@@ -22,7 +21,7 @@
     methods: {
       submitLogin: function(evt) {
         this.$store.dispatch('login', {
-          email: evt.target.email.value,
+          user_name: evt.target.email.value,
           password: evt.target.password.value,
           router: this.$router
           })

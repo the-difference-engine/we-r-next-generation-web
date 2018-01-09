@@ -11,6 +11,7 @@ import faq from '@/components/faq'
 import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
+import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
 
@@ -39,7 +40,8 @@ export default new Router({
         default: login,
         header: header,
         footer: nullComp
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/signup',
@@ -48,7 +50,8 @@ export default new Router({
         default: signup,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/profile',
@@ -57,7 +60,8 @@ export default new Router({
         default: profile,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/volunteer',
@@ -66,7 +70,8 @@ export default new Router({
         default: volunteer,
         header: header,
         footer: footer
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/faq',

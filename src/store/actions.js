@@ -1,21 +1,26 @@
 import * as types from './types'
 import axios from 'axios'
+import localforage, {baseUrl} from '../sessionUtils'
 
-import localforage from 'localforage'
-const baseUrl = 'http://localhost:4567/'
-localforage.config({name: 'WeRNextGeneration'})
-
-export const login = ({commit}, {email, password, router}) =>
-  //Add async request to get profile information before session creation
-  axios.post(baseUrl + 'api/v1/sessions', email, password)
-  .then(session => {
-    console.log('received session is: ', session || 'no id!')
-    localforage.setItem('X_TOKEN', session.data.X_TOKEN)
-    commit(types.LOGIN, session.data.X_TOKEN)
+export const login = ({commit}, {user_name, password, router}) =>
+  axios.post(`${baseUrl}api/v1/sessions/${user_name}/${password}`)
+  .then(res => {
+    commit(types.LOGIN, res.data.profileData)
+    localforage.setItem('X_TOKEN', res.data.X_TOKEN)
+    .then(() => router.push('/'))
   })
   .catch(err => console.error(err))
 
-export const logout = () =>
-  localforage.removeItem('X_TOKEN')
-  .then(() => console.log('client storage token removed!'))
-  .catch(err => console.error(err))
+export const logout = ({commit}, {router}) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    const config = {headers: {'x-token': session}}
+    axios.delete(`${baseUrl}api/v1/sessions/${session}`, config)
+    .then(() => {
+      localforage.removeItem('X_TOKEN')
+      .then(() => {
+        commit(types.LOGOUT)
+        router.push('/login')
+      }).catch(err => console.error(err))
+    }).catch(err => console.error(err))
+  })
