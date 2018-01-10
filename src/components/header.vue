@@ -14,8 +14,7 @@
           <li><router-link to="/signup">Sign Up</router-link></li>
           <li ><router-link to="/donate" id="donate">Donate</router-link></li>
           <li><router-link to="/profile" v-html="profileImage"></router-link></li>
-          <li v-if="loggedIn"><button
-            id="logout-btn"
+          <li><button
             class="btn btn-primary"
             v-on:click.prevent="submitLogout">Logout
           </button></li>
@@ -35,7 +34,6 @@
     },
     data () {
       return {
-        loggedIn: this.$store.state.userInfo.loggedIn,
         profileImage: '<span class="glyphicon glyphicon-user"></span>'
       }
     }
