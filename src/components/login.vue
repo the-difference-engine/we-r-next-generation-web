@@ -100,6 +100,11 @@
     font-size: 20px;
   }
 
+  #email:focus, #password:focus{
+    outline: none;
+    border: 1px solid #7DDBD4;
+  }
+
   #password-reminder {
     float: left;
     text-decoration: none;

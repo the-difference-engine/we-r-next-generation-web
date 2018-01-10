@@ -14,13 +14,15 @@ export const login = ({commit}, {user_name, password, router}) =>
 export const logout = ({commit}, {router}) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    const config = {headers: {'x-token': session}}
-    axios.delete(`${baseUrl}api/v1/sessions/${session}`, config)
-    .then(() => {
-      localforage.removeItem('X_TOKEN')
+    if (session) {
+      const config = {headers: {'x-token': session}}
+      axios.delete(`${baseUrl}api/v1/sessions/${session}`, config)
       .then(() => {
-        commit(types.LOGOUT)
-        router.push('/login')
+        localforage.removeItem('X_TOKEN')
+        .then(() => {
+          commit(types.LOGOUT)
+          router.push('/login')
+        }).catch(err => console.error(err))
       }).catch(err => console.error(err))
-    }).catch(err => console.error(err))
+    }
   })
