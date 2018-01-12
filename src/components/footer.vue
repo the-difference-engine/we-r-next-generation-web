@@ -32,7 +32,7 @@
         </div>
       </div>
       <div id="footer_bottom">
-        <p><img src="src/assets/WeRNextGeneration_white.png" alt="WeRNextGeneration Logo" width="100px">&nbsp&nbsp&nbsp&copy&nbspCopyright 2017</p>
+        <p><img src="static/assets/WeRNextGeneration_white.png" alt="WeRNextGeneration Logo" width="100px">&nbsp&nbsp&nbsp&copy&nbspCopyright 2017</p>
       </div>
     </div>
   </div>
