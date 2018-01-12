@@ -16,7 +16,6 @@
   <div class='row' id='success-carousel'>
     <carousel :navigationEnabled="true" :perPage="1">
       <slide v-for="(sStory, index) in homePageData.sStories" :key="index">
-        <div class="text-justify">
           <div class="row" id="success-row">
             <div class="col-6" id="success-left">
               <h1>Success Stories</h1>
@@ -27,7 +26,6 @@
               <img :src="sStory.imageUrl" :alt="'success story image 1' + index" class="fit-image"/>
             </div>
           </div>
-        </div>
       </slide>
     </carousel>
   </div>
