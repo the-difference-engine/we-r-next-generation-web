@@ -15,8 +15,8 @@
   </div>
   <div class='row' id='success-carousel'>
     <carousel :navigationEnabled="true" :perPage="1">
-      <slide v-for="(sStory, index) in sStories" :key="index">
-        <div class="container-fluid">
+      <slide v-for="(sStory, index) in homePageData.sStories" :key="index">
+        <div class="text-justify">
           <div class="row" id="success-row">
             <div class="col-6" id="success-left">
               <h1>Success Stories</h1>
@@ -85,8 +85,7 @@
     },
     data () {
       return {
-        homePageData: {},
-        sStories: [{text: 'Their Smile. Their Confidence. The New Way to see their World. Growing into the Leader they want.', imageUrl: 'https://s3.us-east-2.amazonaws.com/wernextheneration/DSC_0104.JPG'}]
+        homePageData: {}
       }
     },
     created() {
@@ -119,9 +118,6 @@
     background: rgba(0, 0, 0, 0.7);
     padding: 10px;
   }
-  /* h2 span.spacer{
-    padding:0 5px;
-  } */
   #who-we-are-paragraph {
     margin: auto;
     width: 80%;
@@ -135,23 +131,18 @@
     background-color:#EF7C27;
   }
   #success-carousel{
-    margin: 10px auto;
-  }
-  #success-row{
-    text-align: left;
+    margin: auto;
+    width: 90%;
   }
   #success-left {
-    padding-left:5%;
-    display: inline-block;
-    text-align: left;
-    width: 40%;
+    padding: 5%;
+    float: left;
+    width: 50%;
   }
   #success-right{
-    display: inline-block;
-    text-align: right;
-    padding-right: 5%;
-    width: 30%;
-    margin-left:10%;
+    padding: 5%;
+    width: 50%;
+    float: right;
   }
   #action-carousel {
     width: 80%;
@@ -159,7 +150,7 @@
     text-align: center;
   }
   #testimonial-carousel {
-    width:80%;
+    width:90%;
     margin: auto;
     text-align: center;
   }
