@@ -10,12 +10,5 @@ test:
 deployment:
   production:
     branch: qa
-    codedeploy:
-      we-r-next-generation-web:
-        application_root: /
-        region: us-east-1
-        revision_location:
-          revision_type: S3
-          s3_location:
-            bucket: wrngtest
-            key_pattern: we-r-next-generation-web-{BRANCH}-{SHORT_COMMIT}
+    commands:
+      - aws s3 sync dist s3://wrngtest --delete
