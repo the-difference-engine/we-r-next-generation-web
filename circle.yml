@@ -11,4 +11,5 @@ deployment:
   production:
     branch: qa
     commands:
+      - npm run build --config build/webpack.prod.conf.js
       - aws s3 sync dist s3://wrngtest --delete
