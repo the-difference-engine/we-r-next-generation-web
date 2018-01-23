@@ -9,7 +9,7 @@ test:
 
 deployment:
   production:
-    branch: master
+    branch: qa
     codedeploy:
       we-r-next-generation-web:
         application_root: /
