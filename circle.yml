@@ -8,7 +8,7 @@ test:
     - "true"
 
 deployment:
-  production:
+  development:
     branch: qa
     commands:
       - npm run build --config build/webpack.prod.conf.js
