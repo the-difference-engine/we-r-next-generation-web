@@ -2,7 +2,7 @@
   <div id="login-container">
     <h1 id="login-header">Log In</h1>
     <span id="sign-up">Aren't a member yet?</span>
-    <button id="sign-up-btn">Sign Up</button>
+    <router-link to="/newlogin"><button id="sign-up-btn">Sign Up</button></router-link>
     <br>
     <form v-on:submit.prevent="submitLogin" id="login-form">
       <span id="email-tag">Email</span>
@@ -54,10 +54,6 @@
     font-family: helvetica;
   }
 
-  #login-header {
-
-  }
-
   #sign-up {
     color: #cac8c8;
   }
@@ -73,6 +69,7 @@
     width: 90px;
     height: 30px;
     font-size: 13px;
+    text-decoration: none;
   }
 
   #email-tag {

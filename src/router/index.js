@@ -11,6 +11,7 @@ import faq from '@/components/faq'
 import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
+import newLogin from '@/components/newLogin'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -42,6 +43,15 @@ export default new Router({
         footer: nullComp
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/newlogin',
+      name: 'newLogin',
+      components: {
+        default: newLogin,
+        header: header,
+        footer: nullComp
+      },
     },
     {
       path: '/signup',
