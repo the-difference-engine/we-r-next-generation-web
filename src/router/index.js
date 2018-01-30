@@ -28,7 +28,7 @@ export default new Router({
       path: '/',
       name: 'Root',
       components: {
-        default: campInfo,
+        default: homePage,
         header: header,
         footer: footer
       }

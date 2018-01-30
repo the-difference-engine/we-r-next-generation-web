@@ -8,7 +8,7 @@
       </div>
       <div id="header_right" class="col-sm-12 col-lg-6 col-lg-offset-2">
         <ul id="header_menu">
-          <li><router-link to="/">The Camp</router-link></li>
+          <li><router-link to="/campInfo">The Camp</router-link></li>
           <li><router-link to="/volunteer">Get Involved</router-link></li>
           <li><router-link to="/login">Log In</router-link></li>
           <li><router-link to="/signup">Sign Up</router-link></li>
