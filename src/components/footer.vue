@@ -25,7 +25,7 @@
           <div id="footer_right" class="col-sm-12 col-lg-4">
             <h4>Connect</h4>
             <div class="row">
-              <p><span class="glyphicon glyphicon-record"></span>&nbsp&nbsp<span class="glyphicon glyphicon-record"></span>&nbsp&nbsp<span class="glyphicon glyphicon-record"></span></p>
+              <p><span class="fa fa-facebook"></span>&nbsp&nbsp<span class="fa fa-instagram""></span>&nbsp&nbsp<span class="fa fa-twitter"></span></p>
             </div>
 
           </div>
