@@ -25,7 +25,11 @@
           <div id="footer_right" class="col-sm-12 col-lg-4">
             <h4>Connect</h4>
             <div class="row">
-              <p><span class="fa fa-facebook"></span>&nbsp&nbsp<span class="fa fa-instagram""></span>&nbsp&nbsp<span class="fa fa-twitter"></span></p>
+              <p>
+                <a href="https://www.facebook.com/weRnextgeneration" target="_blank" class="fa fa-facebook" style="font-size: 36px;color:white"></a>&nbsp&nbsp
+                <a href="https://twitter.com/WeRNxGen" target="_blank" class="fa fa-twitter" style="font-size: 36px;color:white"></a>&nbsp&nbsp
+                <a href="https://www.youtube.com/channel/UC3blpMpnnLT70oTJ7HzYx9w" target="_blank" class="fa fa-youtube" style="font-size: 36px;color:white"></a>&nbsp&nbsp
+              </p>
             </div>
 
           </div>
