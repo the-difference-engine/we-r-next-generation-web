@@ -20,6 +20,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   padding-top: 60px;
-  background-color: #FFF8ED;
+  background-color: white;
 }
 </style>
