@@ -70,8 +70,6 @@
         }).catch( e=> {
           this.errors = e
         })
-//        Remove this line after the seahorse error has been corrected
-        this.questionSubmitted = true
       }
     },
     created() {
