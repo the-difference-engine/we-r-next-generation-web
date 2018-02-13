@@ -85,7 +85,7 @@
       }
     },
     created() {
-      axios.get('http://localhost:4567/api/v1/resources/homepage')
+      axios.get('/api/v1/resources/homepage')
       .then(res => {
         this.homePageData = res.data
       })
