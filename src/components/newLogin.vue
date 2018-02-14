@@ -111,9 +111,6 @@
     height: 45px;
     border-color: gray;
   }
-  .form-highlight:hover{
-    border-color: #7ddbd4;
-  }
   .form-highlight:focus{
     border-color: #7ddbd4;
   }

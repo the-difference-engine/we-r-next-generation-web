@@ -1,17 +1,24 @@
 <template>
-  <div id="login-container">
-    <h1 id="login-header">Log In</h1>
-    <span id="sign-up">Aren't a member yet?</span>
-    <router-link to="/newlogin"><button id="sign-up-btn">Sign Up</button></router-link>
-    <br>
-    <form v-on:submit.prevent="submitLogin" id="login-form">
-      <span id="email-tag">Email</span>
-      <input name="email" id="email" />
-      <span id="password-tag">Password</span>
-      <input name="password" id="password" type="password" />
-      <a id="password-reminder" href="#">I forgot my password</a>
-      <input id="login-submit" type="submit" value="Log In" />
-    </form>
+  <div id="background-img">
+    <div id="login-container" class="container">
+      <h1 id="login-header">Log In</h1>
+      <div class="row">
+        <div id="sign-up-div" class="col-xs-12 col-sm-6"><span id="sign-up"><i>Aren't a member yet?</i></span></div>
+        <div class="col-xs-12 col-sm-6"><router-link to="/newlogin"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
+      </div>
+      <div class="row">
+        <form v-on:submit.prevent="submitLogin" class="container-fluid" id="login-form">
+          <div class="row" id="form-row">
+            <span id="email-tag">Email</span>
+            <input class="form-control form-highlight" name="email" id="email" />
+            <span id="password-tag">Password</span>
+            <input class="form-control form-highlight" name="password" id="password" type="password" />
+            <p><a id="password-reminder" href="#">I forgot my password</a></p>
+            <input class="green-btn btn btn-primary" id="login-submit" type="submit" value="Log In" />
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,87 +41,110 @@
 </script>
 
 <style scoped>
-  #header-placeholder {
-    height: 70px;
-    text-align: center;
-    line-height: 70px;
-    font-size: 38px;
-    border-bottom: 2px solid grey;
+  span {
+    color: gray;
   }
-
-  #login-container {
-    margin: auto;
-    padding: 100px 150px 80px;
-    width: 600px;
-    height: 500px;
-    border-radius: 10px;
-    background-color: #ededed;
-    margin-top: 15px;
-    text-align: center;
-    font-family: helvetica;
+  #login-header {
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
   }
-
-  #sign-up {
-    color: #cac8c8;
-  }
-
-  #login-form {
-    margin-top: 30px;
-  }
-
-  #sign-up-btn{
-    color: white;
-    background-color: #ea8432;
-    opacity: 0.6;
-    width: 90px;
-    height: 30px;
-    font-size: 13px;
-    text-decoration: none;
-  }
-
-  #email-tag {
-    float: left;
-    color: #cac8c8;
-  }
-
-  #email {
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    margin-bottom: 40px;
-    font-size: 20px;
-  }
-
-  #password-tag {
-    float: left;
-    color: #cac8c8;
-  }
-
-  #password {
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    font-size: 20px;
-  }
-
-  #email:focus, #password:focus{
-    outline: none;
-    border: 1px solid #7DDBD4;
-  }
-
-  #password-reminder {
-    float: left;
-    text-decoration: none;
-    color: #ea8432;
-    margin: 20px 0px;
-  }
-
   #login-submit {
     width: 100%;
-    height: 35px;
+    margin-top: 10px;
+    height: 45px;
+  }
+  #password-reminder {
+    color: #ff9327;
+  }
+  #email-tag {
+    float: left;
+  }
+  #password-tag {
+    float: left;
+  }
+  #login-form {
+    text-align: center;
+  }
+  #form-row > span {
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+  #form-row > input {
+    margin-bottom: 20px;
+  }
+  .form-highlight{
+    width: 100%;
+    font-size: 20px;
+    height: 45px;
+    border-color: gray;
+  }
+  .form-highlight:focus{
+    border-color: #7ddbd4;
+  }
+  .green-btn {
+    background-color: #7ddbd4;
     color: white;
-    background-color: #ea8432;
-    opacity: 0.6;
-    font-size: 22px;
+    border: none;
+    margin-bottom: 20px;
+  }
+  #background-img {
+    background: white url("http://www.jsums.edu/education/files/2012/12/bigstock-Four-Children-At-Computer-Term-3917429.jpg?x56568") no-repeat fixed center;
+    opacity: 0.7;
+    width: 100%;
+    height: 100vh;
+  }
+  #login-container {
+    /* desktop */
+    width: 33%;
+    padding: 20px 70px;
+    /* all sizes */
+    height: auto;
+    opacity: 1 !important;
+    margin: auto;
+    border-radius: 10px;
+    border: 4px solid #ea8432;
+    background-color: white;
+    text-align: center;
+    font-family: helvetica;
+    position: relative;
+    top: 40px;
+  }
+  /* mobile */
+  @media screen and (max-width: 320px) and (min-width: 0px) {
+    #login-container {
+      width: 95%;
+      padding: 10px 30px;
+    }
+    #sign-up-div {
+      margin-bottom: 10px !important;
+    }
+  }
+  /* extra breakpoint between mobile and tablet */
+  @media screen and (max-width: 440px) and (min-width: 320px) {
+    #login-container {
+      width: 85%;
+      padding: 10px 35px;
+    }
+    #sign-up-div {
+      margin-bottom: 10px !important;
+    }
+  }
+  /* tablet */
+  @media screen and (max-width: 768px) and (min-width: 441px) {
+    #login-container {
+      width: 70%;
+      padding: 15px 55px;
+    }
+    #sign-up-div {
+      margin-bottom: 10px !important;
+    }
+  }
+  /* laptop */
+  @media screen and (max-width: 1024px) and (min-width: 769px) {
+    #login-container {
+      width: 55%;
+      padding: 15px 55px;
+    }
   }
 </style>
