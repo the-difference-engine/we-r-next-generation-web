@@ -1,9 +1,9 @@
 import * as types from './types'
 import axios from 'axios'
-import localforage, {baseUrl} from '../sessionUtils'
+import localforage from '../sessionUtils'
 
 export const login = ({commit}, {user_name, password, router}) =>
-  axios.post(`${baseUrl}api/v1/sessions/${user_name}/${password}`)
+  axios.post(`/api/v1/sessions/${user_name}/${password}`)
   .then(res => {
     commit(types.LOGIN, res.data.profileData)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
@@ -16,7 +16,7 @@ export const logout = ({commit}, {router}) =>
   .then(session => {
     if (session) {
       const config = {headers: {'x-token': session}}
-      axios.delete(`${baseUrl}api/v1/sessions/${session}`, config)
+      axios.delete(`/api/v1/sessions/${session}`, config)
       .then(() => {
         localforage.removeItem('X_TOKEN')
         .then(() => {
@@ -26,3 +26,10 @@ export const logout = ({commit}, {router}) =>
       }).catch(err => console.error(err))
     }
   })
+
+export const signup = ({commit}, {name, email, password, role}) =>
+  axios.post(`/api/v1/profiles`, {params: {name, email, password, role}})
+  .then(res => {
+    console.log('res data is: ', res.data)
+  })
+  .catch(err => console.error(err))
