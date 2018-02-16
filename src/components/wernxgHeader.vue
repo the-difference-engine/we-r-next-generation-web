@@ -26,7 +26,7 @@
 
 <script>
   export default {
-    name: 'header',
+    name: 'wernxgHeader',
     methods :{
       submitLogout: function (evt) {
         this.$store.dispatch('logout', {router: this.$router})

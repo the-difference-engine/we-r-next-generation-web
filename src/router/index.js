@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import header from '@/components/header'
-import footer from '@/components/footer'
+import wernxgHeader from '@/components/wernxgHeader'
+import wernxgFooter from '@/components/wernxgFooter'
 import campInfo from '@/components/campInfo'
 import login from '@/components/login'
 import signup from '@/components/signup'
@@ -29,8 +29,8 @@ export default new Router({
       name: 'Root',
       components: {
         default: homePage,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       }
     },
     {
@@ -38,7 +38,7 @@ export default new Router({
       name: 'login',
       components: {
         default: login,
-        header: header,
+        header: wernxgHeader,
         footer: nullComp
       },
       beforeEnter: sessionCheck
@@ -48,8 +48,8 @@ export default new Router({
       name: 'signup',
       components: {
         default: signup,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       },
       beforeEnter: sessionCheck
     },
@@ -58,8 +58,8 @@ export default new Router({
       name: 'profile',
       components: {
         default: profile,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       },
       beforeEnter: sessionCheck
     },
@@ -68,8 +68,8 @@ export default new Router({
       name: 'volunteer',
       components: {
         default: volunteer,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       },
       beforeEnter: sessionCheck
     },
@@ -78,8 +78,8 @@ export default new Router({
       name: 'faq',
       components: {
         default: faq,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       }
     },
     {
@@ -87,8 +87,8 @@ export default new Router({
       name: 'donate',
       components: {
         default: donate,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       }
     },
     {
@@ -96,8 +96,8 @@ export default new Router({
       name: 'homePage',
       components: {
         default: homePage,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       }
     },
     {
@@ -105,8 +105,8 @@ export default new Router({
       name: 'CampInfo',
       components: {
         default: campInfo,
-        header: header,
-        footer: footer
+        header: wernxgHeader,
+        footer: wernxgFooter
       }
     }
   ]

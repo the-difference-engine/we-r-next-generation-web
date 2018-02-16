@@ -5,7 +5,7 @@
     <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
   </div>
   <div class='row'>
-    <h1>Who we are/ Why/ Cause</h1>
+    <h1>Who we are</h1>
     <p id="who-we-are-paragraph">{{homePageData.whoWeAreText}} </p>
   </div>
   <div id="read-button-div" class='row'>
@@ -16,11 +16,14 @@
           <div class="row">
             <div class="col-6" id="success-left">
               <h1>Success Stories</h1>
-              <p class="">{{homePageData.sStories[0].text}}</p>
-              <button type="button" class="btn btn-primary btn-md read-button">Read more</button>
+              <p id="SSparagragh">{{homePageData.sStories[0].text}}</p>
+              <div id="crayon-button-div">
+                <img src="static/assets/crayons-min.jpg" alt="crayon image" id="crayon-image"/>
+                <button id="crayon-button" type="button" class="btn btn-primary btn-lg read-button">Read more</button>
+              </div>
             </div>
             <div class="col-6" id="success-right">
-              <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image 1' + index" class="fit-image"/>
+              <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image"/>
             </div>
           </div>
   <div id='action-carousel' class='row'>
@@ -49,11 +52,11 @@
     <div id="signup-highlight">
       <div id="signup-border">
         <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image"/>
-        <router-link to="/signup">
-          <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
-        </router-link>
       </div>
     </div>
+    <router-link to="/signup">
+          <button id="signup-button" type="button" class="btn btn-primary btn-lg">Sign Up</button>
+      </router-link>
   </div>
   <div id='partners'>
     <div class='row' id='partners-header'>
@@ -123,6 +126,7 @@
     margin: auto;
     width: 80%;
     text-align: left;
+    white-space: pre-wrap;
   }
   /* @media (min-width: 1024px){
     #who-we-are-paragraph {
@@ -138,28 +142,40 @@
     text-align: left;
     width: 80%;
     margin: auto;
-    padding: 10px 0px;
+    padding-top: 30px;
   }
   .read-button {
-    background-color:#80DBD3;
+    background-color:#7DDBD4;
+    border-color: #7DDBD4;
+    font-size: 18px;
+    font-weight: 700;
   }
   #success-carousel{
     margin: auto;
     width: 90%;
   }
   #success-left {
-    padding: 5%;
+    padding: 2.5% 5% 5% 10%;
     float: left;
     width: 50%;
   }
+  #SSparagragh {
+    text-align: left;
+  }
+  #crayon-image {
+    width: 40%;
+  }
   #success-right{
-    padding: 5%;
-    width: 50%;
+    padding: 2.5% 4% 4% 4%;
+    margin-right: 6%;
+    width: 44%;
     float: right;
+    background-color:#7DDBD4;
   }
   #action-carousel {
     width: 80%;
     margin: auto;
+    margin-top: 2.5%;
     text-align: center;
   }
   #testimonial-carousel {
@@ -189,26 +205,21 @@
     text-align: center;
     margin: auto;
     width: 100%;
-    background-color: #80DBD3;
+    background-color: #7DDBD4;
   }
   #signup-highlight{
     width:82%;
     padding: 2.5%;
     margin: auto;
     margin-top: 5%;
-    margin-bottom: 15%;
+    margin-bottom: 4%;
     background-color: white;
     text-align: center;
   }
-  /* #signup-border{
-    width: 94%;
-
-  } */
   #signup-button {
-    position: absolute;
-    bottom: 12px;
-    background-color:#EF7C27;
+    background-color:#FF9327;
     font-size: 24px;
     font-weight: 700;
+    margin-bottom: 4%;
   }
 </style>

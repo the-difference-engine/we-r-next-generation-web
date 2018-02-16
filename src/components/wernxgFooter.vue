@@ -44,7 +44,7 @@
 
 <script>
   export default {
-    name: 'footer',
+    name: 'wernxgFooter',
     data () {
       return {
 
