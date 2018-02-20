@@ -1,11 +1,11 @@
 <template>
-<div class='container'>
+<div class='container-fluid'>
   <div id='hero-image' class='row'>
     <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
     <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
   </div>
   <div class='row'>
-    <h1>Who we are</h1>
+    <h1 class="col-12">Who we are</h1>
     <p id="who-we-are-paragraph">{{homePageData.whoWeAreText}} </p>
   </div>
   <div id="read-button-div" class='row'>
@@ -13,19 +13,21 @@
       <button type="button" class="btn btn-primary btn-lg read-button">Read more</button>
     </router-link>
   </div>
-          <div class="row">
-            <div class="col-6" id="success-left">
-              <h1>Success Stories</h1>
-              <p id="SSparagragh">{{homePageData.sStories[0].text}}</p>
-              <div id="crayon-button-div">
-                <img src="static/assets/crayons-min.jpg" alt="crayon image" id="crayon-image"/>
-                <button id="crayon-button" type="button" class="btn btn-primary btn-lg read-button">Read more</button>
-              </div>
-            </div>
-            <div class="col-6" id="success-right">
-              <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image"/>
-            </div>
-          </div>
+  <div class="row">
+    <div class="col-sm-6 col-xs-12" id="success-left">
+      <h1>Success Stories</h1>
+      <p id="SSparagragh">{{homePageData.sStories[0].text}}</p>
+      <div id="crayon-button-div">
+        <img src="static/assets/crayons-min.jpg" alt="crayon image" id="crayon-image"/>
+        <button id="crayon-button" type="button" class="btn btn-primary btn-lg read-button">Read more</button>
+      </div>
+    </div>
+    <div id="success-right-outer" class="col-sm-6 col-xs-12">
+      <div id="success-right">
+        <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image"/>
+      </div>
+    </div>
+  </div>
   <div id='action-carousel' class='row'>
     <carousel :navigationEnabled="true" :perPage="1">
       <slide v-for="(action, index) in homePageData.actionCarousel" :key="index">
@@ -62,13 +64,13 @@
     <div class='row' id='partners-header'>
       <h1>Partners</h1>
     </div>
-    <div class='row' id='partners-images'>
-      <div v-for="(partner, index) in homePageData.partners" :key="index" class="partners">
+    <div class='row' id='partners-images center-block'>
+      <div v-for="(partner, index) in homePageData.partners" :key="index" v-bind:style="{width: Math.floor(100/homePageData.partners.length) + '%'}" class="partners">
         <img :src="partner" :alt="'partner image 1' + index" class="fit-image"/>
       </div>
     </div>
   </div>
-
+<!-- :key="index" v-bind:class="'col-md-' + Math.floor(12/homePageData.partners.length) + ' col-xs-12 partners center-block'" -->
 </div>
 
 </template>
@@ -84,7 +86,9 @@
     },
     data () {
       return {
-        homePageData: {}
+        homePageData: {
+          sStories: [{text:''}]
+        }
       }
     },
     created() {
@@ -99,15 +103,14 @@
 
 <style scoped>
 
-  .container {
-    width: 100%;
+  .container-fluid {
     padding: 0;
   }
   #hero-image {
     position: relative;
     width: 100%;
     text-align: center;
-    margin: auto;
+    margin: 0;
   }
   h2 {
     position: absolute;
@@ -157,7 +160,7 @@
   #success-left {
     padding: 2.5% 5% 5% 10%;
     float: left;
-    width: 50%;
+    /* width: 50%; */
   }
   #SSparagragh {
     text-align: left;
@@ -165,11 +168,16 @@
   #crayon-image {
     width: 40%;
   }
+  #success-right-outer {
+    padding-right: 6%;
+    padding-left: 0;
+    padding: 0% 4% 0 4%;
+  }
   #success-right{
-    padding: 2.5% 4% 4% 4%;
-    margin-right: 6%;
-    width: 44%;
-    float: right;
+    padding: 4% 6% 8% 6%;
+    /* margin-right: 6%; */
+    /* width: 44%; */
+    float: left;
     background-color:#7DDBD4;
   }
   #action-carousel {
@@ -194,8 +202,11 @@
   .fit-image {
     width: 100%;
   }
+  #partners-images {
+    text-align: center;
+  }
   .partners {
-    width: 19%;
+    /* width: 19%; */
     display: inline-block;
     margin: auto;
     padding: 20px;
