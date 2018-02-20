@@ -114,16 +114,32 @@
   }
   h2 {
     position: absolute;
-    top: 40px;
-    left: 33%;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%)
   }
+  /* @font-face {
+    font-family: customFont;
+    src: url('../../static/assets/5yearsoldfont.tff');
+  } */
   h2 span {
     color: white;
-    font: bold 24px/45px Helvetica, Sans-Serif;
+    font-family: 'Nanum Pen Script', cursive;
+    font: bold;
     letter-spacing: -1px;
     background: rgb(0, 0, 0); /* fallback color */
     background: rgba(0, 0, 0, 0.7);
     padding: 10px;
+    white-space: nowrap;
+  }
+  @media (max-width: 1000px) {
+    h2 span { font-size: 25px }
+  }
+  @media (max-width: 800px) {
+    h2 span { font-size: 20px }
+  }
+  @media (max-width: 500px) {
+    h2 span { font-size: 15px }
   }
   #who-we-are-paragraph {
     margin: auto;
