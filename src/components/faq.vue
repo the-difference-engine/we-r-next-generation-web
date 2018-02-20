@@ -10,8 +10,8 @@
     </div>
     <div class="question row" v-for="faq in faqs" v-if="curr_category==faq.category || curr_category=='all'">
       <div class="col-sm-12 col-lg-6 col-lg-offset-3">
-        <p>{{ faq.question }}</p>
-        <p>{{ faq.answer }}</p>
+        <p class="question_text">{{ faq.question }}</p>
+        <p v-html="faq.answer"></p>
       </div>
     </div>
     <div class="row" v-if="!questionSubmitted">
@@ -96,6 +96,10 @@
   .question{
     text-align: left;
     margin: 10px;
+  }
+
+  .question_text{
+    font-weight: bold;
   }
 
   input, textarea, label{
