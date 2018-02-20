@@ -11,7 +11,7 @@
     <div class="question row" v-for="faq in faqs" v-if="curr_category==faq.category || curr_category=='all'">
       <div class="col-sm-12 col-lg-6 col-lg-offset-3">
         <p class="question_text">{{ faq.question }}</p>
-        <p>{{{ faq.answer }}}</>
+        <p>{{{ faq.answer }}}</p>
       </div>
     </div>
     <div class="row" v-if="!questionSubmitted">
