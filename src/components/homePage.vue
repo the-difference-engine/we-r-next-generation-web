@@ -195,6 +195,7 @@
     /* width: 44%; */
     float: left;
     background-color:#7DDBD4;
+    border-radius: 10px;
   }
   #action-carousel {
     width: 80%;
