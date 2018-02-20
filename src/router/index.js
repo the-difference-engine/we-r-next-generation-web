@@ -49,7 +49,7 @@ export default new Router({
       name: 'newLogin',
       components: {
         default: newLogin,
-        header: header,
+        header: wernxgHeader,
         footer: nullComp
       },
     },
