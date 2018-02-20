@@ -29,3 +29,4 @@ export const sessionCheck = (to, from, next) => {
     }
   }).catch(err => console.error(err))
 }
+
