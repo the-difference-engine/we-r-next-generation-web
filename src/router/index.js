@@ -12,6 +12,7 @@ import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
+import confirmation from '@/components/confirmation'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -62,6 +63,15 @@ export default new Router({
         footer: footer
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/confirmation/:token',
+      name: 'confirmation',
+      components: {
+        default: confirmation,
+        header: header,
+        footer: nullComp
+      }
     },
     {
       path: '/profile',
