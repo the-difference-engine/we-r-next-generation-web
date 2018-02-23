@@ -9,27 +9,6 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12"><span>Please select your role:</span></div>
-      </div>
-      <div class="row"><div>
-        <div class="col-xs-6 col-sm-3">
-          <input type="radio" id="parent" value="parent" v-model="picked">
-          <label for="parent">Parent</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="volunteer" value="volunteer" v-model="picked">
-          <label for="volunteer">Volunteer</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="partner" value="partner" v-model="picked">
-          <label for="partner">Partner</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="admin" value="admin" v-model="picked">
-          <label for="admin">Admin</label>
-        </div></div>
-      </div>
-      <div class="row">
         <form v-on:submit.prevent="signup" id="signup-form" class="container-fluid">
           <div class="row" id="form-row">
             <span id="name-tag">Name</span><input class="form-control form-highlight" name="name" id="name" />
