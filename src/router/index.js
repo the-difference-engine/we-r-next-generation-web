@@ -69,7 +69,7 @@ export default new Router({
       name: 'confirmation',
       components: {
         default: confirmation,
-        header: header,
+        header: wernxgHeader,
         footer: nullComp
       }
     },
