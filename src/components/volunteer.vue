@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="inputBio">Bio</label>
             <textarea v-model="message" @keyup="callback" class="form-control" id="inputBio" rows="3" placeholder="Bio"></textarea>
-            <div>{{ count }}</div>
+            <div>{{ count }}/300 Words Max</div>
         </div>
     <p>Which camp would you like to teach at (Select one):</p>
     <div class="form-check">
@@ -141,9 +141,10 @@
         if (this.count <= limitWord) {
           chars = this.message.length;
         } else {
-          let new_text = this.message.substr(0, chars);
+          let new_text = this.message.substr(0, 4);
+          console.log(this.message.split(/\s+/));
           this.message = new_text;
-          wordCount --;
+          // wordCount --;
         }
       }
     },
