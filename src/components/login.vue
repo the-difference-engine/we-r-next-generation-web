@@ -32,6 +32,7 @@
           password: evt.target.password.value,
           router: this.$router
           })
+        this.$store.commit('LOGSTATUS', true)
       }
     },
     data () {

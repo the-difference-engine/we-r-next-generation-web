@@ -21,6 +21,7 @@ export const logout = ({commit}, {router}) =>
         localforage.removeItem('X_TOKEN')
         .then(() => {
           commit(types.LOGOUT)
+          commit(types.LOGSTATUS, false)
           router.push('/login')
         }).catch(err => console.error(err))
       }).catch(err => console.error(err))
@@ -33,3 +34,5 @@ export const signup = ({commit}, {name, email, password, role}) =>
     console.log('res data is: ', res.data)
   })
   .catch(err => console.error(err))
+
+  // export const logStatus = ({commit}, {status})

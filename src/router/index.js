@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import wernxgHeader from '@/components/wernxgHeader'
 import wernxgFooter from '@/components/wernxgFooter'
 import campInfo from '@/components/campInfo'
+import successStories from '@/components/successStories'
 import login from '@/components/login'
 import signup from '@/components/signup'
 import profile from '@/components/profile'
@@ -115,6 +116,15 @@ export default new Router({
       name: 'CampInfo',
       components: {
         default: campInfo,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/successStories',
+      name: 'SuccessStories',
+      components: {
+        default: successStories,
         header: wernxgHeader,
         footer: wernxgFooter
       }
