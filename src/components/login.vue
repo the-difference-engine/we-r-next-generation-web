@@ -13,7 +13,7 @@
             <input class="form-control form-highlight" name="email" id="email" />
             <span id="password-tag">Password</span>
             <input class="form-control form-highlight" name="password" id="password" type="password" />
-            <p><a id="password-reminder" href="#">I forgot my password</a></p>
+            <p><router-link id="password-reminder" to="/forgotPassword">I forgot my password</router-link></p>
             <input class="green-btn btn btn-primary" id="login-submit" type="submit" value="Log In" />
           </div>
         </form>
