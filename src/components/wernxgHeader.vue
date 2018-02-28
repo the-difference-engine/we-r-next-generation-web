@@ -20,6 +20,9 @@
           <li ><router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link></li>
           <li><router-link to="/profile" v-html="profileImage"></router-link></li>
         </ul>
+        <div id="menu-button" class="col-sm-9"> menu
+          <img src="static/assets/hamburger-menu-icon.svg" alt="Menu Button"/>
+        </div>
       </div>
     </div>
   </div>
@@ -88,7 +91,18 @@
     display: inline-block;
     margin: 10px 15px;
   }
+  #menu-button {
+    display: none;
+  }
 
+  @media (max-width: 768px) {
+    #header_menu {
+      display: none;
+      }
+    #menu-button {
+      display: inline-block
+    }
+  }
 
   #donate{
     background-color: #FF9327;
