@@ -3,8 +3,8 @@
 <template>
   <div class="profile">
     <h1>PROFILE PAGE</h1>
-    <p>{{ sessionId }}</p>
-    <p>{{ sessionInfo }}</p>
+    <p>Name: {{ sessionInfo.full_name }}</p>
+    <p>Email: {{ sessionInfo.email }}</p>
   </div>
 </template>
 
