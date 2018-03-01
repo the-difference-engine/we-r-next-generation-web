@@ -10,7 +10,7 @@
         <ul id="header_menu">
           <li><router-link to="/campInfo">The Camp</router-link></li>
           <li><router-link to="/successStories">Success Stories</router-link></li>
-          <li><router-link to="/volunteer">Get Involved</router-link></li>
+          <li><router-link to="/opportunities">Get Involved</router-link></li>
           <li v-if="(!this.loggedIn && !loginStatus)"><router-link to="/login">Log In</router-link></li>
           <li v-if="(this.loggedIn || loginStatus)"><button
             class="btn btn-primary"
