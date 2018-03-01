@@ -27,9 +27,10 @@ export const logout = ({commit}, {router}) =>
     }
   })
 
-export const signup = ({commit}, {name, email, password}) =>
+export const signup = ({commit}, {name, email, password, that}) =>
   axios.post(`/api/v1/profiles`, {params: {name, email, password}})
   .then(res => {
-    console.log('res data is: ', res.data)
+    console.log('res is: ', res.data)
+    that.signedUp = true
   })
   .catch(err => console.error(err))
