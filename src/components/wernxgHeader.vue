@@ -1,12 +1,12 @@
 <template>
   <div class="header container-fluid">
     <div id="header" class="row">
-      <div id="header-left" class="col-sm-3 col-xs-8">
+      <div id="header-left" class="col-xs-8 col-sm-3">
         <router-link to="/home">
         <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" class="img-responsive">
         </router-link>
       </div>
-      <div id="header-right" class="col-sm-9 col-xs-4">
+      <div id="header-right" class="col-xs-4 col-sm-9">
         <div id="right-container">
           <ul id="header_menu">
             <li><router-link to="/campInfo">The Camp</router-link></li>
@@ -85,12 +85,13 @@
     margin-bottom: 5px;
   }
   #header-left {
-    padding-left: 30px;
+    /* padding-left: 10px; */
   }
-  #header-right {
+  #header_menu {
     /* padding-left: 30px; */
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
   }
   /* header right seems to wrap just under 945 width, need to change sizes or something */
 /*//////////////////// */
@@ -100,7 +101,7 @@
   }
   #header_menu>li{
     display: inline-block;
-    padding: 10px 2px;
+    /* padding: 10px 2px; */
   }
   #menu-button {
     display: none;
@@ -112,12 +113,12 @@
     #menu-button {
       display: inline-block
     }
-    #right-container {
+    /* #right-container {
       padding-right: 20%;
       padding-top: 5px;
-    }
+    } */
   }
-  @media (min-width: 755px) {
+  /* @media (min-width: 755px) {
     #header_menu>li{
     display: inline-block;
     padding: 10px 5px;
@@ -140,7 +141,7 @@
     #right-container {
       padding-right: 3.5%;
     }
-  }
+  } */
 
   #donate{
     background-color: #FF9327;
