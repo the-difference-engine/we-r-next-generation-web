@@ -3,7 +3,7 @@
     <div id="header" class="row">
       <div id="header-left" class="col-xs-3">
         <router-link to="/home">
-        <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" width="200px">
+        <img class="img-responsive" src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" width="200px">
         </router-link>
       </div>
       <div id="header-right" class="col-xs-9">
