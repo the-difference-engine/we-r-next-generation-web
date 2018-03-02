@@ -3,11 +3,7 @@
     <div id="header" class="row">
       <div id="header-left" class="col-sm-3 col-xs-8">
         <router-link to="/home">
-<<<<<<< HEAD
-        <img class="img-responsive" src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" width="200px">
-=======
         <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" class="img-responsive">
->>>>>>> ab6f2066549746ccfae6b57fd751f8ddb316e69e
         </router-link>
       </div>
       <div id="header-right" class="col-sm-9 col-xs-4">
