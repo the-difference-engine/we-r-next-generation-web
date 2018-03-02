@@ -31,8 +31,7 @@
           user_name: evt.target.email.value,
           password: evt.target.password.value,
           router: this.$router
-          })
-        this.$store.commit('LOGSTATUS', true)
+        })
       }
     },
     data () {
