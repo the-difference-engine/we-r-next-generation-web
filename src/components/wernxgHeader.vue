@@ -1,29 +1,27 @@
 <template>
   <div class="header container-fluid">
     <div id="header" class="row">
-      <div id="header-left" class="col-xs-8 col-sm-3">
+      <div id="header-left" class="col-xs-3 col-sm-3">
         <router-link to="/home">
         <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" class="img-responsive">
         </router-link>
       </div>
-      <div id="header-right" class="col-xs-4 col-sm-9">
+      <div id="header-right" class="col-xs-9 col-sm-9">
         <div id="right-container">
-          <ul id="header_menu">
-            <li><router-link to="/campInfo">The Camp</router-link></li>
-            <li><router-link to="/successStories">Success Stories</router-link></li>
-            <li><router-link to="/volunteer">Get Involved</router-link></li>
-            <li v-if="(!this.loggedIn && !loginStatus)"><router-link to="/login">Log In</router-link></li>
-            <li v-if="(this.loggedIn || loginStatus)"><button
+          <div id="menu-items">
+            <router-link to="/campInfo">The Camp</router-link>
+            <router-link to="/successStories">Success Stories</router-link>
+            <router-link to="/volunteer">Get Involved</router-link>
+            <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
+            <button
               class="btn btn-primary"
-              v-on:click.prevent="submitLogout">Logout
-            </button></li>
-            <li v-if="(!this.loggedIn && !loginStatus)"><router-link to="/signup">Sign Up</router-link></li>
-            <li ><router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link></li>
-            <li><router-link to="/profile" v-html="profileImage"></router-link></li>
-          </ul>
-          <div id="menu-button">
-            <img src="static/assets/hamburger-menu-icon.svg" alt="Menu Button"/>
+              v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
+            </button>
+            <router-link to="/signup" v-if="(!this.loggedIn && !loginStatus)">Sign Up</router-link>
+            <router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link>
+            <router-link to="/profile" v-html="profileImage"></router-link>
           </div>
+          <img src="static/assets/hamburger-menu-icon.svg" alt="Menu Button" class="img-responsive" id="menu-button"/>
         </div>
       </div>
     </div>
@@ -83,11 +81,13 @@
   }
   #header {
     margin-bottom: 5px;
+    display: flex;
+    align-items: center;
   }
-  #header-left {
+  #header-right {
     /* padding-left: 10px; */
   }
-  #header_menu {
+  #menu-items {
     /* padding-left: 30px; */
     display: flex;
     justify-content: space-between;
@@ -96,22 +96,29 @@
   /* header right seems to wrap just under 945 width, need to change sizes or something */
 /*//////////////////// */
   /*Header Styling*/
-  #header_menu{
+  /* #header_menu{
     list-style: none;
-  }
-  #header_menu>li{
+  } */
+  /* #header_menu>li{
     display: inline-block;
     /* padding: 10px 2px; */
-  }
+  /* } */
   #menu-button {
     display: none;
   }
   @media (max-width: 700px) {
-    #header_menu {
+    #menu-items {
       display: none;
       }
     #menu-button {
-      display: inline-block
+      display: inline-block;
+      width: 30%;
+    }
+    #header-left {
+      width: 60%
+    }
+    #header-right {
+      width: 40%;
     }
     /* #right-container {
       padding-right: 20%;
