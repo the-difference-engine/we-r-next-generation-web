@@ -6,6 +6,7 @@ export const login = ({commit}, {user_name, password, router}) =>
   axios.post(`/api/v1/sessions/${user_name}/${password}`)
   .then(res => {
     commit(types.LOGIN, res.data.profileData)
+    commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => router.push('/'))
   })
@@ -35,5 +36,3 @@ export const signup = ({commit}, {name, email, password, that}) =>
     that.signedUp = true
   })
   .catch(err => console.error(err))
-
-  // export const logStatus = ({commit}, {status})
