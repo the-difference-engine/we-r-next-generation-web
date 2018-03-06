@@ -34,8 +34,8 @@ export const signup = ({commit}, {name, email, password, role}) =>
   })
   .catch(err => console.error(err))
 
-export const resetPassword = () =>
-  axios.put(`/api/v1/resetPassword`)
+export const resetPassword = ({commit}, {email}) =>
+  axios.put(`/api/v1/profiles/resetPassword/${email}`)
   .then(res => {
     console.log('password reset res data: ', res.data)
   })

@@ -3,7 +3,7 @@
     <div id="forgot-pwsd" class="container">
       <h2 id="forgot-pswd-header">Forgot Password</h2>
       <p id="description">Enter the email address you use to login and we'll send you an email with instructions on how to reset your password.</p>
-      <form id="forgot-pswd-form" class="container-fluid">
+      <form v-on:submit.prevent="resetPassword" id="forgot-pswd-form" class="container-fluid">
         <div class="row">
           <span id="email">Email</span>
           <input name="email" id="email-input" class="form-control form-highlight" />
@@ -22,7 +22,13 @@
 <script>
 export default {
     name: 'forgotPassword',
-    methods: {},
+    methods: {
+      resetPassword: function(evt) {
+        this.$store.dispatch('resetPassword', {
+          email: evt.target.email.value
+          })
+      }
+    },
     data () {
       return {}
     }
