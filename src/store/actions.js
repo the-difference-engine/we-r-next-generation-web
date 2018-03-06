@@ -33,3 +33,10 @@ export const signup = ({commit}, {name, email, password, role}) =>
     console.log('res data is: ', res.data)
   })
   .catch(err => console.error(err))
+
+export const resetPassword = () =>
+  axios.put(`/api/v1/resetPassword`)
+  .then(res => {
+    console.log('password reset res data: ', res.data)
+  })
+  .catch(err => console.error(err))

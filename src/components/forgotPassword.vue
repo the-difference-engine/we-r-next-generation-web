@@ -6,12 +6,13 @@
       <form id="forgot-pswd-form" class="container-fluid">
         <div class="row">
           <span id="email">Email</span>
-          <input name="email" class="form-control form-highlight" />
+          <input name="email" id="email-input" class="form-control form-highlight" />
           <div id="remembered-pswd">
-            <span>Just Remembered?</span>
+            <span>Just Remembered?
             <router-link id="remembered-tag" to="/login">Log In</router-link>
+            </span>
           </div>
-          <input class="green-btn btn btn-primary" id="forgot-pswd-submit" type="submit" value="Log In" />
+          <input class="green-btn btn btn-primary" id="forgot-pswd-submit" type="submit" value="Reset Password" />
         </div>
       </form>
     </div>
@@ -29,17 +30,33 @@ export default {
 </script>
 
 <style scoped>
+  #forgot-pswd-form {
+    margin-top: 20px;
+  }
+  #forgot-pswd-header {
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
   #description {
     color: gray;
+    font-size: 16px;
   }
   #remembered-tag {
     color: #ff9327;
   }
+  #remembered-pswd {
+    font-size: 12px;
+  }
   span {
     color: gray;
-  }
-  #email-tag {
     float: left;
+  }
+  #email-input {
+    margin-bottom: 25px;
+    margin-top: 7px;
+  }
+  #email {
+    font-size: 15px;
   }
   .form-highlight{
     width: 100%;
@@ -55,6 +72,10 @@ export default {
     color: white;
     border: none;
     margin-bottom: 20px;
+  }
+  #forgot-pswd-submit {
+    width: 100%;
+    margin-top: 5px;
   }
   #background-img {
     background: white url("http://www.jsums.edu/education/files/2012/12/bigstock-Four-Children-At-Computer-Term-3917429.jpg?x56568") no-repeat fixed center;
