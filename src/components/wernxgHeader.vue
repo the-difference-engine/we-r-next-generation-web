@@ -6,9 +6,14 @@
         <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" class="img-responsive">
         </router-link>
       </div>
-      <div id="header-right" class="col-xs-9 col-sm-9">
-        <div id="right-container">
-          <div id="menu-items">
+          <div alt="Menu Button" class="col-xs-4" id="menu-button">
+            <button v-on:click.prevent="toggleMenu" v-bind:class="{'is-active': menuClicked}" class="hamburger hamburger--collapse" type="button">
+              <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+              </span>
+            </button>
+          </div>
+          <div id="header-right" class="menu-items col-xs-9 col-sm-9" v-bind:class="{ showMenu: menuClicked }">
             <router-link to="/campInfo">The Camp</router-link>
             <router-link to="/successStories">Success Stories</router-link>
             <router-link to="/volunteer">Get Involved</router-link>
@@ -21,9 +26,6 @@
             <router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link>
             <router-link to="/profile" v-html="profileImage"></router-link>
           </div>
-          <img src="static/assets/hamburger-menu-icon.svg" alt="Menu Button" class="img-responsive" id="menu-button"/>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -37,12 +39,17 @@
       submitLogout: function (evt) {
         this.$store.dispatch('logout', {router: this.$router})
         this.loggedIn = false
+      },
+      toggleMenu: function(){
+        this.menuClicked = !this.menuClicked
+        console.log('oohoooo!')
       }
     },
     data () {
       return {
         profileImage: '<span class="glyphicon glyphicon-user"></span>',
-        loggedIn: false
+        loggedIn: false,
+        menuClicked: false
       }
     },
     created () {
@@ -83,33 +90,24 @@
     margin-bottom: 5px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
   }
-  #header-right {
-    /* padding-left: 10px; */
-  }
-  #menu-items {
-    /* padding-left: 30px; */
+  .menu-items {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all .3s linear;
   }
-  /* header right seems to wrap just under 945 width, need to change sizes or something */
-/*//////////////////// */
-  /*Header Styling*/
-  /* #header_menu{
-    list-style: none;
-  } */
-  /* #header_menu>li{
-    display: inline-block;
-    /* padding: 10px 2px; */
-  /* } */
   #menu-button {
     display: none;
   }
   @media (max-width: 700px) {
-    #menu-items {
-      display: none;
-      }
+    .menu-items {
+      visibility: hidden;
+      height:1px;
+      width:100%;
+      display: flex;
+    }
     #menu-button {
       display: inline-block;
       width: 30%;
@@ -117,39 +115,12 @@
     #header-left {
       width: 60%
     }
-    #header-right {
-      width: 40%;
-    }
-    /* #right-container {
-      padding-right: 20%;
-      padding-top: 5px;
-    } */
-  }
-  /* @media (min-width: 755px) {
-    #header_menu>li{
-    display: inline-block;
-    padding: 10px 5px;
+    .showMenu {
+    width: 100%;
+    visibility: visible;
+    height: 50px;
     }
   }
-    @media (min-width: 850px) {
-    #header_menu>li{
-    display: inline-block;
-    padding: 10px 10px;
-    }
-    #right-container {
-      padding-right: 1.8%;
-    }
-  }
-  @media (min-width: 1040px) {
-    #header_menu>li{
-    display: inline-block;
-    padding: 10px 20px;
-    }
-    #right-container {
-      padding-right: 3.5%;
-    }
-  } */
-
   #donate{
     background-color: #FF9327;
     color: white;

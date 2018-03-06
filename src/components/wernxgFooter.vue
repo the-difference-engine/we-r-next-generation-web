@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer container-fluid">
     <div id="footer" class="row">
       <div id="footer_top" class="col-lg-12">
         <div class="row">
@@ -60,7 +60,7 @@
   }
 
   /*Footer Styling*/
-  #footer{
+  .footer{
     background-color:#CAC8C8;
     color: white;
     height: auto;
