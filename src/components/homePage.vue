@@ -105,6 +105,11 @@
 
 <style scoped>
 
+  .row {
+  margin-left: 0;
+  margin-right: 0;
+  }
+
   .container-fluid {
     padding: 0;
   }
