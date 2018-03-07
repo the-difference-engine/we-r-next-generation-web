@@ -18,7 +18,7 @@
             <router-link to="/successStories">Success Stories</router-link>
             <router-link to="/volunteer">Get Involved</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
-            <button
+            <button id="logout-button"
               class="btn btn-primary"
               v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
             </button>
@@ -42,7 +42,6 @@
       },
       toggleMenu: function(){
         this.menuClicked = !this.menuClicked
-        console.log('oohoooo!')
       }
     },
     data () {
@@ -85,6 +84,10 @@
 <style scoped>
   a{
     color: black;
+  }
+  #logout-button {
+    background-color: #5FAAF6;
+    border-color: #5FAAF6;
   }
   #header {
     margin-bottom: 5px;
