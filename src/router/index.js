@@ -14,6 +14,7 @@ import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
 import confirmation from '@/components/confirmation'
+import opportunities from '@/components/opportunities'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -135,6 +136,15 @@ export default new Router({
       name: 'SuccessStories',
       components: {
         default: successStories,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/opportunities',
+      name: 'Opportunities',
+      components: {
+        default: opportunities,
         header: wernxgHeader,
         footer: wernxgFooter
       }

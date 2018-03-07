@@ -28,9 +28,6 @@
         pageContent: [],
       }
     },
-    generate_categories() {
-
-    },
     created() {
       axios.get('/api/v1/campinfo').then(response => {
         this.pageContent = response.data
