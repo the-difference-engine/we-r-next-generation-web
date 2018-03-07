@@ -1,29 +1,31 @@
 <template>
-  <div class="header">
+  <div class="header container-fluid">
     <div id="header" class="row">
-      <div id="header_left" class="col-sm-3">
+      <div id="header-left" class="col-xs-3 col-sm-3">
         <router-link to="/home">
-        <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" width="200px">
+        <img src="static/assets/WeRNextGeneration.png" alt="WeRNextGeneration Logo" class="img-responsive">
         </router-link>
       </div>
-      <div id="header_right" class="col-sm-9">
-        <ul id="header_menu">
-          <li><router-link to="/campInfo">The Camp</router-link></li>
-          <li><router-link to="/successStories">Success Stories</router-link></li>
-          <li><router-link to="/opportunities">Get Involved</router-link></li>
-          <li v-if="(!this.loggedIn && !loginStatus)"><router-link to="/login">Log In</router-link></li>
-          <li v-if="(this.loggedIn || loginStatus)"><button
-            class="btn btn-primary"
-            v-on:click.prevent="submitLogout">Logout
-          </button></li>
-          <li v-if="(!this.loggedIn && !loginStatus)"><router-link to="/signup">Sign Up</router-link></li>
-          <li ><router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link></li>
-          <li><router-link to="/profile" v-html="profileImage"></router-link></li>
-        </ul>
-        <div id="menu-button" class="col-sm-9"> menu
-          <img src="static/assets/hamburger-menu-icon.svg" alt="Menu Button"/>
-        </div>
-      </div>
+          <div alt="Menu Button" class="col-xs-4" id="menu-button">
+            <button v-on:click.prevent="toggleMenu" v-bind:class="{'is-active': menuClicked}" class="hamburger hamburger--collapse" type="button">
+              <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+              </span>
+            </button>
+          </div>
+          <div id="header-right" class="menu-items col-xs-9 col-sm-9" v-bind:class="{ showMenu: menuClicked }">
+            <router-link to="/campInfo">The Camp</router-link>
+            <router-link to="/successStories">Success Stories</router-link>
+            <router-link to="/volunteer">Get Involved</router-link>
+            <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
+            <button
+              class="btn btn-primary"
+              v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
+            </button>
+            <router-link to="/signup" v-if="(!this.loggedIn && !loginStatus)">Sign Up</router-link>
+            <router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link>
+            <router-link to="/profile" v-html="profileImage"></router-link>
+          </div>
     </div>
   </div>
 </template>
@@ -37,12 +39,17 @@
       submitLogout: function (evt) {
         this.$store.dispatch('logout', {router: this.$router})
         this.loggedIn = false
+      },
+      toggleMenu: function(){
+        this.menuClicked = !this.menuClicked
+        console.log('oohoooo!')
       }
     },
     data () {
       return {
         profileImage: '<span class="glyphicon glyphicon-user"></span>',
-        loggedIn: false
+        loggedIn: false,
+        menuClicked: false
       }
     },
     created () {
@@ -80,30 +87,40 @@
     color: black;
   }
   #header {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
   }
-
-  /*Header Styling*/
-  #header_menu{
-    list-style: none;
-  }
-
-  #header_menu>li{
-    display: inline-block;
-    margin: 10px 15px;
+  .menu-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all .3s linear;
   }
   #menu-button {
     display: none;
   }
-
-  @media (max-width: 768px) {
-    #header_menu {
-      display: none;
-      }
+  @media (max-width: 700px) {
+    .menu-items {
+      visibility: hidden;
+      height:1px;
+      width:100%;
+      display: flex;
+    }
     #menu-button {
-      display: inline-block
+      display: inline-block;
+      width: 30%;
+    }
+    #header-left {
+      width: 60%
+    }
+    .showMenu {
+    width: 100%;
+    visibility: visible;
+    height: 50px;
     }
   }
-
   #donate{
     background-color: #FF9327;
     color: white;
