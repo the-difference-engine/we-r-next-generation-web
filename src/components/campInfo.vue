@@ -39,6 +39,10 @@
 </script>
 
 <style scoped>
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
   #hero-image {
     position: relative;
     text-align: center;

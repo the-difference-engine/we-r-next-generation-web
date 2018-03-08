@@ -124,6 +124,11 @@
     height: 50px;
     }
   }
+  @media (min-width: 875px) {
+    .menu-items {
+      padding-right: 5%;
+    }
+  }
   #donate{
     background-color: #FF9327;
     color: white;
