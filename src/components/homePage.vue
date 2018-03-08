@@ -72,7 +72,6 @@
       </div>
     </div>
   </div>
-<!-- :key="index" v-bind:class="'col-md-' + Math.floor(12/homePageData.partners.length) + ' col-xs-12 partners center-block'" -->
 </div>
 
 </template>
@@ -125,10 +124,6 @@
     left: 50%;
     transform: translate(-50%, -50%)
   }
-  /* @font-face {
-    font-family: customFont;
-    src: url('../../static/assets/5yearsoldfont.tff');
-  } */
   h2 span {
     color: white;
     font-family: 'Nanum Pen Script', cursive;
@@ -154,16 +149,6 @@
     text-align: left;
     white-space: pre-wrap;
   }
-  /* @media (min-width: 1024px){
-    #who-we-are-paragraph {
-      width: 85%;
-    }
-  }
-  @media (min-width: 1440px){
-    #who-we-are-paragraph {
-      width: 80%;
-    }
-  } */
   #read-button-div {
     text-align: left;
     width: 80%;
@@ -183,7 +168,6 @@
   #success-left {
     padding: 2.5% 5% 5% 10%;
     float: left;
-    /* width: 50%; */
   }
   #SSparagragh {
     text-align: left;
@@ -198,8 +182,6 @@
   }
   #success-right{
     padding: 4% 6% 8% 6%;
-    /* margin-right: 6%; */
-    /* width: 44%; */
     float: left;
     background-color:#7DDBD4;
     border-radius: 10px;
@@ -230,7 +212,6 @@
     text-align: center;
   }
   .partners {
-    /* width: 19%; */
     display: inline-block;
     margin: auto;
     padding: 20px;
