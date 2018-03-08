@@ -31,8 +31,7 @@
         this.$store.dispatch('signup', {
           name: evt.target.name.value,
           email: evt.target.email.value,
-          password: evt.target.password.value,
-          role: this.picked
+          password: evt.target.password.value
         })
       }
     },
