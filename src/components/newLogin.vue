@@ -1,6 +1,11 @@
 <template>
   <div id="background-img">
     <div id="signup-container" class="container">
+      <div v-if="signedUp" id="signed-in-popup">
+        <h2>Check Your Email!</h2>
+        <p>A link to activate your profile has been sent to the email address you provided. Click through and confirm so you can login!</p>
+        <button v-on:click="signedUp = false" class="btn btn-primary">Exit</button>
+      </div>
       <h1 id="signup-header">Sign Up</h1>
       <div class="row narrow-spacing">
         <div class="account col-xs-12 col-sm-6"><span>Already have an account?</span></div>
@@ -31,19 +36,46 @@
         this.$store.dispatch('signup', {
           name: evt.target.name.value,
           email: evt.target.email.value,
-          password: evt.target.password.value
+          password: evt.target.password.value,
+          that: this
         })
       }
     },
     data () {
       return {
-        picked: 'choose one the above roles!'
+        signedUp: false
       }
     }
   }
 </script>
 
 <style scoped>
+  #signed-in-popup {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 65%;
+    height: 300px;
+    text-align: center;
+    padding: 2rem;
+    margin: auto;
+    border: 1px solid #000;
+    box-shadow: 0 0 0 2038px rgba(0,0,0,.5);
+    z-index: 1;
+  }
+  #signed-in-popup > h2 {
+    color: #7ddbd4;
+    font-weight: bold;
+  }
+  #signed-in-popup > p {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
   #login {
     width: 100px;
   }

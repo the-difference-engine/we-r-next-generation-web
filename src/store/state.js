@@ -3,5 +3,6 @@ export const getters = {
 }
 
 export const state = {
-  userInfo: {}
+  userInfo: {},
+  loginStatus: false
 }

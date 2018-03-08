@@ -2,7 +2,9 @@
 <div class='container-fluid'>
   <div id='hero-image' class='row'>
     <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
-    <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
+    <div class="row">
+      <h2 id="hero-words-positioning" class="col-xs-12"><span id="hero-words">{{homePageData.heroText}}</span></h2>
+    </div>
   </div>
   <div class='row'>
     <h1 class="col-12">Who we are</h1>
@@ -102,6 +104,11 @@
 </script>
 
 <style scoped>
+
+  .row {
+  margin-left: 0;
+  margin-right: 0;
+  }
 
   .container-fluid {
     padding: 0;

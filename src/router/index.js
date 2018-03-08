@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import wernxgHeader from '@/components/wernxgHeader'
 import wernxgFooter from '@/components/wernxgFooter'
 import campInfo from '@/components/campInfo'
+import successStories from '@/components/successStories'
 import login from '@/components/login'
 import signup from '@/components/signup'
 import profile from '@/components/profile'
@@ -13,6 +14,8 @@ import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
 import forgotPassword from '@/components/forgotPassword'
+import confirmation from '@/components/confirmation'
+import opportunities from '@/components/opportunities'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -74,6 +77,15 @@ export default new Router({
       }
     },
     {
+      path: '/confirmation/:token',
+      name: 'confirmation',
+      components: {
+        default: confirmation,
+        header: wernxgHeader,
+        footer: nullComp
+      }
+    },
+    {
       path: '/profile',
       name: 'profile',
       components: {
@@ -125,6 +137,24 @@ export default new Router({
       name: 'CampInfo',
       components: {
         default: campInfo,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/successStories',
+      name: 'SuccessStories',
+      components: {
+        default: successStories,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/opportunities',
+      name: 'Opportunities',
+      components: {
+        default: opportunities,
         header: wernxgHeader,
         footer: wernxgFooter
       }
