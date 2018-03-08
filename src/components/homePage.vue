@@ -43,7 +43,7 @@
     <h1>Testimonials</h1>
   </div>
   <div class='row' id='testimonial-carousel'>
-    <carousel :navigationEnabled="true" :perPage="3">
+    <carousel :navigationEnabled="true" :perPage="$mq | mq({mobile: 2, other: 3})">
       <slide v-for="(testimonial, index) in homePageData.testimonials" :key="index">
         <div class="pad-slide">
           <p class="testimonial-text">{{testimonial.text}}</p>
@@ -193,12 +193,22 @@
     text-align: center;
   }
   #testimonial-carousel {
-    width:90%;
+    width:85%;
     margin: auto;
     text-align: center;
   }
   .testimonial-text {
-    min-height: 100px;
+    min-height: 110px;
+  }
+  @media (max-width:850px) {
+    .testimonial-text {
+      min-height:140px;
+      }
+  }
+  @media (max-width:550px) {
+    .testimonial-text {
+      min-height:180px;
+      }
   }
   .pad-slide {
     width: 90%;
