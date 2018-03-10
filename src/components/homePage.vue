@@ -1,7 +1,7 @@
 <template>
 <div class='container-fluid'>
   <div id='hero-image' class='row'>
-    <div class="img-container">
+    <div class="img-container1">
       <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
     </div>
     <div class="row">
@@ -28,7 +28,9 @@
     </div>
     <div id="success-right-outer" class="col-sm-6 col-xs-12">
       <div id="success-right">
-        <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image"/>
+          <div class="img-container2">
+            <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image1"/>
+          </div>
       </div>
     </div>
   </div>
@@ -36,7 +38,9 @@
     <carousel :navigationEnabled="true" :perPage="1">
       <slide v-for="(action, index) in homePageData.actionCarousel" :key="index">
         <div class="pad-slide">
-          <img :src="action" :alt="'carousel image 1' + index" class="fit-image"/>
+          <div class="img-container3">
+          <img :src="action" :alt="'carousel image 1' + index" class="fit-image1"/>
+          </div>
         </div>
       </slide>
     </carousel>
@@ -49,7 +53,9 @@
       <slide v-for="(testimonial, index) in homePageData.testimonials" :key="index">
         <div class="pad-slide">
           <p class="testimonial-text">{{testimonial.text}}</p>
-          <img :src="testimonial.imageUrl" :alt="'testimonial image 1' + index" class="fit-image"/>
+          <div class="img-container4">
+            <img :src="testimonial.imageUrl" :alt="'testimonial image 1' + index" class="fit-image1"/>
+          </div>
         </div>
       </slide>
     </carousel>
@@ -57,7 +63,9 @@
   <div class='row' id='signup'>
     <div id="signup-highlight">
       <div id="signup-border">
-        <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image"/>
+        <div class="img-container5">
+          <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image1"/>
+        </div>
       </div>
     </div>
     <router-link to="/signup">
@@ -187,6 +195,7 @@
     float: left;
     background-color:#7DDBD4;
     border-radius: 10px;
+    width:100%;
   }
   #action-carousel {
     width: 80%;
@@ -217,11 +226,40 @@
     text-align: center;
     margin: auto
   }
-  .img-container {
+  .img-container1 {
     position: relative;
     padding-bottom: 35.67%;
     height:0;
     overflow: hidden;
+    width: 100%;
+  }
+  .img-container2 {
+    position: relative;
+    padding-bottom: 66.12%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container3 {
+    position: relative;
+    padding-bottom: 66.22%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container4 {
+    position: relative;
+    padding-bottom: 66.56%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container5 {
+    position: relative;
+    padding-bottom: 43.34%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
   }
   .fit-image1 {
     position: absolute;
