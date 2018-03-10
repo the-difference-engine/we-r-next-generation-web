@@ -7,7 +7,7 @@
     <form>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputParentName">Parent Name</label>
+          <label for="inputParentName">Parent/Guardian Name</label>
           <input type="text" class="form-control" id="inputParentName" placeholder="Full Name">
         </div>
         <div class="form-group col-md-6">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="form-row">
-        <label for="inputAddress1">Address</label>
+        <label for="inputAddress1">Child's Address</label>
         <input type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
       </div>
       <div class="form-row">
@@ -34,6 +34,10 @@
         <div class="form-group col-md-6">
           <label for="inputChildAge">Child's Age</label>
           <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputChildGender">Child's Gender</label>
+          <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender">
         </div>
       </div>
       <p>Camp your child would like to attend (Select one):</p>

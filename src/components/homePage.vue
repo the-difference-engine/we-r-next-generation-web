@@ -1,7 +1,9 @@
 <template>
 <div class='container-fluid'>
   <div id='hero-image' class='row'>
-    <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
+    <div class="img-container">
+      <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
+    </div>
     <div class="row">
       <h2 id="hero-words-positioning" class="col-xs-12"><span id="hero-words">{{homePageData.heroText}}</span></h2>
     </div>
@@ -214,6 +216,19 @@
     width: 90%;
     text-align: center;
     margin: auto
+  }
+  .img-container {
+    position: relative;
+    padding-bottom: 35.67%;
+    height:0;
+    overflow: hidden;
+  }
+  .fit-image1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* height: auto; */
   }
   .fit-image {
     width: 100%;
