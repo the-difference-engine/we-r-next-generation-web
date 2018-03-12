@@ -1,24 +1,23 @@
 <template>
   <div id="background-img">
-    <div id="forgot-pwsd" class="container">
-      <div v-if="requestMade" id="reset-popup">
-        <h2>Check Your Email!</h2>
-        <p>A link to reset your password has been sent to the email address you provided. Click through and confirm so you can create a new password!</p>
-        <button v-on:click="requestMade = false" class="btn btn-primary">Exit</button>
-      </div>
-      <h2 id="forgot-pswd-header">Forgot Password</h2>
-      <p id="description">Enter the email address you use to login and we'll send you an email with instructions on how to reset your password.</p>
-      <p id="reset-pswd-error" v-if="resetError">The request was could not be processed! Please try again.</p>
-      <form v-on:submit.prevent="resetPassword" id="forgot-pswd-form" class="container-fluid">
+    <div id="new-pwsd" class="container">
+      <h2 id="new-pswd-header">Enter New Password</h2>
+      <p id="description">Enter your new password twice and make sure they match!</p>
+      <p class="pswd-match" v-if="pswdNoMatch">Both passwords need to match!</p>
+      <p class="pswd-match" v-if="passwordFail">We were unable to process your request.</p>
+      <p id="pswd-success" v-if="passwordSuccess">Password reset! Log in to view your profile.</p>
+      <form v-on:submit.prevent="submitNewPassword" id="new-pswd-form" class="container-fluid">
         <div class="row">
-          <span id="email">Email</span>
-          <input name="email" id="email-input" class="form-control form-highlight" />
+          <span class="password">Password</span>
+          <input name="password1" class="password-input form-control form-highlight" type="password" />
+          <span class="password">Re-type password</span>
+          <input name="password2" class="password-input form-control form-highlight" type="password" />
           <div id="remembered-pswd">
             <span>Just Remembered?
             <router-link id="remembered-tag" to="/login">Log In</router-link>
             </span>
           </div>
-          <input class="green-btn btn btn-primary" id="forgot-pswd-submit" type="submit" value="Reset Password" />
+          <input class="green-btn btn btn-primary" id="new-pswd-submit" type="submit" value="Reset Password" />
         </div>
       </form>
     </div>
@@ -27,52 +26,50 @@
 
 <script>
 export default {
-    name: 'forgotPassword',
+    name: 'newPassword',
     methods: {
-      resetPassword: function(evt) {
-        this.$store.dispatch('resetPassword', {
-          email: evt.target.email.value,
-          that: this
+      submitNewPassword: function(evt) {
+        const {password1, password2} = evt.target
+        if (password1.value === password2.value) {
+          this.pswdNoMatch = false
+          this.$store.dispatch('submitNewPassword', {
+            password: evt.target.password1.value,
+            resetToken: this.$route.params.token,
+            that: this
           })
+        } else {
+          this.pswdNoMatch = true
+          setTimeout(() => {this.pswdNoMatch = false}, 3000)
+        }
       }
     },
     data () {
       return {
-        requestMade: false,
-        resetError: false
+        pswdNoMatch: false,
+        passwordFail: false,
+        passwordSuccess: false
       }
     }
 }
 </script>
 
 <style scoped>
-  #reset-pswd-error {
+  #pswd-success {
+    color: #7ddbd4;
+    background-color: #ededed;
+    border-radius: 10px;
+    padding: 12px 0;
+  }
+  .pswd-match {
     color: red;
     background-color: #ededed;
     border-radius: 10px;
     padding: 12px 0;
   }
-  #reset-popup {
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    border-radius: 10px;
-    width: 65%;
-    min-width: 150px;
-    height: auto;
-    text-align: center;
-    padding: 2rem;
-    margin: auto;
-    border: 1px solid #000;
-    box-shadow: 0 0 0 2038px rgba(0,0,0,.5);
-    z-index: 1;
-  }
-  #forgot-pswd-form {
+  #new-pswd-form {
     margin-top: 20px;
   }
-  #forgot-pswd-header {
+  #new-pswd-header {
     font-weight: bold;
     margin-bottom: 25px;
   }
@@ -90,7 +87,7 @@ export default {
     color: gray;
     float: left;
   }
-  #email-input {
+  .password-input {
     margin-bottom: 25px;
     margin-top: 7px;
   }
@@ -112,7 +109,7 @@ export default {
     border: none;
     margin-bottom: 20px;
   }
-  #forgot-pswd-submit {
+  #new-pswd-submit {
     width: 100%;
     margin-top: 5px;
   }
@@ -121,9 +118,8 @@ export default {
     opacity: 0.7;
     width: 100%;
     height: 100vh;
-    min-width: 180px;
   }
-  #forgot-pwsd {
+  #new-pwsd {
     /* desktop */
     width: 33%;
     padding: 20px 70px;
@@ -141,28 +137,28 @@ export default {
   }
   /* mobile */
   @media screen and (max-width: 320px) and (min-width: 0px) {
-    #forgot-pwsd {
+    #new-pwsd {
       width: 95%;
       padding: 10px 30px;
     }
   }
   /* extra breakpoint between mobile and tablet */
   @media screen and (max-width: 440px) and (min-width: 320px) {
-    #forgot-pwsd {
+    #new-pwsd {
       width: 85%;
       padding: 10px 35px;
     }
   }
   /* tablet */
   @media screen and (max-width: 768px) and (min-width: 441px) {
-    #forgot-pwsd {
+    #new-pwsd {
       width: 70%;
       padding: 15px 55px;
     }
   }
   /* laptop */
   @media screen and (max-width: 1024px) and (min-width: 769px) {
-    #forgot-pwsd {
+    #new-pwsd {
       width: 55%;
       padding: 15px 55px;
     }

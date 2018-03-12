@@ -13,6 +13,7 @@
           <router-link to="/login"><button id="login" class="green-btn btn btn-primary">Login</button></router-link>
         </div>
       </div>
+      <p id="sign-up-err" v-if="signUpErr">We were unable to create a profile with the information you provided.</p>
       <div class="row">
         <form v-on:submit.prevent="signup" id="signup-form" class="container-fluid">
           <div class="row" id="form-row">
@@ -43,23 +44,30 @@
     },
     data () {
       return {
-        signedUp: false
+        signedUp: false,
+        signUpErr: false
       }
     }
   }
 </script>
 
 <style scoped>
+  #sign-up-err{
+    color: red;
+    background-color: #ededed;
+    border-radius: 10px;
+    padding: 12px 0;
+  }
   #signed-in-popup {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50px;
     left: 0;
     right: 0;
     background-color: #fff;
     border-radius: 10px;
     width: 65%;
-    height: 300px;
+    min-width: 150px;
+    height: auto;
     text-align: center;
     padding: 2rem;
     margin: auto;
@@ -134,6 +142,7 @@
     opacity: 0.7;
     width: 100%;
     height: 100vh;
+    min-width: 180px;
   }
   #signup-container {
     /* desktop */
