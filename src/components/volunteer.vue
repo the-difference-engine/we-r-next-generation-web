@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <label for="inputAddress2">Address Line 2</label>
-            <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="">
+            <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
         </div>
         <div class="form-group">
             <label for="city">City</label>
