@@ -13,8 +13,10 @@ import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
 import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
+import forgotPassword from '@/components/forgotPassword'
 import confirmation from '@/components/confirmation'
 import opportunities from '@/components/opportunities'
+import newPassword from '@/components/newPassword'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -65,6 +67,24 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/forgotPassword',
+      name: 'forgotPassword',
+      components: {
+        default: forgotPassword,
+        header: wernxgHeader,
+        footer: nullComp
+      }
+    },
+    {
+      path: '/newPassword/:token',
+      name: 'newPassword',
+      components: {
+        default: newPassword,
+        header: wernxgHeader,
+        footer: nullComp
+      }
     },
     {
       path: '/confirmation/:token',

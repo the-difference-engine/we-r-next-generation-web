@@ -2,7 +2,7 @@ import * as types from './types'
 import axios from 'axios'
 import localforage from '../sessionUtils'
 
-export const login = ({commit}, {user_name, password, router}) =>
+export const login = ({commit}, {user_name, password, router, that}) =>
   axios.post(`/api/v1/sessions/${user_name}/${password}`)
   .then(res => {
     commit(types.LOGIN, res.data.profileData)
@@ -10,7 +10,11 @@ export const login = ({commit}, {user_name, password, router}) =>
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => router.push('/'))
   })
-  .catch(err => console.error(err))
+  .catch(err => {
+    that.loginErr = true
+    setTimeout(() => {that.loginErr = false}, 3000)
+    console.error(err)
+  })
 
 export const logout = ({commit}, {router}) =>
   localforage.getItem('X_TOKEN')
@@ -35,4 +39,32 @@ export const signup = ({commit}, {name, email, password, that}) =>
     console.log('res is: ', res.data)
     that.signedUp = true
   })
-  .catch(err => console.error(err))
+  .catch(err => {
+    that.signUpErr = true
+    setTimeout(() => {that.signUpErr = false}, 3000)
+    console.error(err)
+  })
+
+export const resetPassword = ({commit}, {email, that}) =>
+  axios.put(`/api/v1/profiles/resetPassword/${email}`)
+  .then(res => {
+    console.log('password reset res data: ', res.data)
+    that.requestMade = true
+  })
+  .catch(err => {
+    that.resetError = true
+    setTimeout(() => {that.resetError = false}, 3000)
+    console.error(err)
+  })
+
+export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
+  axios.put(`/api/v1/profiles/newPassword/${resetToken}/${password}`)
+  .then(res => {
+    that.passwordSuccess = true
+    console.log('new pswd submission res data:', res.data)
+  })
+  .catch(err => {
+    that.passwordFail = true
+    setTimeout(() => {that.passwordFail = false}, 3000)
+    console.error(err)
+  })

@@ -13,27 +13,7 @@
           <router-link to="/login"><button id="login" class="green-btn btn btn-primary">Login</button></router-link>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12"><span>Please select your role:</span></div>
-      </div>
-      <div class="row"><div>
-        <div class="col-xs-6 col-sm-3">
-          <input type="radio" id="parent" value="parent" v-model="picked">
-          <label for="parent">Parent</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="volunteer" value="volunteer" v-model="picked">
-          <label for="volunteer">Volunteer</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="partner" value="partner" v-model="picked">
-          <label for="partner">Partner</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="admin" value="admin" v-model="picked">
-          <label for="admin">Admin</label>
-        </div></div>
-      </div>
+      <p id="sign-up-err" v-if="signUpErr">We were unable to create a profile with the information you provided.</p>
       <div class="row">
         <form v-on:submit.prevent="signup" id="signup-form" class="container-fluid">
           <div class="row" id="form-row">
@@ -65,23 +45,29 @@
     data () {
       return {
         signedUp: false,
-        picked: 'choose one the above roles!'
+        signUpErr: false
       }
     }
   }
 </script>
 
 <style scoped>
+  #sign-up-err{
+    color: red;
+    background-color: #ededed;
+    border-radius: 10px;
+    padding: 12px 0;
+  }
   #signed-in-popup {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50px;
     left: 0;
     right: 0;
     background-color: #fff;
     border-radius: 10px;
     width: 65%;
-    height: 300px;
+    min-width: 150px;
+    height: auto;
     text-align: center;
     padding: 2rem;
     margin: auto;
@@ -156,6 +142,7 @@
     opacity: 0.7;
     width: 100%;
     height: 100vh;
+    min-width: 180px;
   }
   #signup-container {
     /* desktop */
