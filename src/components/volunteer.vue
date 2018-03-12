@@ -4,47 +4,67 @@
 <div class="container">
     <h1>Volunteer Application</h1>
     <hr>
-    <form>
-        <div class="form-row">
+    <form v-on:submit.prevent="submit">
+        <div>
             <div class="form-group col-md-6">
                 <label for="inputFullName">Full Name</label>
-                <input type="text" class="form-control" id="inputFullName" placeholder="Full Name">
+                {{profileData.full_name}}
             </div>
             <div class="form-group col-md-6">
                 <label for="inputEmail">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                {{profileData.email}}
             </div>
         </div>
         <div class="form-group">
-            <label for="inputAddress1">Address</label>
-            <input type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+            <label for="inputAddress1">Address Line 1</label>
+            <input name="address1" type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+        </div>
+        <div class="form-group">
+            <label for="inputAddress2">Address Line 2</label>
+            <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input name="city" type="text" class="form-control" id="city" placeholder="City">
+        </div>
+        <div class="form-group">
+            <label for="stateProvince">State/Province</label>
+            <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+        </div>
+        <div class="form-group">
+            <label for="zipCode">Zip Code</label>
+            <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input name="country" type="text" class="form-control" id="country" placeholder="Country">
         </div>
         <div class="form-group">
             <div class="form-group col-md-6">
                 <label for="inputPhone">Phone Number</label>
-                <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
+                <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
             </div>
         </div>
         <hr>
         <p>Please tell us a little bit about yourself:</p>
         <div class="form-group">
             <label for="inputBio">Bio</label>
-            <textarea class="form-control" id="inputBio" rows="3" placeholder="Bio"></textarea>
+            <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio"></textarea>
+            {{charactersLeft}}
         </div>
     <p>Which camp would you like to teach at (Select one):</p>
     <div class="form-check">
         <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="">
+            <input class="form-check-input" type="radio" name="camp" value="camp1">
             Camp 1
         </label>
     </div>
     <div class="form-check">
         <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="">
+            <input class="form-check-input" type="radio" name="camp" value="camp2">
             Camp 2
         </label>
     </div>
-    </form>
 <div class="waiver">
     <h3>Volunteer Release and Waiver of Liability Form</h3>
     <br>
@@ -120,15 +140,53 @@
     </div>
     <button type="submit" class="btn btn-primary">Save & Submit</button>
 </div>
+</form>
 </div>
 </template>
 
 <script>
+  import localforage from '../sessionUtils'
+  import axios from 'axios'
   export default {
     name: 'volunteer',
     data () {
       return {
+          profileData: {},
+          bio: ''
       }
+    },
+    methods: {
+        submit: function(evt){
+            console.log(evt.target.address1.value)
+            console.log(evt.target.address2.value)
+            console.log(evt.target.city.value)
+            console.log(evt.target.stateProvince.value)
+            console.log(evt.target.zipCode.value)
+            console.log(evt.target.country.value)
+            console.log(evt.target.phoneNumber.value)
+            console.log(evt.target.bio.value)
+            console.log(evt.target.camp)
+        }
+    },
+    computed: {
+        charactersLeft(){
+            let words = this.bio.split(' ').filter((entry)=>{ return entry.trim() != ''; })
+            let count = words.length
+            let cap = 300
+            return (cap-count) + ' / ' + cap + ' words remaining'
+        }
+    },
+    created() {
+      localforage.getItem('X_TOKEN')
+      .then(session => {
+        axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
+        .then(response => {
+            console.log(response.data)
+          this.profileData = response.data
+        })
+        .catch(console.error)
+      })
+      .catch(console.error)
     }
   }
 </script>
