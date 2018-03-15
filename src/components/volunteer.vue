@@ -108,6 +108,7 @@
 </ol>
     By signing below, I express my understanding and intent to enter into this Release and Waiver of Liability willingly and voluntarily.<br>
 <br>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputSignature">Please type your full name (Or parent/guardian if under 18): </label>
