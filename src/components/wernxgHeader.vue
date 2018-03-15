@@ -15,6 +15,7 @@
           </div>
           <div id="header-right" class="menu-items col-xs-9 col-sm-9" v-bind:class="{ showMenu: menuClicked }">
             <router-link to="/campInfo">The Camp</router-link>
+            <router-link to="/camp/create">New CampEx</router-link>
             <router-link to="/successStories">Success Stories</router-link>
             <router-link to="/volunteer">Get Involved</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
