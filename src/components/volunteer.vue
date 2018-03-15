@@ -49,7 +49,7 @@
         <p>Please tell us a little bit about yourself:</p>
         <div class="form-group">
             <label for="inputBio">Bio</label>
-            <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio"></textarea>
+            <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
             {{charactersLeft}}
         </div>
     <p>Which camp would you like to teach at (Select one):</p>
@@ -135,7 +135,7 @@
         </div><br>
         <div class="form-group col-md-3">
             <label for="inputDate">Date:</label>
-            <input type="text" class="form-control" id="inputDate" placeholder="">
+            <input type="text" class="form-control" id="inputDate" name="dateSigned" placeholder="">
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Save & Submit</button>
@@ -157,15 +157,31 @@
     },
     methods: {
         submit: function(evt){
-            console.log(evt.target.address1.value)
-            console.log(evt.target.address2.value)
-            console.log(evt.target.city.value)
-            console.log(evt.target.stateProvince.value)
-            console.log(evt.target.zipCode.value)
-            console.log(evt.target.country.value)
-            console.log(evt.target.phoneNumber.value)
-            console.log(evt.target.bio.value)
-            console.log(evt.target.camp)
+            localforage.getItem('X_TOKEN')
+            .then(session => {
+                console.log('submit session: ', {headers: { 'x-token': session }})
+                axios.post('/api/v1/applications', {
+                    headers: { 'x-token': session },
+                    params: {
+                        full_name: this.profileData.full_name,
+                        email: this.profileData.email,
+                        address_line_1: evt.target.address1.value,
+                        address_line_2: evt.target.address2.value,
+                        city: evt.target.city.value,
+                        state_province: evt.target.stateProvince.value,
+                        zip_code: evt.target.zipCode.value,
+                        country: evt.target.country.value,
+                        phone_number: evt.target.phoneNumber.value,
+                        bio: evt.target.bio.value,
+                        camp: evt.target.camp.value,
+                        date_signed: evt.target.dateSigned.value,
+                        type: 'volunteer',
+                        status: 'pending'
+                        }
+                })
+                .catch(console.error)})
+            .catch(console.error)
+
         }
     },
     computed: {
@@ -181,7 +197,7 @@
       .then(session => {
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
         .then(response => {
-            console.log(response.data)
+            // console.log(response.data)
           this.profileData = response.data
         })
         .catch(console.error)
