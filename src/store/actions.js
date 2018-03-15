@@ -25,6 +25,7 @@ export const logout = ({commit}, {router}) =>
       .then(() => {
         localforage.removeItem('X_TOKEN')
         .then(() => {
+          axios.defaults.headers.common['x-token'] = null
           commit(types.LOGOUT)
           commit(types.LOGSTATUS, false)
           router.push('/login')
@@ -67,4 +68,15 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     that.passwordFail = true
     setTimeout(() => {that.passwordFail = false}, 3000)
     console.error(err)
+  })
+
+export const getVolunteerApps = ({commit}, {that}) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    if (session) {
+      const config = {headers: {'x-token': session}}
+      axios.get('/api/v1/applications/volunteers', config)
+      .then(res => {that.applications = res.data})
+      .catch(err => console.error(err))
+    }
   })

@@ -17,6 +17,7 @@ import forgotPassword from '@/components/forgotPassword'
 import confirmation from '@/components/confirmation'
 import opportunities from '@/components/opportunities'
 import newPassword from '@/components/newPassword'
+import adminApplications from '@/components/adminApplications'
 import {sessionCheck} from '../sessionUtils'
 
 Vue.use(Router)
@@ -168,6 +169,16 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       }
+    },
+    {
+      path: '/adminApplications',
+      name: 'Admin Applications',
+      components: {
+        default: adminApplications,
+        header: nullComp,
+        footer: nullComp
+      },
+      beforeEnter: sessionCheck
     }
   ]
 })
