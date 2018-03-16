@@ -8,7 +8,10 @@ export const login = ({commit}, {user_name, password, router, that}) =>
     commit(types.LOGIN, res.data.profileData)
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
-    .then(() => router.push('/'))
+    .then(() => {
+      if (res.data.profileData.role === 'admin') router.push('/adminApplications')
+      else router.push('/')
+    })
   })
   .catch(err => {
     that.loginErr = true

@@ -1,6 +1,9 @@
 <template>
   <div id="admin-applications">
-    <div id="submitted" class="application-list"></div>
+    <div id="submitted" class="application-list">
+      <div class="list-icon"></div>
+      <table></table>
+    </div>
     <div id="pending" class="application-list"></div>
     <div id="approved" class="application-list"></div>
     <div id="not-approved" class="application-list"></div>
