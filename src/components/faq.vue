@@ -87,6 +87,10 @@
 </script>
 
 <style scoped>
+  .row {
+    margin-left:0;
+    margin-right:0;
+  }
   #category_buttons{
     display: flex;
     justify-content: space-around;

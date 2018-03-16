@@ -28,9 +28,6 @@
         pageContent: [],
       }
     },
-    generate_categories() {
-
-    },
     created() {
       axios.get('/api/v1/campinfo').then(response => {
         this.pageContent = response.data
@@ -42,6 +39,10 @@
 </script>
 
 <style scoped>
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
   #hero-image {
     position: relative;
     text-align: center;

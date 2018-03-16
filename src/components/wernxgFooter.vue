@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer container-fluid">
     <div id="footer" class="row">
       <div id="footer_top" class="col-lg-12">
         <div class="row">
@@ -7,7 +7,7 @@
             <h4>The Company</h4>
             <ul>
               <li><router-link to="/home">Home</router-link></li>
-              <li><router-link to="/volunteer">Participate</router-link></li>
+              <li><router-link to="/volunteer">Volunteer</router-link></li>
               <li><router-link to="/signup">Sign Up</router-link></li>
               <li><router-link to="/login">Login</router-link></li>
               <li><router-link to="/donate">Donate</router-link></li>
@@ -60,7 +60,7 @@
   }
 
   /*Footer Styling*/
-  #footer{
+  .footer{
     background-color:#CAC8C8;
     color: white;
     height: auto;

@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 import {sessionCheck} from '../sessionUtils'
 
 import campInfo from '@/components/campInfo'
+import camper from '@/components/camper'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
+import forgotPassword from '@/components/forgotPassword'
+import getInvolved from '@/components/getInvolved'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import newLogin from '@/components/newLogin'
+import newPassword from '@/components/newPassword'
 import nullComp from '@/components/nullComp'
+import opportunities from '@/components/opportunities'
+import partner from '@/components/partner'
 import profile from '@/components/profile'
-import signup from '@/components/signup'
 import successStories from '@/components/successStories'
 import users from '@/components/users'
 import volunteer from '@/components/volunteer'
@@ -60,13 +64,31 @@ export default new Router({
     },
     {
       path: '/signup',
-      name: 'signup',
+      name: 'camper',
       components: {
-        default: signup,
+        default: camper,
         header: wernxgHeader,
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/forgotPassword',
+      name: 'forgotPassword',
+      components: {
+        default: forgotPassword,
+        header: wernxgHeader,
+        footer: nullComp
+      }
+    },
+    {
+      path: '/newPassword/:token',
+      name: 'newPassword',
+      components: {
+        default: newPassword,
+        header: wernxgHeader,
+        footer: nullComp
+      }
     },
     {
       path: '/confirmation/:token',
@@ -92,6 +114,26 @@ export default new Router({
       name: 'volunteer',
       components: {
         default: volunteer,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/partner',
+      name: 'partner',
+      components: {
+        default: partner,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/getInvolved',
+      name: 'getInvolved',
+      components: {
+        default: getInvolved,
         header: wernxgHeader,
         footer: wernxgFooter
       },
@@ -145,12 +187,21 @@ export default new Router({
     {
       path: '/users',
       name: 'View Users',
+      //beforeEnter: sessionCheck
       components: {
         default: users,
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      //beforeEnter: sessionCheck
+    },
+    {
+      path: '/opportunities',
+      name: 'Opportunities',
+      components: {
+        default: opportunities,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
     }
   ]
 })

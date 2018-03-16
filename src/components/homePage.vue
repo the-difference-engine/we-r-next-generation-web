@@ -1,8 +1,12 @@
 <template>
 <div class='container-fluid'>
   <div id='hero-image' class='row'>
-    <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
-    <h2 id="hero-words-positioning"><span id="hero-words">{{homePageData.heroText}}</span></h2>
+    <div class="img-container1">
+      <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
+    </div>
+    <div class="row">
+      <h2 id="hero-words-positioning" class="col-xs-12"><span id="hero-words">{{homePageData.heroText}}</span></h2>
+    </div>
   </div>
   <div class='row'>
     <h1 class="col-12">Who we are</h1>
@@ -24,7 +28,9 @@
     </div>
     <div id="success-right-outer" class="col-sm-6 col-xs-12">
       <div id="success-right">
-        <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image"/>
+          <div class="img-container2">
+            <img :src="homePageData.sStories[0].imageUrl" :alt="'success story image'" class="fit-image1"/>
+          </div>
       </div>
     </div>
   </div>
@@ -32,7 +38,9 @@
     <carousel :navigationEnabled="true" :perPage="1">
       <slide v-for="(action, index) in homePageData.actionCarousel" :key="index">
         <div class="pad-slide">
-          <img :src="action" :alt="'carousel image 1' + index" class="fit-image"/>
+          <div class="img-container3">
+          <img :src="action" :alt="'carousel image 1' + index" class="fit-image1"/>
+          </div>
         </div>
       </slide>
     </carousel>
@@ -41,11 +49,13 @@
     <h1>Testimonials</h1>
   </div>
   <div class='row' id='testimonial-carousel'>
-    <carousel :navigationEnabled="true" :perPage="3">
+    <carousel :navigationEnabled="true" :perPage="$mq | mq({mobile: 2, other: 3})">
       <slide v-for="(testimonial, index) in homePageData.testimonials" :key="index">
         <div class="pad-slide">
           <p class="testimonial-text">{{testimonial.text}}</p>
-          <img :src="testimonial.imageUrl" :alt="'testimonial image 1' + index" class="fit-image"/>
+          <div class="img-container4">
+            <img :src="testimonial.imageUrl" :alt="'testimonial image 1' + index" class="fit-image1"/>
+          </div>
         </div>
       </slide>
     </carousel>
@@ -53,7 +63,9 @@
   <div class='row' id='signup'>
     <div id="signup-highlight">
       <div id="signup-border">
-        <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image"/>
+        <div class="img-container5">
+          <img :src="homePageData.signupPic" alt="sign-up pic" class="fit-image1"/>
+        </div>
       </div>
     </div>
     <router-link to="/signup">
@@ -70,7 +82,6 @@
       </div>
     </div>
   </div>
-<!-- :key="index" v-bind:class="'col-md-' + Math.floor(12/homePageData.partners.length) + ' col-xs-12 partners center-block'" -->
 </div>
 
 </template>
@@ -103,6 +114,11 @@
 
 <style scoped>
 
+  .row {
+  margin-left: 0;
+  margin-right: 0;
+  }
+
   .container-fluid {
     padding: 0;
   }
@@ -118,10 +134,6 @@
     left: 50%;
     transform: translate(-50%, -50%)
   }
-  /* @font-face {
-    font-family: customFont;
-    src: url('../../static/assets/5yearsoldfont.tff');
-  } */
   h2 span {
     color: white;
     font-family: 'Nanum Pen Script', cursive;
@@ -147,16 +159,6 @@
     text-align: left;
     white-space: pre-wrap;
   }
-  /* @media (min-width: 1024px){
-    #who-we-are-paragraph {
-      width: 85%;
-    }
-  }
-  @media (min-width: 1440px){
-    #who-we-are-paragraph {
-      width: 80%;
-    }
-  } */
   #read-button-div {
     text-align: left;
     width: 80%;
@@ -176,7 +178,6 @@
   #success-left {
     padding: 2.5% 5% 5% 10%;
     float: left;
-    /* width: 50%; */
   }
   #SSparagragh {
     text-align: left;
@@ -191,11 +192,10 @@
   }
   #success-right{
     padding: 4% 6% 8% 6%;
-    /* margin-right: 6%; */
-    /* width: 44%; */
     float: left;
     background-color:#7DDBD4;
     border-radius: 10px;
+    width:100%;
   }
   #action-carousel {
     width: 80%;
@@ -204,17 +204,69 @@
     text-align: center;
   }
   #testimonial-carousel {
-    width:90%;
+    width:85%;
     margin: auto;
     text-align: center;
   }
   .testimonial-text {
-    min-height: 100px;
+    min-height: 110px;
+  }
+  @media (max-width:850px) {
+    .testimonial-text {
+      min-height:140px;
+      }
+  }
+  @media (max-width:550px) {
+    .testimonial-text {
+      min-height:180px;
+      }
   }
   .pad-slide {
     width: 90%;
     text-align: center;
     margin: auto
+  }
+  .img-container1 {
+    position: relative;
+    padding-bottom: 35.67%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container2 {
+    position: relative;
+    padding-bottom: 66.12%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container3 {
+    position: relative;
+    padding-bottom: 66.22%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container4 {
+    position: relative;
+    padding-bottom: 66.56%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .img-container5 {
+    position: relative;
+    padding-bottom: 43.34%;
+    height:0;
+    overflow: hidden;
+    width: 100%;
+  }
+  .fit-image1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* height: auto; */
   }
   .fit-image {
     width: 100%;
@@ -223,7 +275,6 @@
     text-align: center;
   }
   .partners {
-    /* width: 19%; */
     display: inline-block;
     margin: auto;
     padding: 20px;

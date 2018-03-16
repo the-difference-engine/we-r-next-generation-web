@@ -6,6 +6,7 @@
         <div id="sign-up-div" class="col-xs-12 col-sm-6"><span id="sign-up"><i>Aren't a member yet?</i></span></div>
         <div class="col-xs-12 col-sm-6"><router-link to="/newlogin"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
       </div>
+      <p id="login-err" v-if="loginErr">You were unable to login with the information provided.</p>
       <div class="row">
         <form v-on:submit.prevent="submitLogin" class="container-fluid" id="login-form">
           <div class="row" id="form-row">
@@ -13,7 +14,7 @@
             <input class="form-control form-highlight" name="email" id="email" />
             <span id="password-tag">Password</span>
             <input class="form-control form-highlight" name="password" id="password" type="password" />
-            <p><a id="password-reminder" href="#">I forgot my password</a></p>
+            <p><router-link id="password-reminder" to="/forgotPassword">I forgot my password</router-link></p>
             <input class="green-btn btn btn-primary" id="login-submit" type="submit" value="Log In" />
           </div>
         </form>
@@ -30,13 +31,15 @@
         this.$store.dispatch('login', {
           user_name: evt.target.email.value,
           password: evt.target.password.value,
-          router: this.$router
-          })
-        this.$store.commit('LOGSTATUS', true)
+          router: this.$router,
+          that: this
+        })
       }
     },
     data () {
-      return {}
+      return {
+        loginErr: false
+      }
     }
   }
 </script>
@@ -44,6 +47,12 @@
 <style scoped>
   span {
     color: gray;
+  }
+  #login-err{
+    color: red;
+    background-color: #ededed;
+    border-radius: 10px;
+    padding: 12px 0;
   }
   #login-header {
     margin-bottom: 25px;

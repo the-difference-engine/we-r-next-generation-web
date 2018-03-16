@@ -1,6 +1,11 @@
 <template>
   <div id="background-img">
     <div id="signup-container" class="container">
+      <div v-if="signedUp" id="signed-in-popup">
+        <h2>Check Your Email!</h2>
+        <p>A link to activate your profile has been sent to the email address you provided. Click through and confirm so you can login!</p>
+        <button v-on:click="signedUp = false" class="btn btn-primary">Exit</button>
+      </div>
       <h1 id="signup-header">Sign Up</h1>
       <div class="row narrow-spacing">
         <div class="account col-xs-12 col-sm-6"><span>Already have an account?</span></div>
@@ -8,27 +13,7 @@
           <router-link to="/login"><button id="login" class="green-btn btn btn-primary">Login</button></router-link>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12"><span>Please select your role:</span></div>
-      </div>
-      <div class="row"><div>
-        <div class="col-xs-6 col-sm-3">
-          <input type="radio" id="parent" value="parent" v-model="picked">
-          <label for="parent">Parent</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="volunteer" value="volunteer" v-model="picked">
-          <label for="volunteer">Volunteer</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="partner" value="partner" v-model="picked">
-          <label for="partner">Partner</label>
-        </div></div>
-        <div class="col-xs-6 col-sm-3"><div>
-          <input type="radio" id="admin" value="admin" v-model="picked">
-          <label for="admin">Admin</label>
-        </div></div>
-      </div>
+      <p id="sign-up-err" v-if="signUpErr">We were unable to create a profile with the information you provided.</p>
       <div class="row">
         <form v-on:submit.prevent="signup" id="signup-form" class="container-fluid">
           <div class="row" id="form-row">
@@ -52,19 +37,53 @@
         this.$store.dispatch('signup', {
           name: evt.target.name.value,
           email: evt.target.email.value,
-          password: evt.target.password.value
+          password: evt.target.password.value,
+          that: this
         })
       }
     },
     data () {
       return {
-        picked: 'choose one the above roles!'
+        signedUp: false,
+        signUpErr: false
       }
     }
   }
 </script>
 
 <style scoped>
+  #sign-up-err{
+    color: red;
+    background-color: #ededed;
+    border-radius: 10px;
+    padding: 12px 0;
+  }
+  #signed-in-popup {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 65%;
+    min-width: 150px;
+    height: auto;
+    text-align: center;
+    padding: 2rem;
+    margin: auto;
+    border: 1px solid #000;
+    box-shadow: 0 0 0 2038px rgba(0,0,0,.5);
+    z-index: 1;
+  }
+  #signed-in-popup > h2 {
+    color: #7ddbd4;
+    font-weight: bold;
+  }
+  #signed-in-popup > p {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
   #login {
     width: 100px;
   }
@@ -123,6 +142,7 @@
     opacity: 0.7;
     width: 100%;
     height: 100vh;
+    min-width: 180px;
   }
   #signup-container {
     /* desktop */
