@@ -2,7 +2,7 @@
 
 <template>
 <div class="container">
-  <h1>Volunteer Application</h1>
+  <h1>Partner Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
     <div>
@@ -49,20 +49,7 @@
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <p>Which camp would you like to teach at (Select one):</p>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="camp" value="camp1">
-        Camp 1
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="camp" value="camp2">
-        Camp 2
-      </label>
-    </div>
-  <div class="waiver">
+  <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
       <br>
       This Release and Waiver of Liability (the “release”) executed on _____ (date) by ________(“Volunteer”) releases We R NextGeneration, Inc. a nonprofit corporation organized and existing under the laws of the State of Maryland and each of its directors, officers, employees, and agents. The Volunteer desires to provide volunteer services for Nonprofit and engage in activities related to serving as a volunteer.
@@ -136,7 +123,7 @@
       </div>
   </div>
   <button type="submit" class="btn btn-primary">Save & Submit</button>
-</div>
+</div> -->
 </form>
 </div>
 </template>
@@ -145,7 +132,7 @@
   import localforage from '../sessionUtils'
   import axios from 'axios'
   export default {
-    name: 'volunteer',
+    name: 'partner',
     data () {
       return {
           profileData: {},
@@ -172,7 +159,7 @@
                         bio: evt.target.bio.value,
                         camp: evt.target.camp.value,
                         date_signed: evt.target.dateSigned.value,
-                        type: 'volunteer',
+                        type: 'partner',
                         status: 'pending'
                         }
                 })
