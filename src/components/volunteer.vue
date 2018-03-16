@@ -32,18 +32,11 @@
             <textarea class="form-control" id="inputBio" rows="3" placeholder="Bio"></textarea>
         </div>
     <p>Which camp would you like to teach at (Select one):</p>
-    <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="">
-            Camp 1
-        </label>
-    </div>
-    <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="">
-            Camp 2
-        </label>
-    </div>
+        <select>
+            <div v-for="(camp, index) in camps" :key="index">
+                <option>camp["full_name"]</option>
+            </div>
+        </select>
     </form>
 <div class="waiver">
     <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -125,11 +118,22 @@
 </template>
 
 <script>
-  export default {
+    import axios from 'axios';
+    export default {
     name: 'volunteer',
     data () {
-      return {
-      }
+        return {
+            camps: [],
+        }
+    },
+    created() {
+        console.log('ATTEMPTING ALL CAMPS METHOD')
+        axios.get('/api/v1/applications/camps')
+        .then(response => {
+            this.camps = response.data
+            console.log(this.camps)
+        })
+        .catch(error => console.log)
     }
   }
 </script>
