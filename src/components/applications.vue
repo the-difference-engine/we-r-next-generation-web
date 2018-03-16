@@ -2,13 +2,14 @@
   <div class="">
     <router-link to="/partner">Become a Partner</router-link>
     <router-link to="/volunteer">Volunteer</router-link>
+    <router-link to="/signup">Sign up a Camper</router-link>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
   export default {
-    name: 'getInvolved',
+    name: 'applications',
     data () {
       return {
 

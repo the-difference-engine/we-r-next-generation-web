@@ -8,7 +8,7 @@ import login from '@/components/login'
 import camper from '@/components/camper'
 import profile from '@/components/profile'
 import volunteer from '@/components/volunteer'
-import getInvolved from '@/components/getInvolved'
+import applications from '@/components/applications'
 import partner from '@/components/partner'
 import faq from '@/components/faq'
 import donate from '@/components/donate'
@@ -128,10 +128,10 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/getInvolved',
-      name: 'getInvolved',
+      path: '/applications',
+      name: 'applications',
       components: {
-        default: getInvolved,
+        default: applications,
         header: wernxgHeader,
         footer: wernxgFooter
       },
