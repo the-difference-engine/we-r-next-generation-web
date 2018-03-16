@@ -8,6 +8,7 @@
       </div>
       <div id="header_right" class="col-sm-9">
         <ul id="header_menu">
+          <li><router-link to="/users">Members</router-link></li><!-- TODO: Make this visible to admins only. -->
           <li><router-link to="/campInfo">The Camp</router-link></li>
           <li><router-link to="/successStories">Success Stories</router-link></li>
           <li><router-link to="/volunteer">Get Involved</router-link></li>

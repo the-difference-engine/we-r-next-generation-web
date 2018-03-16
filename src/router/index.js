@@ -1,20 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import wernxgHeader from '@/components/wernxgHeader'
-import wernxgFooter from '@/components/wernxgFooter'
-import campInfo from '@/components/campInfo'
-import successStories from '@/components/successStories'
-import login from '@/components/login'
-import signup from '@/components/signup'
-import profile from '@/components/profile'
-import volunteer from '@/components/volunteer'
-import faq from '@/components/faq'
-import donate from '@/components/donate'
-import nullComp from '@/components/nullComp'
-import homePage from '@/components/homePage'
-import newLogin from '@/components/newLogin'
-import confirmation from '@/components/confirmation'
+
 import {sessionCheck} from '../sessionUtils'
+
+import campInfo from '@/components/campInfo'
+import confirmation from '@/components/confirmation'
+import donate from '@/components/donate'
+import faq from '@/components/faq'
+import homePage from '@/components/homePage'
+import login from '@/components/login'
+import newLogin from '@/components/newLogin'
+import nullComp from '@/components/nullComp'
+import profile from '@/components/profile'
+import signup from '@/components/signup'
+import successStories from '@/components/successStories'
+import users from '@/components/users'
+import volunteer from '@/components/volunteer'
+import wernxgFooter from '@/components/wernxgFooter'
+import wernxgHeader from '@/components/wernxgHeader'
 
 Vue.use(Router)
 
@@ -138,6 +141,16 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       }
+    },
+    {
+      path: '/users',
+      name: 'View Users',
+      components: {
+        default: users,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      //beforeEnter: sessionCheck
     }
   ]
 })
