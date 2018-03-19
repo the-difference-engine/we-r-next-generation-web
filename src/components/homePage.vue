@@ -1,5 +1,5 @@
 <template>
-<div class='container-fluid'>
+<div class='container'>
   <div id='hero-image' class='row'>
     <img :src="homePageData.heroImage" alt="top-image" class="fit-image">
     <div class="row">
