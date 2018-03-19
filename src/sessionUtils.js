@@ -16,7 +16,7 @@ export const sessionCheck = (to, from, next) => {
         if (res.data.X_TOKEN) {
           store.commit(types.LOGIN, res.data.profileData)
           if (to.path === from.path) next(false)
-          else if (to.path === '/adminApplications') next()
+          else if (res.data.profileData.role === 'admin' && to.path === '/adminApplications') next()
           else if (res.data.profileData.role === 'admin') next('/adminApplications')
           else if (to.path === '/login') next({path: '/'})
           else next()
@@ -44,6 +44,7 @@ export const adminCheck = (to, from, next) => {
       .then(res => {
         if (res.data.X_TOKEN) {
           store.commit(types.LOGIN, res.data.profileData)
+          if (to.path === from.path) next(false)
           if (res.data.profileData.role === 'admin') next('/adminApplications')
           else next()
         }
