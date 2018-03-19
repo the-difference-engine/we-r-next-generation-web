@@ -17,6 +17,7 @@ import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
 import forgotPassword from '@/components/forgotPassword'
 import confirmation from '@/components/confirmation'
+import campex from '@/components/campex'
 import opportunities from '@/components/opportunities'
 import newPassword from '@/components/newPassword'
 import {sessionCheck} from '../sessionUtils'
@@ -187,6 +188,15 @@ export default new Router({
       name: 'Opportunities',
       components: {
         default: opportunities,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/camp/create',
+      name: 'CreateCamp',
+      components: {
+        default: campex,
         header: wernxgHeader,
         footer: wernxgFooter
       }
