@@ -6,6 +6,14 @@ import router from './router'
 import store from './store'
 import {sync} from 'vuex-router-sync'
 import axios from 'axios'
+import VueMq from 'vue-mq'
+
+Vue.use(VueMq, {
+  breakpoints: {
+    mobile: 600,
+    other: Infinity
+  }
+})
 
 axios.defaults.baseURL = process.env.BASE_URL
 
