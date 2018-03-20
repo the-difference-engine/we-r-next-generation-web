@@ -83,3 +83,15 @@ export const getVolunteerApps = ({commit}, {that}) =>
       .catch(err => console.error(err))
     }
   })
+
+export const campCreate = ({ commit }, { new_camp, router, that }) =>
+  axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
+    .then(res => {
+      console.log('res is: ', res.data)
+      that.signedUp = true
+    })
+    .catch(err => {
+      that.signUpErr = true
+      setTimeout(() => { that.signUpErr = false }, 3000)
+      console.error(err)
+    })

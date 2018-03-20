@@ -5,9 +5,11 @@ import wernxgFooter from '@/components/wernxgFooter'
 import campInfo from '@/components/campInfo'
 import successStories from '@/components/successStories'
 import login from '@/components/login'
-import signup from '@/components/signup'
+import camper from '@/components/camper'
 import profile from '@/components/profile'
 import volunteer from '@/components/volunteer'
+import getInvolved from '@/components/getInvolved'
+import partner from '@/components/partner'
 import faq from '@/components/faq'
 import donate from '@/components/donate'
 import nullComp from '@/components/nullComp'
@@ -15,6 +17,7 @@ import homePage from '@/components/homePage'
 import newLogin from '@/components/newLogin'
 import forgotPassword from '@/components/forgotPassword'
 import confirmation from '@/components/confirmation'
+import campex from '@/components/campex'
 import opportunities from '@/components/opportunities'
 import newPassword from '@/components/newPassword'
 import adminNavbar from '@/components/adminNavbar'
@@ -63,9 +66,9 @@ export default new Router({
     },
     {
       path: '/signup',
-      name: 'signup',
+      name: 'camper',
       components: {
-        default: signup,
+        default: camper,
         header: wernxgHeader,
         footer: wernxgFooter
       },
@@ -113,6 +116,26 @@ export default new Router({
       name: 'volunteer',
       components: {
         default: volunteer,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/partner',
+      name: 'partner',
+      components: {
+        default: partner,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/getInvolved',
+      name: 'getInvolved',
+      components: {
+        default: getInvolved,
         header: wernxgHeader,
         footer: wernxgFooter
       },
@@ -181,6 +204,15 @@ export default new Router({
         footer: nullComp
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/camp/create',
+      name: 'CreateCamp',
+      components: {
+        default: campex,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
     }
   ]
 })

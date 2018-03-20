@@ -4,60 +4,77 @@
   <div class="container">
     <h1>Camp Application</h1>
     <hr>
-    <form>
+    <form v-on:submit.prevent="submit">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputParentName">Parent/Guardian Name</label>
-          <input type="text" class="form-control" id="inputParentName" placeholder="Full Name">
+          <label for="inputFullName">Full Name</label>
+          {{profileData.full_name}}
         </div>
         <div class="form-group col-md-6">
-          <label for="inputEmail">Email</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+            <label for="inputEmail">Email</label>
+            {{profileData.email}}
         </div>
       </div>
       <div class="form-row">
-        <label for="inputAddress1">Child's Address</label>
-        <input type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+        <label for="inputAddress1">Child's Address line 1</label>
+        <input type="text" name="address1" class="form-control" id="inputAddress1" placeholder="1234 Main St">
       </div>
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputPhone">Phone Number</label>
-          <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
-        </div>
+        <label for="inputAddress2">Child's Address line 2</label>
+        <input type="text" name="address2" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+      </div>
+      <div class="form-group">
+      <label for="city">City</label>
+      <input name="city" type="text" class="form-control" id="city" placeholder="City">
+      </div>
+      <div class="form-group">
+        <label for="stateProvince">State/Province</label>
+        <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+      </div>
+      <div class="form-group">
+        <label for="zipCode">Zip Code</label>
+        <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+      </div>
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input name="country" type="text" class="form-control" id="country" placeholder="Country">
+      </div>
+      <div class="form-group">
+        <label for="inputPhone">Phone Number</label>
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number" name="phoneNumber">
       </div>
       <hr>
+      <div class="form-group">
+        <label for="inputChildName">Child's Name</label>
+        <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" name="childName">
+      </div>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputChildName">Child's Name</label>
-          <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name">
-        </div>
-        <div class="form-group col-md-6">
           <label for="inputChildAge">Child's Age</label>
-          <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age">
+          <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
         </div>
         <div class="form-group col-md-6">
           <label for="inputChildGender">Child's Gender</label>
-          <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender">
+          <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
         </div>
       </div>
       <p>Camp your child would like to attend (Select one):</p>
       <div class="form-check">
         <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="">
-          Camp 1
+            <input class="form-check-input" type="radio" name="camp" value="camp1">
+            Camp 1
         </label>
       </div>
       <div class="form-check">
         <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="">
-          Camp 2
+            <input class="form-check-input" type="radio" name="camp" value="camp2">
+            Camp 2
         </label>
       </div>
       <p>How do you think they could benefit from Creativity Camp?</p>
       <div class="form-row">
-        <textarea class="form-control" id="inputBenefit" rows="3" placeholder=""></textarea>
+        <textarea class="form-control" id="inputBenefit" rows="3" placeholder="" name="bio"></textarea>
       </div>
-    </form>
     <div class="waiver">
       <h3>Parent Release and Waiver of Liability Form</h3>
       <br>
@@ -81,20 +98,76 @@
         </div>
         <div class="form-group col-md-3">
           <label for="inputDate">Date:</label>
-          <input type="text" class="form-control" id="inputDate" placeholder="">
+          <input type="text" class="form-control" id="inputDate" placeholder="" name="dateSigned">
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Save & Submit</button>
     </div>
+    </form>
   </div>
 </template>
 
 <script>
+  import localforage from '../sessionUtils'
+  import axios from 'axios'
   export default {
-    name: 'signup',
+    name: 'camper',
     data () {
       return {
+        profileData: {},
+        bio: ''
       }
+    },
+    methods: {
+      submit: function(evt){
+            localforage.getItem('X_TOKEN')
+            .then(session => {
+                console.log('submit session: ', {headers: { 'x-token': session }})
+                axios.post('/api/v1/applications', {
+                    headers: { 'x-token': session },
+                    params: {
+                        full_name: this.profileData.full_name,
+                        email: this.profileData.email,
+                        address_line_1: evt.target.address1.value,
+                        address_line_2: evt.target.address2.value,
+                        city: evt.target.city.value,
+                        state_province: evt.target.stateProvince.value,
+                        zip_code: evt.target.zipCode.value,
+                        country: evt.target.country.value,
+                        phone_number: evt.target.phoneNumber.value,
+                        childName: evt.target.childName.value,
+                        age: evt.target.age.value,
+                        gender: evt.target.gender.value,
+                        bio: evt.target.bio.value,
+                        camp: evt.target.camp.value,
+                        date_signed: evt.target.dateSigned.value,
+                        type: 'camper',
+                        status: 'pending'
+                        }
+                })
+                .catch(console.error)})
+            .catch(console.error)
+
+        }
+    },
+    computed: {
+        charactersLeft(){
+            let words = this.bio.split(' ').filter((entry)=>{ return entry.trim() != ''; })
+            let count = words.length
+            let cap = 300
+            return (cap-count) + ' / ' + cap + ' words remaining'
+        }
+    },
+    created() {
+      localforage.getItem('X_TOKEN')
+      .then(session => {
+        axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
+        .then(response => {
+          this.profileData = response.data
+        })
+        .catch(console.error)
+      })
+      .catch(console.error)
     }
   }
 </script>
