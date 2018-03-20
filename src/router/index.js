@@ -20,7 +20,9 @@ import confirmation from '@/components/confirmation'
 import campex from '@/components/campex'
 import opportunities from '@/components/opportunities'
 import newPassword from '@/components/newPassword'
-import {sessionCheck} from '../sessionUtils'
+import adminNavbar from '@/components/adminNavbar'
+import adminApplications from '@/components/adminApplications'
+import {sessionCheck, adminCheck} from '../sessionUtils'
 
 Vue.use(Router)
 
@@ -40,7 +42,8 @@ export default new Router({
         default: homePage,
         header: wernxgHeader,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -191,6 +194,16 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       }
+    },
+    {
+      path: '/adminApplications',
+      name: 'Admin Applications',
+      components: {
+        default: adminApplications,
+        header: adminNavbar,
+        footer: nullComp
+      },
+      beforeEnter: sessionCheck
     },
     {
       path: '/camp/create',
