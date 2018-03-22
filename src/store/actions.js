@@ -8,7 +8,10 @@ export const login = ({commit}, {user_name, password, router, that}) =>
     commit(types.LOGIN, res.data.profileData)
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
-    .then(() => router.push('/'))
+    .then(() => {
+      if (res.data.profileData.role === 'admin') router.push('/adminApplications')
+      else router.push('/')
+    })
   })
   .catch(err => {
     that.loginErr = true
@@ -25,6 +28,7 @@ export const logout = ({commit}, {router}) =>
       .then(() => {
         localforage.removeItem('X_TOKEN')
         .then(() => {
+          axios.defaults.headers.common['x-token'] = null
           commit(types.LOGOUT)
           commit(types.LOGSTATUS, false)
           router.push('/login')
@@ -68,3 +72,26 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     setTimeout(() => {that.passwordFail = false}, 3000)
     console.error(err)
   })
+
+export const getVolunteerApps = ({commit}, {that}) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    if (session) {
+      const config = {headers: {'x-token': session}}
+      axios.get('/api/v1/applications/volunteers', config)
+      .then(res => {that.applications = res.data})
+      .catch(err => console.error(err))
+    }
+  })
+
+export const campCreate = ({ commit }, { new_camp, router, that }) =>
+  axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
+    .then(res => {
+      console.log('res is: ', res.data)
+      that.signedUp = true
+    })
+    .catch(err => {
+      that.signUpErr = true
+      setTimeout(() => { that.signUpErr = false }, 3000)
+      console.error(err)
+    })

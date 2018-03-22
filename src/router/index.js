@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {sessionCheck} from '../sessionUtils'
+import {sessionCheck, adminCheck} from '../sessionUtils'
 
+import adminApplications from '@/components/adminApplications'
+import adminNavbar from '@/components/adminNavbar'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
+import campex from '@/components/campex'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
@@ -41,7 +44,8 @@ export default new Router({
         default: homePage,
         header: wernxgHeader,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -199,6 +203,25 @@ export default new Router({
       name: 'Opportunities',
       components: {
         default: opportunities,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/adminApplications',
+      name: 'Admin Applications',
+      components: {
+        default: adminApplications,
+        header: adminNavbar,
+        footer: nullComp
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/camp/create',
+      name: 'CreateCamp',
+      components: {
+        default: campex,
         header: wernxgHeader,
         footer: wernxgFooter
       }
