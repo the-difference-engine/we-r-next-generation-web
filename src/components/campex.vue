@@ -1,51 +1,85 @@
 <template>
 <div class="container">
-    <h1>Add a New Camp Session</h1>
+    <h1 class="big">Add a New Camp Session</h1>
     <hr>
-    <form id="camp-create">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="campName">Name</label>
+    <form v-on:submit.prevent="submitLogin" id="camp-create">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Name</label>
+            <div class="col-md-10">
                 <input type="text" class="form-control" v-model="new_camp.name" v-bind:placeholder="placeholders.name">
             </div>
-            <div class="form-group col-md-6">
-                <label for="dateStart">Start Date</label>
-                <input type="date" class="form-control" v-model="new_camp.date_start">
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Description</label>
+            <div class="col-md-10">
+                <textarea rows="2" class="form-control" v-model="new_camp.description" v-bind:placeholder="placeholders.description"></textarea>
             </div>
         </div>
-        <div class="form-group">
-            <label for="dateEnd">End Date</label>
-            <input type="date" class="form-control" v-model="new_camp.date_end">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Point of Contact</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" v-model="new_camp.poc" v-bind:placeholder="placeholders.poc">
+            </div>
         </div>
-        <div class="form-group">
-            <div class="form-group col-md-6">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" v-model="new_camp.description" v-bind:placeholder="placeholders.description">
+        <div class="form-group row">
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <label class="col-md-4 col-form-label col-form-label-sm text-right">Start Date</label>
+                <div class="col-md-8 px-0">
+                    <input type="date" class="form-control" v-model="new_camp.date_start">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label class="col-md-4 col-form-label col-form-label-sm text-right">End Date</label>
+                <div class="col-md-8 px-0">
+                    <input type="date" class="form-control" v-model="new_camp.date_end" v-bind:min="new_camp.date_start">
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <label class="col-md-4 col-form-label col-form-label-sm text-right">Camper Limit</label>
+                <div class="col-md-8 px-0">
+                    <input type="number" class="form-control" v-model="new_camp.limit">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label class="col-md-4 col-form-label col-form-label-sm text-right">Status</label>
+                <div class="col-md-8 px-0">
+                    <select class="form-control" v-model="new_camp.status">
+                        <option v-for="opt in status_options" :value="opt">{{opt}}</option>
+                    </select>
+                </div>
             </div>
         </div>
         <hr>
+        <div class="form-group row">
+            <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-primary">Save & Submit</button>
+            </div>
+        </div>
     </form>
-    <button type="submit" class="btn btn-primary">Save & Submit</button>
 </div>
 </template>
 
 <script>
-    // new Vue({
-    //     el: '#camp-create',
-    //     data: {
-    //     }
+    // Auto-generate a default camp end date based on a default camp lenght
+    var defaultLength = 5;
+    var oneweek = new Date();
+    oneweek.setDate(oneweek.getDate() + defaultLength);
 
-    // })
-    // function addWeek() {
-        var oneweek = new Date();
-        oneweek.setDate(oneweek.getDate() + 5);
-    //     return oneweek;
-    // }
-
-    // oneweek = addWeek();
-// oneweek.setDate(oneweek.getDate() + 5);
     export default {
         name: 'campex',
+        methods: {
+            campCreate: function(evt) {
+                this.$store.dispatch('campCreate', {
+                new_camp: new_camp,
+                router: this.$router,
+                that: this
+                })
+            }
+        },
         data () {
             return {
                 new_camp: {
@@ -55,32 +89,29 @@
                     description: '',
                     poc: '',
                     limit: 10,
-                    status: 'Active'
+                    status: '',
+                    created_by: '',
+                    created_at: new Date(),
+                    updated_at: new Date()
                 },
                 placeholders: {
                     name: "Name this camp session",
                     description: "Describe this camp",
                     poc: "Main contact for the camp",
-                }
+                },
+                status_options: [
+                    'Active',
+                    'Tentative',
+                    'Cancelled',
+                    'Not Active'
+                ]
             }
         }
     }
 
-                    // date_end => {
-                        // date_end = date_start.add(5);
-                        // date_end.setDate(date_end.getDate() + 5).toISOString().slice(0,10);
-                    // },
 
 </script>
 
 <style scoped>
-  .container{
-    margin: 30px;
-  }
 
-  .waiver{
-    margin: 25px;
-    padding: 25px;
-    border: 2px solid gray;
-  }
 </style>
