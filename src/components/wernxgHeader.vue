@@ -17,7 +17,7 @@
             <router-link to="/campInfo">The Camp</router-link>
             <router-link to="/camp/create">New CampEx</router-link>
             <router-link to="/successStories">Success Stories</router-link>
-            <router-link to="/volunteer">Get Involved</router-link>
+            <router-link to="/getInvolved">Get Involved</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
             <button id="logout-button"
               class="btn btn-primary"
