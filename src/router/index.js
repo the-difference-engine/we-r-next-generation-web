@@ -1,25 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import wernxgHeader from '@/components/wernxgHeader'
-import wernxgFooter from '@/components/wernxgFooter'
+import {sessionCheck, adminCheck} from '../sessionUtils'
+
+import adminApplications from '@/components/adminApplications'
+import adminNavbar from '@/components/adminNavbar'
 import campInfo from '@/components/campInfo'
-import successStories from '@/components/successStories'
-import login from '@/components/login'
 import camper from '@/components/camper'
-import profile from '@/components/profile'
-import volunteer from '@/components/volunteer'
 import applications from '@/components/applications'
-import partner from '@/components/partner'
-import faq from '@/components/faq'
-import donate from '@/components/donate'
-import nullComp from '@/components/nullComp'
-import homePage from '@/components/homePage'
-import newLogin from '@/components/newLogin'
-import forgotPassword from '@/components/forgotPassword'
+import campex from '@/components/campex'
 import confirmation from '@/components/confirmation'
-import opportunities from '@/components/opportunities'
+import donate from '@/components/donate'
+import faq from '@/components/faq'
+import forgotPassword from '@/components/forgotPassword'
+import getInvolved from '@/components/getInvolved'
+import homePage from '@/components/homePage'
+import login from '@/components/login'
+import newLogin from '@/components/newLogin'
 import newPassword from '@/components/newPassword'
-import {sessionCheck} from '../sessionUtils'
+import nullComp from '@/components/nullComp'
+import opportunities from '@/components/opportunities'
+import partner from '@/components/partner'
+import profile from '@/components/profile'
+import successStories from '@/components/successStories'
+import users from '@/components/users'
+import volunteer from '@/components/volunteer'
+import wernxgFooter from '@/components/wernxgFooter'
+import wernxgHeader from '@/components/wernxgHeader'
 
 Vue.use(Router)
 
@@ -39,7 +45,8 @@ export default new Router({
         default: homePage,
         header: wernxgHeader,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -183,10 +190,39 @@ export default new Router({
       }
     },
     {
+      path: '/users',
+      name: 'View Users',
+      //beforeEnter: sessionCheck
+      components: {
+        default: users,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+    },
+    {
       path: '/opportunities',
       name: 'Opportunities',
       components: {
         default: opportunities,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/adminApplications',
+      name: 'Admin Applications',
+      components: {
+        default: adminApplications,
+        header: adminNavbar,
+        footer: nullComp
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/camp/create',
+      name: 'CreateCamp',
+      components: {
+        default: campex,
         header: wernxgHeader,
         footer: wernxgFooter
       }

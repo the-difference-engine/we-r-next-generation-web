@@ -7,6 +7,7 @@ import store from './store'
 import {sync} from 'vuex-router-sync'
 import axios from 'axios'
 import VueMq from 'vue-mq'
+import localforage from './sessionUtils'
 
 Vue.use(VueMq, {
   breakpoints: {
@@ -16,6 +17,10 @@ Vue.use(VueMq, {
 })
 
 axios.defaults.baseURL = process.env.BASE_URL
+localforage.getItem('X_TOKEN')
+.then(token => {
+  if (token) axios.defaults.headers.common['x-token'] = token
+}).catch(err => console.error(err))
 
 sync(store, router)
 
