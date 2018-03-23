@@ -1,14 +1,17 @@
 <template>
   <div class="users container">
     <h1>Users</h1>
-    <select>
-      <option>Filter by...</option>
-      <option
-        :key="role"
-        :value="role"
-        v-for="role in roles"
-      >{{ role }}</option>
-    </select>
+    <div class="form-group">
+      <label for="user-filter">Filter by:</label>
+      <select id="user-filter" class="form-control" v-model="filterRole">
+        <option value="">Filter by&hellip;</option>
+        <option
+          :key="role"
+          :value="role"
+          v-for="role in roles"
+        >{{ role }}</option>
+      </select>
+    </div>
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -58,7 +61,7 @@
     },
     data: function() {
       return {
-        filterRole: null,
+        filterRole: "",
         roles: roles,
         sortAscending: defaultSortAscending,
         sortColumn: "id",
@@ -68,7 +71,7 @@
     },
     computed: {
       sortedUsers: function() {
-        return this.users.sort((left, right) => {
+        return this.filteredUsers.sort((left, right) => {
           let leftColumn = null;
           let rightColumn = null;
           switch (this.sortColumn) {
@@ -96,8 +99,9 @@
         });
       },
       filteredUsers: function() {
-        return this.users.sort(user => {
-
+        return this.users.filter(user => {
+          let userRoles = user.applications.map(application => { return application.type; });
+          return this.filterRole === "" || userRoles.includes(this.filterRole);
         });
       },
     },
