@@ -11,13 +11,17 @@
         <input name="address1" type="text" class="form-control" id="inputCompanyName" placeholder="Fictional Holdings LC">
       </div>
       <div class="form-group">
-        <label for="companyLogo">Company Logo</label>
-        <input name="address1" type="text" class="form-control" id="companyLogo" placeholder="please draw in markdown">
+        <label for="companyLogo">Company Logo URL</label>
+        <input name="address1" type="text" class="form-control" id="companyLogo" placeholder="optional">
     </div>
     </div>
     <div class="form-group">
       <label for="companyUrl">Company URL</label>
       <input name="address1" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
+    </div>
+    <div class="form-group">
+      <label for="inputBio">Optional Note</label>
+      <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
     </div>
   <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -129,6 +133,7 @@
                         bio: evt.target.bio.value,
                         camp: evt.target.camp.value,
                         date_signed: evt.target.dateSigned.value,
+                        bio: evt.target.bio.value,
                         type: 'partner',
                         status: 'pending'
                         }
