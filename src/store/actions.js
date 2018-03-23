@@ -73,13 +73,17 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     console.error(err)
   })
 
-export const getVolunteerApps = ({commit}, {that}) =>
+export const getApplications = ({commit}, {that, type}) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
     if (session) {
       const config = {headers: {'x-token': session}}
-      axios.get('/api/v1/applications/volunteers', config)
-      .then(res => {that.applications = res.data})
+      axios.get(`/api/v1/applications/${type}`, config)
+      .then(res => {
+        that.applications = res.data.applications
+        that.applicationType = res.data.type
+        console.log(res.data);
+      })
       .catch(err => console.error(err))
     }
   })
