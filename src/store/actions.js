@@ -73,7 +73,17 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     console.error(err)
   })
 
-<<<<<<< HEAD
+export const getVolunteerApps = ({ commit }, { that }) =>
+  localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = { headers: { 'x-token': session } }
+        axios.get('/api/v1/applications/volunteers', config)
+          .then(res => { that.applications = res.data })
+          .catch(err => console.error(err))
+      }
+    })
+
 export const campSessionCreate = ({ commit }, { new_camp, router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
@@ -110,27 +120,3 @@ export const campSessionGet = ({ commit }, { camp_id }) => {
   })
 }
 
-=======
-export const getVolunteerApps = ({commit}, {that}) =>
-  localforage.getItem('X_TOKEN')
-  .then(session => {
-    if (session) {
-      const config = {headers: {'x-token': session}}
-      axios.get('/api/v1/applications/volunteers', config)
-      .then(res => {that.applications = res.data})
-      .catch(err => console.error(err))
-    }
-  })
-
-export const campCreate = ({ commit }, { new_camp, router, that }) =>
-  axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
-    .then(res => {
-      console.log('res is: ', res.data)
-      that.signedUp = true
-    })
-    .catch(err => {
-      that.signUpErr = true
-      setTimeout(() => { that.signUpErr = false }, 3000)
-      console.error(err)
-    })
->>>>>>> b913da6cb4ddbdbd8c04b20361c2e34c7543e87b
