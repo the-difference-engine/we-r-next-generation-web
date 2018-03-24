@@ -149,10 +149,18 @@
     data () {
       return {
           profileData: {},
-          bio: ''
+          bio: '',
+          camps: [],
+          sessionId: ''
       }
     },
     methods: {
+        charactersLeft(){
+            let words = this.bio.split(' ').filter((entry)=>{ return entry.trim() != ''; })
+            let count = words.length
+            let cap = 300
+            return (cap-count) + ' / ' + cap + ' words remaining'
+        },
         submit: function(evt){
             localforage.getItem('X_TOKEN')
             .then(session => {
@@ -178,8 +186,6 @@
                 })
                 .catch(console.error)})
             .catch(console.error)
-
-        }
     },
     computed: {
         charactersLeft(){
@@ -190,18 +196,31 @@
         }
     },
     created() {
-      localforage.getItem('X_TOKEN')
-      .then(session => {
-        axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
-        .then(response => {
-            // console.log(response.data)
-          this.profileData = response.data
+        console.log('IN CREATED')
+        localforage.getItem('X_TOKEN')
+        .then(session => {
+            console.log('AYYYYYYYYE')
+            axios.get('/api/v1/camps/', {
+                    headers: { 'x-token': session }
+                })
+                .then(response => {
+                    this.camps = response.data
+                    console.log(this.camps)
+                })
+                .catch(err => {
+                    console.log('WOMP')
+                })
+            axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
+            .then(response => {
+                console.log(response.data)
+            this.profileData = response.data
+            })
+            .catch(console.error)
         })
         .catch(console.error)
-      })
-      .catch(console.error)
+        }
     }
-  }
+}
 </script>
 
 <style scoped>
