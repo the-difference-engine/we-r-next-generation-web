@@ -69,15 +69,39 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     console.error(err)
   })
 
-export const campCreate = ({ commit }, { new_camp, router, that }) =>
-  axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
-    .then(res => {
-      console.log('res is: ', res.data)
-      that.signedUp = true
+export const campSessionCreate = ({ commit }, { new_camp, router }) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    axios.post(`/api/v1/camp/session/create`, { 
+      headers: { 'x-token': session },
+      params: new_camp 
     })
-    .catch(err => {
-      that.signUpErr = true
-      setTimeout(() => { that.signUpErr = false }, 3000)
-      console.error(err)
-    })
+      .then(res => {
+        console.log('res is: ', res);
+        router.push('/camp/' + res.data.$oid)
+      })
+      .catch(err => {
+        setTimeout(() => {  }, 3000);
+        console.error(err);
+      })
+  });
+
+export const campSessionGet = ({ commit }, { camp_id }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
+        axios.get('/api/v1/camp/session/' + camp_id)
+          .then(response => {
+            console.log("Response Received from campSessionGet", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionGet");
+            reject(e)
+          })
+      })
+  })
+}
 

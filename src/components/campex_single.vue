@@ -1,24 +1,25 @@
 <template>
 <div class="container">
-    <h1 class="big">Add a New Camp Session</h1>
+    <h1 class="big">Camp Session</h1>
     <hr>
-    <form v-on:submit.prevent="submitLogin" id="camp-create">
+    {{get_camp}}
+    <form v-on:submit.prevent="campCreate" id="camp-create">
         <div class="form-group row">
             <label class="col-md-2 col-form-label text-right">Name</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" v-model="new_camp.name" v-bind:placeholder="placeholders.name">
+                <input readonly type="text" class="form-control" v-model="camp.name" v-bind:placeholder="placeholders.name">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-2 col-form-label text-right">Description</label>
             <div class="col-md-10">
-                <textarea rows="2" class="form-control" v-model="new_camp.description" v-bind:placeholder="placeholders.description"></textarea>
+                <textarea readonly rows="2" class="form-control" v-model="camp.description" v-bind:placeholder="placeholders.description"></textarea>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-2 col-form-label text-right">Point of Contact</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" v-model="new_camp.poc" v-bind:placeholder="placeholders.poc">
+                <input readonly type="text" class="form-control" v-model="camp.poc" v-bind:placeholder="placeholders.poc">
             </div>
         </div>
         <div class="form-group row">
@@ -26,13 +27,13 @@
             <div class="col-md-5">
                 <label class="col-md-4 col-form-label col-form-label-sm text-right">Start Date</label>
                 <div class="col-md-8 px-0">
-                    <input type="date" class="form-control" v-model="new_camp.date_start">
+                    <input readonly type="date" class="form-control" v-model="camp.date_start">
                 </div>
             </div>
             <div class="col-md-5">
                 <label class="col-md-4 col-form-label col-form-label-sm text-right">End Date</label>
                 <div class="col-md-8 px-0">
-                    <input type="date" class="form-control" v-model="new_camp.date_end" v-bind:min="new_camp.date_start">
+                    <input readonly type="date" class="form-control" v-model="camp.date_end" v-bind:min="camp.date_start">
                 </div>
             </div>
         </div>
@@ -41,15 +42,13 @@
             <div class="col-md-5">
                 <label class="col-md-4 col-form-label col-form-label-sm text-right">Camper Limit</label>
                 <div class="col-md-8 px-0">
-                    <input type="number" class="form-control" v-model="new_camp.limit">
+                    <input readonly type="number" class="form-control" v-model="camp.limit">
                 </div>
             </div>
             <div class="col-md-5">
                 <label class="col-md-4 col-form-label col-form-label-sm text-right">Status</label>
                 <div class="col-md-8 px-0">
-                    <select class="form-control" v-model="new_camp.status">
-                        <option v-for="opt in status_options" :value="opt">{{opt}}</option>
-                    </select>
+                    <input readonly type="text" class="form-control" v-model="camp.status">
                 </div>
             </div>
         </div>
@@ -70,19 +69,31 @@
     oneweek.setDate(oneweek.getDate() + defaultLength);
 
     export default {
-        name: 'campex',
+        name: 'campex_single',
         methods: {
             campCreate: function(evt) {
+                console.log("Camp Create Method");
                 this.$store.dispatch('campCreate', {
-                new_camp: new_camp,
+                camp: this.camp,
                 router: this.$router,
                 that: this
+                })
+            },
+            campGet: function() {
+                console.log("Get Camp Method");
+                this.$store.dispatch('campSessionGet', {
+                camp_id: this.$route.params.id,
+                })
+                .then(data => {
+                    console.log("Received data", data)
+                    this.camp = data;
+                    console.log("Camp Now:", this.camp);
                 })
             }
         },
         data () {
             return {
-                new_camp: {
+                camp: {
                     name: '',
                     date_start: new Date().toISOString().slice(0,10),
                     date_end: oneweek.toISOString().slice(0,10),
@@ -105,6 +116,11 @@
                     'Cancelled',
                     'Not Active'
                 ]
+            }
+        },
+        computed: {
+            get_camp: function() {
+                return this.campGet();
             }
         }
     }
