@@ -7,7 +7,7 @@
             <h4>The Company</h4>
             <ul>
               <li><router-link to="/home">Home</router-link></li>
-              <li><router-link to="/volunteer">Volunteer</router-link></li>
+              <li><router-link to="/applications">Applications</router-link></li>
               <li><router-link to="/signup">Sign Up</router-link></li>
               <li><router-link to="/login">Login</router-link></li>
               <li><router-link to="/donate">Donate</router-link></li>
