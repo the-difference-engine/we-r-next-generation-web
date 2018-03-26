@@ -16,14 +16,11 @@ import getInvolved from '@/components/getInvolved'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import newLogin from '@/components/newLogin'
-<<<<<<< HEAD
 import forgotPassword from '@/components/forgotPassword'
 import confirmation from '@/components/confirmation'
 import campex_create from '@/components/campex_create'
 import campex_single from '@/components/campex_single'
 import opportunities from '@/components/opportunities'
-=======
->>>>>>> b913da6cb4ddbdbd8c04b20361c2e34c7543e87b
 import newPassword from '@/components/newPassword'
 import nullComp from '@/components/nullComp'
 import opportunities from '@/components/opportunities'
