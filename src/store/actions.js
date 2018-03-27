@@ -101,6 +101,27 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       })
   });
 
+
+export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) =>
+  localforage.getItem('X_TOKEN')
+    .then(session => {
+      axios.put(`/api/v1/camp/session/${camp_id}/update`, {
+        headers: { 'x-token': session },
+        params: updated_camp
+      })
+        .then(res => {
+          console.log('camp id: ', camp_id)
+          console.log('res is: ', res.data._id.$oid);
+          router.push('/camp/' + res.data._id.$oid)
+        })
+        .catch(err => {
+          setTimeout(() => { }, 3000);
+          console.error(err);
+        })
+    });
+
+
+// Get one Camp Experience Session by ID Number
 export const campSessionGet = ({ commit }, { camp_id }) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
@@ -118,5 +139,27 @@ export const campSessionGet = ({ commit }, { camp_id }) => {
           })
       })
   })
+}
+
+// Get all Camp Experience Sessions, sorted by field
+//  Default field = Start Date (descending)
+export const campSessionsGetAll = ({commit}, {field_name, order}) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'field_name:', field_name);
+        // axios.get('/api/v1/camp/sessions?sort=' + field_name + '&order=' + order)
+        axios.get('/api/v1/camp/sessions')
+          .then(response => {
+            console.log("Response Received from campSessionsGetAll", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionsGetAll", e);
+            reject(e)
+          })
+      })
+  })  
 }
 
