@@ -101,7 +101,6 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       })
   });
 
-
 export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) =>
   localforage.getItem('X_TOKEN')
     .then(session => {
@@ -122,6 +121,23 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 
 
 // Get one Camp Experience Session by ID Number
+
+export const getCamp = ({ commit }, { router }) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    axios.get(`/api/v1/camp/session/get`, { 
+      headers: { 'x-token': session }
+    })
+      .then(res => {
+        console.log('res is: ', res, res.data);
+        resolve(res.data);
+      })
+      .catch(err => {
+        setTimeout(() => {  }, 3000);
+        console.error(err);
+      })
+  });
+
 export const campSessionGet = ({ commit }, { camp_id }) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
