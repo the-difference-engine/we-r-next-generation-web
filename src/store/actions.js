@@ -88,6 +88,19 @@ export const getApplications = ({commit}, {that, type}) =>
     }
   })
 
+  export const updateApplication = ({commit}, {that}) =>
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = {headers: {'x-token': session}}
+        axios.put(`/api/v1/applications/${id}`, config)
+        .then(res => {
+
+        })
+        .catch(err => console.error(err))
+      }
+    })
+
 export const campCreate = ({ commit }, { new_camp, router, that }) =>
   axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
     .then(res => {
