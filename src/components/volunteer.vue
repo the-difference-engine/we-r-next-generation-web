@@ -1,5 +1,4 @@
 <!--An empty component to replace the header and/or footer on pages where it is not required-->
-
 <template>
 <div class="container">
   <h1>Volunteer Application</h1>
@@ -51,8 +50,8 @@
     </div>
     <p>Which camp would you like to teach at (Select one):</p>
     <div>
-        <select class="form-control">
-            <option v-for="camp in camps" v-bind:key="camp._id" name="camp" :value="camp.$oid">{{ camp.name }}</option>
+        <select v-model="testcamp" class="form-control">
+            <option v-for="camp in camps" v-bind:key="camp._id" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
         </select>
     </div>
   <div class="waiver">
@@ -144,13 +143,14 @@
           profileData: {},
           bio: '',
           camps: [],
-          sessionId: ''
+          sessionId: '',
+          testcamp: ''
       }
     },
     methods: {
         submit: function(evt){
             console.log("GOT TO SUBMIT")
-            console.log("camp stuff", evt.target.camp)
+            console.log("camp stuff", this.testcamp)
             localforage.getItem('X_TOKEN')
             .then(session => {
                 console.log('submit session: ', {headers: { 'x-token': session }})
@@ -167,7 +167,7 @@
                         country: evt.target.country.value,
                         phone_number: evt.target.phoneNumber.value,
                         bio: evt.target.bio.value,
-                        camp: evt.target.camp.value,
+                        camp: this.testcamp,
                         date_signed: evt.target.dateSigned.value,
                         type: 'volunteer',
                         status: 'pending'
