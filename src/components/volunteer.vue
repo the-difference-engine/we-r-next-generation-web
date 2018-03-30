@@ -1,5 +1,4 @@
 <!--An empty component to replace the header and/or footer on pages where it is not required-->
-
 <template>
 <div class="container">
   <h1>Volunteer Application</h1>
@@ -50,17 +49,10 @@
       {{charactersLeft}}
     </div>
     <p>Which camp would you like to teach at (Select one):</p>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="camp" value="camp1">
-        Camp 1
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="camp" value="camp2">
-        Camp 2
-      </label>
+    <div>
+        <select v-model="testcamp" class="form-control">
+            <option v-for="camp in camps" v-bind:key="camp._id" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+        </select>
     </div>
   <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -151,17 +143,14 @@
           profileData: {},
           bio: '',
           camps: [],
-          sessionId: ''
+          sessionId: '',
+          testcamp: ''
       }
     },
     methods: {
-        charactersLeft(){
-            let words = this.bio.split(' ').filter((entry)=>{ return entry.trim() != ''; })
-            let count = words.length
-            let cap = 300
-            return (cap-count) + ' / ' + cap + ' words remaining'
-        },
         submit: function(evt){
+            console.log("GOT TO SUBMIT")
+            console.log("camp stuff", this.testcamp)
             localforage.getItem('X_TOKEN')
             .then(session => {
                 console.log('submit session: ', {headers: { 'x-token': session }})
@@ -178,7 +167,7 @@
                         country: evt.target.country.value,
                         phone_number: evt.target.phoneNumber.value,
                         bio: evt.target.bio.value,
-                        camp: evt.target.camp.value,
+                        camp: this.testcamp,
                         date_signed: evt.target.dateSigned.value,
                         type: 'volunteer',
                         status: 'pending'
@@ -186,6 +175,7 @@
                 })
                 .catch(console.error)})
             .catch(console.error)
+        }
     },
     computed: {
         charactersLeft(){
@@ -200,19 +190,19 @@
         localforage.getItem('X_TOKEN')
         .then(session => {
             console.log('AYYYYYYYYE')
-            axios.get('/api/v1/camps/', {
-                    headers: { 'x-token': session }
+            axios.get('/api/v1/camp/session/get', {
+                    'headers': { 'x-token': session }
                 })
                 .then(response => {
                     this.camps = response.data
-                    console.log(this.camps)
+                    console.log("My stuff Ayyyye!", this.camps)
                 })
                 .catch(err => {
                     console.log('WOMP')
                 })
             axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
             .then(response => {
-                console.log(response.data)
+                console.log("Brian stuff", response.data)
             this.profileData = response.data
             })
             .catch(console.error)
@@ -220,7 +210,6 @@
         .catch(console.error)
         }
     }
-}
 </script>
 
 <style scoped>
