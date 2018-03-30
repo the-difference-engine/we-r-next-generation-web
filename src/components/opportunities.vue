@@ -2,13 +2,29 @@
   <div class="opportunities">
     <h1>Opportunities</h1>
     <h3>...to foster creativity in our kids</h3>
-    <div v-for="entry in pageContent" class="opportunity">
+    <div class="opportunity">
       <div class="row">
-        <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="entry.imgSrc" :alt="entry.imgAlt" class="img-responsive"></div>
+        <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.camper.imgSrc" :alt="pageContent.camper.imgAlt" class="img-responsive"></div>
         <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1 caption">
-          <h3>{{ entry.headline }}</h3>
-          <p>{{ entry.caption }}</p>
-          <p>{{ entry.callToAct }}</p>
+          <h3>{{ pageContent.camper.headline }}</h3>
+          <p>{{ pageContent.camper.caption }}</p>
+          <p>{{ pageContent.camper.callToAct }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.volunteer.imgSrc" :alt="pageContent.volunteer.imgAlt" class="img-responsive"></div>
+        <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1 caption">
+          <h3>{{ pageContent.volunteer.headline }}</h3>
+          <p>{{ pageContent.volunteer.caption }}</p>
+          <p>{{ pageContent.volunteer.callToAct }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.partner.imgSrc" :alt="pageContent.partner.imgAlt" class="img-responsive"></div>
+        <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1 caption">
+          <h3>{{ pageContent.partner.headline }}</h3>
+          <p>{{ pageContent.partner.caption }}</p>
+          <p>{{ pageContent.partner.callToAct }}</p>
         </div>
       </div>
     </div>
@@ -29,15 +45,19 @@
     name: 'opportunities',
     data () {
       return {
-        pageContent: [],
+        pageContent: {camper: {imgSrc: ""},
+                      volunteer: {imgSrc: ""},
+                      partner: {imgSrc: ""}},
+
       }
     },
     created() {
-      axios.get('/api/v1/opportunities').then(response => {
-        this.pageContent = response.data
-      }).catch(e => {
-        this.errors = e
+      axios.get('/api/v1/resources/applicationsPage')
+      .then(res => {
+        this.pageContent = res.data
+        console.log(this.pageContent)
       })
+      .catch(console.log)
     },
   }
 </script>
