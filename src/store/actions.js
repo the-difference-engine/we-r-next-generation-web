@@ -141,6 +141,26 @@ export const campSessionGet = ({ commit }, { camp_id }) => {
   })
 }
 
+// Get all applicants related to a Camp Session by ID Number
+export const campSessionGetApplicants = ({ commit }, { camp_id }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
+        axios.get('/api/v1/camp/session/' + camp_id + '/applicants')
+          .then(response => {
+            console.log("Response Received from campSessionGetApplicants", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionGetApplicants");
+            reject(e)
+          })
+      })
+  })
+}
+
 // Get all Camp Experience Sessions, sorted by field
 //  Default field = Start Date (descending)
 export const campSessionsGetAll = ({commit}, {field_name, order}) => {
