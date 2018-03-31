@@ -88,16 +88,41 @@ export const getApplications = ({commit}, {that, type}) =>
     }
   })
 
-  export const updateApplication = ({commit}, {that}) =>
+  export const updateApplication = ({commit}, {that, type, app, statusChange}) =>
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = {
+          headers: {'x-token': session},
+          params: {app, type, statusChange}}
+        axios.put(`/api/v1/applications/status/${app._id.$oid}`, config)
+        .then(res => {
+          const updatedApp = res.data
+          that.applications[statusChange].apps[updatedApp._id.$oid] = res.data
+          delete that.applications[app.status].apps[updatedApp._id.$oid]
+          that.canGetApps = true
+        })
+        .catch(err => {
+          that.canGetApps = true
+          console.error(err)
+        })
+      }
+    })
+
+  export const deleteApplication = ({commit}, {that, app}) =>
     localforage.getItem('X_TOKEN')
     .then(session => {
       if (session) {
         const config = {headers: {'x-token': session}}
-        axios.put(`/api/v1/applications/${id}`, config)
+        axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
         .then(res => {
-
+          delete that.applications[app.status].apps[app._id.$oid]
+          that.canGetApps = true
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+          that.canGetApps = true
+          console.error(err)
+        })
       }
     })
 
