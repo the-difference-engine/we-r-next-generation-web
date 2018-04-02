@@ -6,48 +6,22 @@
   <hr>
   <form v-on:submit.prevent="submit">
     <div>
-      <div class="form-group col-md-6">
-        <label for="inputFullName">Full Name</label>
-        {{profileData.full_name}}
+      <div class="form-group">
+        <label for="inputCompanyName">Company Name</label>
+        <input name="address1" type="text" class="form-control" id="inputCompanyName" placeholder="Fictional Holdings LC">
       </div>
-      <div class="form-group col-md-6">
-        <label for="inputEmail">Email</label>
-        {{profileData.email}}
-      </div>
+      <div class="form-group">
+        <label for="companyLogo">Company Logo URL</label>
+        <input name="address1" type="text" class="form-control" id="companyLogo" placeholder="optional">
+    </div>
     </div>
     <div class="form-group">
-      <label for="inputAddress1">Address Line 1</label>
-      <input name="address1" type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+      <label for="companyUrl">Company URL</label>
+      <input name="address1" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
     </div>
     <div class="form-group">
-      <label for="inputAddress2">Address Line 2</label>
-      <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
-    </div>
-    <div class="form-group">
-      <label for="city">City</label>
-      <input name="city" type="text" class="form-control" id="city" placeholder="City">
-    </div>
-    <div class="form-group">
-      <label for="stateProvince">State/Province</label>
-      <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
-    </div>
-    <div class="form-group">
-      <label for="zipCode">Zip Code</label>
-      <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
-    </div>
-    <div class="form-group">
-      <label for="country">Country</label>
-      <input name="country" type="text" class="form-control" id="country" placeholder="Country">
-    </div>
-    <div class="form-group">
-      <label for="inputPhone">Phone Number</label>
-      <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
-    </div>
-    <p>Please tell us a little bit about yourself:</p>
-    <div class="form-group">
-      <label for="inputBio">Bio</label>
-      <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
-      {{charactersLeft}}
+      <label for="inputBio">Optional Note</label>
+      <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
     </div>
   <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -159,6 +133,7 @@
                         bio: evt.target.bio.value,
                         camp: evt.target.camp.value,
                         date_signed: evt.target.dateSigned.value,
+                        bio: evt.target.bio.value,
                         type: 'partner',
                         status: 'pending'
                         }

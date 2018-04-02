@@ -33,4 +33,27 @@ export default {
     padding-right: 0;
     padding-left: 0;
   }
+  .my-1 {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .my-2 {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .my-3 {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .my-4 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .my-5 {
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .float-right {
+    float: right;
+  }
 </style>

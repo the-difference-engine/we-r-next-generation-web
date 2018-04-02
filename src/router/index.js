@@ -1,28 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import wernxgHeader from '@/components/wernxgHeader'
-import wernxgFooter from '@/components/wernxgFooter'
+import {sessionCheck, adminCheck} from '../sessionUtils'
+
+import adminApplications from '@/components/adminApplications'
+import adminNavbar from '@/components/adminNavbar'
 import campInfo from '@/components/campInfo'
-import successStories from '@/components/successStories'
-import login from '@/components/login'
 import camper from '@/components/camper'
-import profile from '@/components/profile'
-import volunteer from '@/components/volunteer'
-import getInvolved from '@/components/getInvolved'
-import partner from '@/components/partner'
-import faq from '@/components/faq'
+import applications from '@/components/applications'
+import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
-import nullComp from '@/components/nullComp'
+import faq from '@/components/faq'
 import homePage from '@/components/homePage'
+import login from '@/components/login'
 import newLogin from '@/components/newLogin'
 import forgotPassword from '@/components/forgotPassword'
-import confirmation from '@/components/confirmation'
-import campex from '@/components/campex'
-import opportunities from '@/components/opportunities'
+import campex_create from '@/components/campex_create'
+import campex_single from '@/components/campex_single'
 import newPassword from '@/components/newPassword'
-import adminNavbar from '@/components/adminNavbar'
-import adminApplications from '@/components/adminApplications'
-import {sessionCheck, adminCheck} from '../sessionUtils'
+import nullComp from '@/components/nullComp'
+import opportunities from '@/components/opportunities'
+import partner from '@/components/partner'
+import profile from '@/components/profile'
+import successStories from '@/components/successStories'
+import users from '@/components/users'
+import volunteer from '@/components/volunteer'
+import wernxgFooter from '@/components/wernxgFooter'
+import wernxgHeader from '@/components/wernxgHeader'
 
 Vue.use(Router)
 
@@ -132,10 +135,10 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/getInvolved',
-      name: 'getInvolved',
+      path: '/applications',
+      name: 'applications',
       components: {
-        default: getInvolved,
+        default: applications,
         header: wernxgHeader,
         footer: wernxgFooter
       },
@@ -187,6 +190,16 @@ export default new Router({
       }
     },
     {
+      path: '/users',
+      name: 'View Users',
+      //beforeEnter: sessionCheck
+      components: {
+        default: users,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+    },
+    {
       path: '/opportunities',
       name: 'Opportunities',
       components: {
@@ -209,10 +222,19 @@ export default new Router({
       path: '/camp/create',
       name: 'CreateCamp',
       components: {
-        default: campex,
+        default: campex_create,
         header: wernxgHeader,
         footer: wernxgFooter
       }
-    }
+    },
+    {
+      path: '/camp/:id',
+      name: 'ViewCamp',
+      components: {
+        default: campex_single,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
   ]
 })

@@ -126,14 +126,118 @@ export const getApplications = ({commit}, {that, type}) =>
       }
     })
 
-export const campCreate = ({ commit }, { new_camp, router, that }) =>
-  axios.post(`/api/v1/camp/session/create`, { params: { name, email, password } })
-    .then(res => {
-      console.log('res is: ', res.data)
-      that.signedUp = true
+export const campSessionCreate = ({ commit }, { new_camp, router }) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    axios.post(`/api/v1/camp/session/create`, { 
+      headers: { 'x-token': session },
+      params: new_camp 
     })
-    .catch(err => {
-      that.signUpErr = true
-      setTimeout(() => { that.signUpErr = false }, 3000)
-      console.error(err)
+      .then(res => {
+        console.log('res is: ', res);
+        router.push('/camp/' + res.data.$oid)
+      })
+      .catch(err => {
+        setTimeout(() => {  }, 3000);
+        console.error(err);
+      })
+  });
+
+export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) =>
+  localforage.getItem('X_TOKEN')
+    .then(session => {
+      axios.put(`/api/v1/camp/session/${camp_id}/update`, {
+        headers: { 'x-token': session },
+        params: updated_camp
+      })
+        .then(res => {
+          console.log('camp id: ', camp_id)
+          console.log('res is: ', res.data._id.$oid);
+          router.push('/camp/' + res.data._id.$oid)
+        })
+        .catch(err => {
+          setTimeout(() => { }, 3000);
+          console.error(err);
+        })
+    });
+
+
+// Get one Camp Experience Session by ID Number
+
+export const getCamp = ({ commit }, { router }) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    axios.get(`/api/v1/camp/session/get`, { 
+      headers: { 'x-token': session }
     })
+      .then(res => {
+        console.log('res is: ', res, res.data);
+        resolve(res.data);
+      })
+      .catch(err => {
+        setTimeout(() => {  }, 3000);
+        console.error(err);
+      })
+  });
+
+export const campSessionGet = ({ commit }, { camp_id }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
+        axios.get('/api/v1/camp/session/' + camp_id)
+          .then(response => {
+            console.log("Response Received from campSessionGet", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionGet");
+            reject(e)
+          })
+      })
+  })
+}
+
+// Get all applicants related to a Camp Session by ID Number
+export const campSessionGetApplicants = ({ commit }, { camp_id }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
+        axios.get('/api/v1/camp/session/' + camp_id + '/applicants')
+          .then(response => {
+            console.log("Response Received from campSessionGetApplicants", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionGetApplicants");
+            reject(e)
+          })
+      })
+  })
+}
+
+// Get all Camp Experience Sessions, sorted by field
+//  Default field = Start Date (descending)
+export const campSessionsGetAll = ({commit}, {field_name, order}) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'field_name:', field_name);
+        // axios.get('/api/v1/camp/sessions?sort=' + field_name + '&order=' + order)
+        axios.get('/api/v1/camp/sessions')
+          .then(response => {
+            console.log("Response Received from campSessionsGetAll", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionsGetAll", e);
+            reject(e)
+          })
+      })
+  })  
+}
+
