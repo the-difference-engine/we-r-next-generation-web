@@ -9,6 +9,7 @@ export const login = ({commit}, {user_name, password, router, that}) =>
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => {
+      axios.defaults.headers.common['x-token'] = res.data.X_TOKEN
       if (res.data.profileData.role === 'admin') router.push('/adminApplications')
       else router.push('/')
     })
@@ -129,9 +130,9 @@ export const getApplications = ({commit}, {that, type}) =>
 export const campSessionCreate = ({ commit }, { new_camp, router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.post(`/api/v1/camp/session/create`, { 
+    axios.post(`/api/v1/camp/session/create`, {
       headers: { 'x-token': session },
-      params: new_camp 
+      params: new_camp
     })
       .then(res => {
         console.log('res is: ', res);
@@ -167,7 +168,7 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.get(`/api/v1/camp/session/get`, { 
+    axios.get(`/api/v1/camp/session/get`, {
       headers: { 'x-token': session }
     })
       .then(res => {
@@ -238,6 +239,6 @@ export const campSessionsGetAll = ({commit}, {field_name, order}) => {
             reject(e)
           })
       })
-  })  
+  })
 }
 
