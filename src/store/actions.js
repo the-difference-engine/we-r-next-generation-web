@@ -115,7 +115,7 @@ export const getApplications = ({commit}, {that, type}) =>
       if (session) {
         const config = {headers: {'x-token': session}}
         axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
-        .then(res => {
+        .then(() => {
           delete that.applications[app.status].apps[app._id.$oid]
           that.canGetApps = true
         })

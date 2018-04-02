@@ -15,7 +15,7 @@
     <input class="btn btn-primary" type="button" value="Get Applications" :disabled="!canGetApps" v-on:click.prevent="getApplications"/>
     <br><br>
     <!-- Renders in the case of all applications -->
-    <div id="all-applicatoins" v-if="applicationType === 'all'">
+    <div id="all-applications" v-if="applicationType === 'all'">
       <table class="apps-by-status">
         <tr>
           <th class="col-header">Name</th>
@@ -47,7 +47,6 @@
           <th class="col-header">Date Signed</th>
           <th class="col-header">Change Status</th>
         </tr>
-        <!-- <tr class="application" v-for="application in appByStatus.apps" :key="application._id.$oid"> -->
         <tr class="application" v-for="(application, app_id) in appByStatus.apps" :key="app_id">
           <td>{{application.full_name}}</td>
           <td v-if="applicationType === 'camper'">{{application.camper_name}}</td>
