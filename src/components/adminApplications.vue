@@ -16,7 +16,7 @@
     <br><br>
     <!-- Renders in the case of all applications -->
     <div id="all-applications" v-if="applicationType === 'all'">
-      <table class="apps-by-status">
+      <table class="apps-by-status all-apps">
         <tr>
           <th class="col-header">Name</th>
           <th class="col-header">Age</th>
@@ -76,7 +76,7 @@
       </table>
     </div>
     <!-- Renders in case there are no apps of a certain status -->
-    <div v-if="applicationType !== 'all' && !Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="status+'-empty'" class="app-list-empty">
+    <div v-if="applicationType !== 'all' && !Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="`${status}-empty`" class="app-list-empty">
       <p>There are no <strong>{{applicationType}}</strong> applications with a status of: <em>{{status}}</em></p>
     </div>
   </div>
@@ -123,6 +123,9 @@ export default {
     font-size: 32px;
     width: 75px;
     float: left;
+  }
+  .all-apps {
+    width: 100% !important;
   }
   .apps-by-status {
     width: calc(100% - 75px);
