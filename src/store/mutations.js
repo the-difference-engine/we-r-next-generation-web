@@ -9,5 +9,8 @@ export default {
   },
   [types.LOGSTATUS](state, data){
     state.loginStatus = data
+  },
+  [types.ISADMIN](state, data) {
+    state.isAdmin = data
   }
 }
