@@ -7,21 +7,25 @@
   <form v-on:submit.prevent="submit">
     <div>
       <div class="form-group">
-        <label for="inputCompanyName">Company Name</label>
-        <input name="address1" type="text" class="form-control" id="inputCompanyName" placeholder="Fictional Holdings LC">
+        <label for="companyName">Company Name</label>
+        <input name="companyName" type="text" class="form-control" id="companyName" placeholder="Fictional Holdings LC">
       </div>
       <div class="form-group">
         <label for="companyLogo">Company Logo URL</label>
-        <input name="address1" type="text" class="form-control" id="companyLogo" placeholder="optional">
+        <input name="companyLogo" type="text" class="form-control" id="companyLogo" placeholder="optional">
     </div>
     </div>
     <div class="form-group">
       <label for="companyUrl">Company URL</label>
-      <input name="address1" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
+      <input name="companyUrl" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
     </div>
     <div class="form-group">
       <label for="inputBio">Optional Note</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="inputImage">Upload Photo</label>
+      <input type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="upload">
     </div>
   <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -110,32 +114,42 @@
     data () {
       return {
           profileData: {},
-          bio: ''
+          bio: '',
+          cloudinary: {
+              uploadPreset: '<PRESET>',
+              cloudName: 'nextgen123',
+              apiKey: '442836694551491'
+          },
+          imageUrl
       }
     },
     methods: {
+        upload: function(file) {
+            const formData = new FormData()
+            formData.append('file', file[0]);
+            formData.append('upload_preset', this.cloudinary.uploadPreset);
+            formData.append('tags', 'gs-vue,gs-vue-uploaded');
+            // For debug purpose only
+            // Inspects the content of formData
+            for(var pair of formData.entries()) {
+                console.log(pair[0]+', '+pair[1]);
+            }
+            axios.post(this.clUrl, formData).then(res => {
+                this.imageUrl = res.data
+                })
+        },
         submit: function(evt){
+
             localforage.getItem('X_TOKEN')
             .then(session => {
                 console.log('submit session: ', {headers: { 'x-token': session }})
-                axios.post('/api/v1/applications', {
+                axios.post('/api/v1/partner/apply', {
                     headers: { 'x-token': session },
                     params: {
-                        full_name: this.profileData.full_name,
-                        email: this.profileData.email,
-                        address_line_1: evt.target.address1.value,
-                        address_line_2: evt.target.address2.value,
-                        city: evt.target.city.value,
-                        state_province: evt.target.stateProvince.value,
-                        zip_code: evt.target.zipCode.value,
-                        country: evt.target.country.value,
-                        phone_number: evt.target.phoneNumber.value,
+                        companyName: evt.target.companyName.value,
+                        companyLogo: evt.target.companyLogo.value,
+                        companyUrl: evt.target.companyUrl.value,
                         bio: evt.target.bio.value,
-                        camp: evt.target.camp.value,
-                        date_signed: evt.target.dateSigned.value,
-                        bio: evt.target.bio.value,
-                        type: 'partner',
-                        status: 'pending'
                         }
                 })
                 .catch(console.error)})
@@ -144,6 +158,9 @@
         }
     },
     computed: {
+        clUrl: function(){
+            return `https://api.cloudinary.com/v1_1/${this.cloudinary.cloudName}/upload`
+        },
         charactersLeft(){
             let words = this.bio.split(' ').filter((entry)=>{ return entry.trim() != ''; })
             let count = words.length
@@ -170,7 +187,6 @@
   .container{
     margin: 30px;
   }
-
   .waiver{
     margin: 25px;
     padding: 25px;
