@@ -9,33 +9,46 @@
           <h3>{{ pageContent.camper.headline }}</h3>
           <p>{{ pageContent.camper.caption }}</p>
           <p>{{ pageContent.camper.callToAct }}</p>
+          <div class="button-wrapper">
+            <router-link class="btn btn-primary appButtons" to="/signup">Sign up a Camper</router-link>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="opportunity">
       <div class="row">
         <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.volunteer.imgSrc" :alt="pageContent.volunteer.imgAlt" class="img-responsive"></div>
         <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1 caption">
           <h3>{{ pageContent.volunteer.headline }}</h3>
           <p>{{ pageContent.volunteer.caption }}</p>
           <p>{{ pageContent.volunteer.callToAct }}</p>
+          <div class="button-wrapper">
+            <router-link id="volunteer" class="btn btn-primary appButtons" to="/volunteer">Volunteer</router-link>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="opportunity">
       <div class="row">
         <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.partner.imgSrc" :alt="pageContent.partner.imgAlt" class="img-responsive"></div>
         <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1 caption">
           <h3>{{ pageContent.partner.headline }}</h3>
           <p>{{ pageContent.partner.caption }}</p>
           <p>{{ pageContent.partner.callToAct }}</p>
+          <div class="button-wrapper">
+            <router-link class="btn btn-primary appButtons" to="/partner">Become a Partner</router-link>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
         <h3>If you are interested in helping children embrace their creative side, sign up and submit an application</h3>
         <router-link to="/signup">
           <button id="getInvolved" type="button" class="btn btn-primary btn-lg">Sign Up</button>
         </router-link>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -55,7 +68,6 @@
       axios.get('/api/v1/resources/applicationsPage')
       .then(res => {
         this.pageContent = res.data
-        console.log(this.pageContent)
       })
       .catch(console.log)
     },
@@ -87,6 +99,13 @@
     font-weight: 700;
     margin-bottom: 4%;
     border: none;
+  }
+  .appButtons {
+    background-color: #5FAAF6;
+    border-color: #5FAAF6;
+  }
+  .button-wrapper {
+    text-align: center;
   }
 
 </style>

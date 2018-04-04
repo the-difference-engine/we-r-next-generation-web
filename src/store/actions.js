@@ -40,7 +40,6 @@ export const logout = ({commit}, {router}) =>
 export const signup = ({commit}, {name, email, password, that}) =>
   axios.post(`/api/v1/profiles`, {params: {name, email, password}})
   .then(res => {
-    console.log('res is: ', res.data)
     that.signedUp = true
   })
   .catch(err => {
@@ -87,12 +86,11 @@ export const getVolunteerApps = ({ commit }, { that }) =>
 export const campSessionCreate = ({ commit }, { new_camp, router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.post(`/api/v1/camp/session/create`, { 
+    axios.post(`/api/v1/camp/session/create`, {
       headers: { 'x-token': session },
-      params: new_camp 
+      params: new_camp
     })
       .then(res => {
-        console.log('res is: ', res);
         router.push('/camp/' + res.data.$oid)
       })
       .catch(err => {
@@ -125,7 +123,7 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.get(`/api/v1/camp/session/get`, { 
+    axios.get(`/api/v1/camp/session/get`, {
       headers: { 'x-token': session }
     })
       .then(res => {
@@ -196,6 +194,6 @@ export const campSessionsGetAll = ({commit}, {field_name, order}) => {
             reject(e)
           })
       })
-  })  
+  })
 }
 
