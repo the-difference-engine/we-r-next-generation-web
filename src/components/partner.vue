@@ -117,7 +117,6 @@
         submit: function(evt){
             localforage.getItem('X_TOKEN')
             .then(session => {
-                console.log('submit session: ', {headers: { 'x-token': session }})
                 axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
@@ -156,7 +155,6 @@
       .then(session => {
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
         .then(response => {
-            // console.log(response.data)
           this.profileData = response.data
         })
         .catch(console.error)

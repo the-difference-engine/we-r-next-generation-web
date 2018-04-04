@@ -45,7 +45,6 @@ export const logout = ({commit}, {router}) =>
 export const signup = ({commit}, {name, email, password, that}) =>
   axios.post(`/api/v1/profiles`, {params: {name, email, password}})
   .then(res => {
-    console.log('res is: ', res.data)
     that.signedUp = true
   })
   .catch(err => {
@@ -139,7 +138,6 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       params: new_camp
     })
       .then(res => {
-        console.log('res is: ', res);
         router.push('/camp/' + res.data.$oid)
       })
       .catch(err => {

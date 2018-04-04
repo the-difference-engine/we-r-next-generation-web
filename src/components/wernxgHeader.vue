@@ -17,14 +17,14 @@
             <router-link v-if="isAdmin" to="/admin/applications"><button class="btn btn-warning">Admin Site</button></router-link>
             <router-link to="/campInfo">The Camp</router-link>
             <router-link to="/successStories">Success Stories</router-link>
-            <router-link to="/applications">Applications</router-link>
+            <router-link to="/opportunities">Applications</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
             <button id="logout-button"
               class="btn btn-primary"
               v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
             </button>
             <router-link to="/signup" v-if="(!this.loggedIn && !loginStatus)">Sign Up</router-link>
-            <router-link to="/donate"> <button id="donate" class="btn btn-primary btn-md">Donate</button></router-link>
+            <a href="https://www.paypal.com/donate/?token=ufL1ssPQsJFFnR3pkIe5KWP31pQIN60cJGTqvFlU4dW_KkXvZhJeat2x111V_waHb3E0s0&country.x=US&locale.x=US"> <button id="donate" class="btn btn-primary btn-md">Donate</button></a>
             <router-link to="/profile" v-html="profileImage"></router-link>
           </div>
     </div>
@@ -63,7 +63,6 @@
           this.loggedIn = true
           if (response.data.profileData.role === 'admin') this.$store.commit('ISADMIN', true)
           else this.$store.commit('ISADMIN', false)
-          console.log(response.data)
         })
         .catch(err => {
           if (err.toString().includes('401')) {

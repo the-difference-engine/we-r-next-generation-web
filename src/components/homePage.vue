@@ -107,7 +107,7 @@
       .then(res => {
         this.homePageData = res.data
       })
-      .catch(error => console.log)
+      .catch(console.log)
     }
   }
 </script>
