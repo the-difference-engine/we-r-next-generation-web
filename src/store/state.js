@@ -4,5 +4,6 @@ export const getters = {
 
 export const state = {
   userInfo: {},
-  loginStatus: false
+  loginStatus: false,
+  isAdmin: false
 }

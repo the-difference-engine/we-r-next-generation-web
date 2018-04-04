@@ -14,9 +14,8 @@
             </button>
           </div>
           <div id="header-right" class="menu-items col-xs-9 col-sm-9" v-bind:class="{ showMenu: menuClicked }">
-            <router-link to="/users">Members</router-link><!-- TODO: Make this visible to admins only. -->
+            <router-link v-if="isAdmin" to="/admin/applications"><button class="btn btn-warning">Admin Site</button></router-link>
             <router-link to="/campInfo">The Camp</router-link>
-            <router-link to="/camp/create">New CampEx</router-link>
             <router-link to="/successStories">Success Stories</router-link>
             <router-link to="/opportunities">Applications</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
@@ -62,6 +61,8 @@
           axios.get('/api/v1/sessions/' + session, { 'headers': { 'x-token': session } })
           .then((response, err) => {
           this.loggedIn = true
+          if (response.data.profileData.role === 'admin') this.$store.commit('ISADMIN', true)
+          else this.$store.commit('ISADMIN', false)
         })
         .catch(err => {
           if (err.toString().includes('401')) {
@@ -76,6 +77,9 @@
     computed: {
       loginStatus () {
         return this.$store.state.loginStatus
+      },
+      isAdmin () {
+        return this.$store.state.isAdmin
       }
     }
   }
