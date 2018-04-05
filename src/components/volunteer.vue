@@ -42,9 +42,8 @@
       <label for="inputPhone">Phone Number</label>
       <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
     </div>
-    <p>Please tell us a little bit about yourself:</p>
     <div class="form-group col-sm-12">
-      <label for="inputBio">Bio</label>
+      <label for="inputBio">Please tell us a little bit about yourself:</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
@@ -219,9 +218,6 @@
     border: 2px solid gray;
   }
   input {
-      text-align: center;
-  }
-  textarea {
       text-align: center;
   }
 </style>

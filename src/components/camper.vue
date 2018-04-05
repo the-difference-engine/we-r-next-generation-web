@@ -56,9 +56,10 @@
         <label for="inputChildGender">Child's Gender</label>
         <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
       </div>
-      <p>How do you think they could benefit from Creativity Camp?</p>
-      <div class="form-row">
-        <textarea class="form-control" id="inputBenefit" rows="3" placeholder="" name="bio"></textarea>
+      <div class="form-group">
+        <label for="textarea">How do you think they could benefit from Creativity Camp?</label>
+        <textarea class="form-control" id="textarea" rows="3" placeholder="" name="bio"></textarea>
+        {{charactersLeft}}
       </div>
     <p>Which camp would you like your child to attend? (Select one):</p>
     <div>
@@ -198,5 +199,17 @@
     margin: 25px;
     padding: 25px;
     border: 2px solid gray;
+  }
+
+  input {
+    text-align: center;
+  }
+
+  textarea {
+    text-align: center;
+  }
+
+  select {
+    text-align: center;
   }
 </style>
