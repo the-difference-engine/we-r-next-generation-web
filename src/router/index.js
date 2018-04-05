@@ -190,14 +190,14 @@ export default new Router({
       }
     },
     {
-      path: '/users',
+      path: '/admin/users',
       name: 'View Users',
-      //beforeEnter: sessionCheck
       components: {
         default: users,
-        header: wernxgHeader,
+        header: adminNavbar,
         footer: wernxgFooter
       },
+      beforeEnter: sessionCheck
     },
     {
       path: '/opportunities',
@@ -209,32 +209,34 @@ export default new Router({
       }
     },
     {
-      path: '/adminApplications',
+      path: '/admin/applications',
       name: 'Admin Applications',
       components: {
         default: adminApplications,
         header: adminNavbar,
-        footer: nullComp
+        footer: wernxgFooter
       },
       beforeEnter: sessionCheck
     },
     {
-      path: '/camp/create',
+      path: '/admin/camp/create',
       name: 'CreateCamp',
       components: {
         default: campex_create,
-        header: wernxgHeader,
+        header: adminNavbar,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: sessionCheck
     },
     {
-      path: '/camp/:id',
+      path: '/admin/camp/:id',
       name: 'ViewCamp',
       components: {
         default: campex_single,
-        header: wernxgHeader,
+        header: adminNavbar,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: sessionCheck
     },
   ]
 })

@@ -196,8 +196,7 @@
                 .then(response => {
                     this.camps = response.data
                 })
-                .catch(err => {
-                })
+                .catch(console.log)
             axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
             .then(response => {
             this.profileData = response.data

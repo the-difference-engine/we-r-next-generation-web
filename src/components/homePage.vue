@@ -1,5 +1,5 @@
 <template>
-<div class='container'>
+<div class='container-fluid'>
   <div id='hero-image' class='row'>
     <div class="img-container1">
       <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
@@ -107,7 +107,7 @@
       .then(res => {
         this.homePageData = res.data
       })
-      .catch(error => console.log)
+      .catch(console.log)
     }
   }
 </script>

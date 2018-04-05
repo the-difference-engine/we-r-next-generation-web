@@ -82,7 +82,6 @@
                     <td>{{camp.date_end}}</td>
                 </tr>
             </table>
-
         </div>
     </div>
 </div>
