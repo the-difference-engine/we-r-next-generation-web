@@ -116,9 +116,9 @@
           profileData: {},
           bio: '',
           cloudinary: {
-              uploadPreset: '<PRESET>',
-              cloudName: 'nextgen123',
-              apiKey: '442836694551491'
+              uploadPreset: 'tpg3m6fv',
+              cloudName: 'wernextgeneration',
+              apiKey: '234871425639756'
           },
           imageUrl
       }

@@ -151,11 +151,8 @@
     },
     methods: {
         submit: function(evt){
-            console.log("GOT TO SUBMIT")
-            console.log("camp stuff", this.testcamp)
             localforage.getItem('X_TOKEN')
             .then(session => {
-                console.log('submit session: ', {headers: { 'x-token': session }})
                 axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
@@ -191,23 +188,18 @@
         }
     },
     created() {
-        console.log('IN CREATED')
         localforage.getItem('X_TOKEN')
         .then(session => {
-            console.log('AYYYYYYYYE')
             axios.get('/api/v1/camp/session/get', {
                     'headers': { 'x-token': session }
                 })
                 .then(response => {
                     this.camps = response.data
-                    console.log("My stuff Ayyyye!", this.camps)
                 })
                 .catch(err => {
-                    console.log('WOMP')
                 })
             axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
             .then(response => {
-                console.log("Brian stuff", response.data)
             this.profileData = response.data
             })
             .catch(console.error)
