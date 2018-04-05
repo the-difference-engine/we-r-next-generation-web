@@ -52,7 +52,7 @@
     <div>
         <select v-model="chosencamp" class="form-control">
             <option value="" disabled hidden>Select Camp</option>
-            <option v-for="camp in orderedCamps(camps)" v-bind:key="camp._id" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+            <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
         </select>
     </div>
   <div class="waiver">
