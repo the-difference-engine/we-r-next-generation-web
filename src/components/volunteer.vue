@@ -47,12 +47,14 @@
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <p>Which camp would you like to teach at (Select one):</p>
     <div>
-        <select v-model="chosencamp" class="form-control">
-            <option value="" disabled hidden>Select Camp</option>
-            <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
-        </select>
+        <div class="form-group">
+            <label for="selector">Which camp would you like to teach at (Select one):</label>
+            <select v-model="chosencamp" class="form-control" id="selector">
+                <option value="" disabled hidden>Select Camp</option>
+                <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+            </select>
+        </div>
     </div>
   <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -218,6 +220,9 @@
     border: 2px solid gray;
   }
   input {
+      text-align: center;
+  }
+  textarea {
       text-align: center;
   }
 </style>

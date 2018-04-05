@@ -61,12 +61,15 @@
         <textarea class="form-control" id="textarea" rows="3" placeholder="" name="bio"></textarea>
         {{charactersLeft}}
       </div>
-    <p>Which camp would you like your child to attend? (Select one):</p>
+    <p></p>
     <div>
-        <select v-model="chosencamp" class="form-control">
+      <div class="form-group">
+        <label for="selector">Which camp would you like your child to attend? (Select one):</label>
+        <select v-model="chosencamp" class="form-control" id="selector">
             <option value="" disabled hidden>Select Camp</option>
             <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
         </select>
+      </div>
     </div>
     <div class="waiver">
       <h3>Parent Release and Waiver of Liability Form</h3>
