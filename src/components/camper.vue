@@ -1,4 +1,3 @@
-<!--An empty component to replace the header and/or footer on pages where it is not required-->
 
 <template>
   <div class="container-fluid">
@@ -61,7 +60,6 @@
         <textarea class="form-control" id="textarea" rows="3" placeholder="" name="bio"></textarea>
         {{charactersLeft}}
       </div>
-    <p></p>
     <div>
       <div class="form-group">
         <label for="selector">Which camp would you like your child to attend? (Select one):</label>
@@ -101,20 +99,6 @@
     </div>
     </form>
   </div>
-  <!-- dump of stuffs -->
-        <!-- <p>Camp your child would like to attend (Select one):</p> -->
-      <!-- <div class="form-group">
-        <label for="campSelection">
-            <input type="radio" id="campSelection" name="camp" value="camp1">
-            Camp 1
-        </label>
-      </div>
-      <div class="form-check">
-        <label >
-            <input class="form-check-input" type="radio" name="camp" value="camp2">
-            Camp 2
-        </label>
-      </div> -->
 </template>
 
 <script>
