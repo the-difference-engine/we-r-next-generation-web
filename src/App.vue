@@ -33,4 +33,7 @@ export default {
     padding-right: 0;
     padding-left: 0;
   }
+  .float-right {
+    float: right;
+  }
 </style>
