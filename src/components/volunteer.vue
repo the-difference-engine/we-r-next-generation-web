@@ -50,8 +50,9 @@
     </div>
     <p>Which camp would you like to teach at (Select one):</p>
     <div>
-        <select v-model="testcamp" class="form-control">
-            <option v-for="camp in camps" v-bind:key="camp._id" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+        <select v-model="chosencamp" class="form-control">
+            <option value="" disabled hidden>Select Camp</option>
+            <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
         </select>
     </div>
   <div class="waiver">
@@ -136,6 +137,7 @@
 <script>
   import localforage from '../sessionUtils'
   import axios from 'axios'
+  import _ from 'lodash'
   export default {
     name: 'volunteer',
     data () {
@@ -144,7 +146,7 @@
           bio: '',
           camps: [],
           sessionId: '',
-          testcamp: ''
+          chosencamp: ''
       }
     },
     methods: {
@@ -164,7 +166,7 @@
                         country: evt.target.country.value,
                         phone_number: evt.target.phoneNumber.value,
                         bio: evt.target.bio.value,
-                        camp: this.testcamp,
+                        camp: this.chosencamp,
                         date_signed: evt.target.dateSigned.value,
                         type: 'volunteer',
                         status: 'pending'
@@ -172,6 +174,9 @@
                 })
                 .catch(console.error)})
             .catch(console.error)
+        },
+        orderedCamps(list) {
+            return _.orderBy(list, 'created_at', 'desc');
         }
     },
     computed: {
