@@ -1,58 +1,60 @@
 <!--An empty component to replace the header and/or footer on pages where it is not required-->
 <template>
-<div class="container">
+<div class="container-fluid">
   <h1>Volunteer Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
     <div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-sm-6">
         <label for="inputFullName">Full Name</label>
         {{profileData.full_name}}
       </div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-sm-6">
         <label for="inputEmail">Email</label>
         {{profileData.email}}
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-12">
       <label for="inputAddress1">Address Line 1</label>
       <input name="address1" type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="inputAddress2">Address Line 2</label>
       <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="city">City</label>
       <input name="city" type="text" class="form-control" id="city" placeholder="City">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="stateProvince">State/Province</label>
       <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="zipCode">Zip Code</label>
       <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="country">Country</label>
       <input name="country" type="text" class="form-control" id="country" placeholder="Country">
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-6">
       <label for="inputPhone">Phone Number</label>
       <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
     </div>
-    <p>Please tell us a little bit about yourself:</p>
-    <div class="form-group">
-      <label for="inputBio">Bio</label>
+    <div class="form-group col-sm-12">
+      <label for="inputBio">Please tell us a little bit about yourself:</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <p>Which camp would you like to teach at (Select one):</p>
     <div>
-        <select v-model="testcamp" class="form-control">
-            <option v-for="camp in camps" v-bind:key="camp._id" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
-        </select>
+        <div class="form-group">
+            <label for="selector">Which camp would you like to teach at (Select one):</label>
+            <select v-model="chosencamp" class="form-control" id="selector">
+                <option value="" disabled hidden>Select Camp</option>
+                <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+            </select>
+        </div>
     </div>
     <div ref="waiver_el">
         <div class="waiver">
@@ -134,6 +136,7 @@
 <script>
 import localforage from '../sessionUtils'
 import axios from 'axios'
+import _ from 'lodash'
 export default {
     name: 'volunteer',
     data () {
@@ -142,7 +145,7 @@ export default {
             bio: '',
             camps: [],
             sessionId: '',
-            testcamp: '',
+            chosencamp: '',
 
             errors: [],
             disable_edits: false,
@@ -235,7 +238,7 @@ export default {
                             country: evt.target.country.value,
                             phone_number: evt.target.phoneNumber.value,
                             bio: evt.target.bio.value,
-                            // camp: this.testcamp,
+                            camp: this.chosencamp,
                             date_signed: this.waiver.signed_date,
                             type: 'volunteer',
                             status: 'pending'
@@ -280,6 +283,9 @@ export default {
                 this.waiver.items = data['items'];
                 this.waiver.footer = data['footer'];
             })
+        },
+        orderedCamps(list) {
+            return _.orderBy(list, 'created_at', 'desc');
         }
     },
     computed: {
@@ -320,23 +326,17 @@ export default {
         },
     },
     created() {
-        console.log('IN CREATED')
         localforage.getItem('X_TOKEN')
         .then(session => {
-            console.log('AYYYYYYYYE')
             axios.get('/api/v1/camp/session/get', {
                     'headers': { 'x-token': session }
                 })
                 .then(response => {
                     this.camps = response.data
-                    console.log("My stuff Ayyyye!", this.camps)
                 })
-                .catch(err => {
-                    console.log('WOMP')
-                })
+                .catch(console.log)
             axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
             .then(response => {
-                console.log("Brian stuff", response.data)
             this.profileData = response.data
             })
             .catch(console.error)
@@ -350,14 +350,6 @@ export default {
     .container{
         margin: 30px;
     }
-
-    .waiver{
-        overflow: auto;
-        margin: 25px;
-        padding: 25px;
-        border: 2px solid gray;
-    }
-
     table > tbody > tr > td {
         vertical-align: top !important;
         padding-top: 1em !important;
@@ -366,4 +358,15 @@ export default {
     .hide-me {
         display: none;
     }
+  .waiver{
+    margin: 25px;
+    padding: 25px;
+    border: 2px solid gray;
+  }
+  input {
+      text-align: center;
+  }
+  textarea {
+      text-align: center;
+  }
 </style>

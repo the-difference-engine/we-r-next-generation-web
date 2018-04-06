@@ -14,10 +14,11 @@ export const sessionCheck = (to, from, next) => {
       axios.get(`/api/v1/sessions/${session}`, config)
       .then(res => {
         if (res.data.X_TOKEN) {
+          const role = res.data.profileData.role
           store.commit(types.LOGIN, res.data.profileData)
           if (to.path === from.path) next(false)
-          else if (res.data.profileData.role === 'admin' && to.path === '/adminApplications') next()
-          else if (res.data.profileData.role === 'admin') next('/adminApplications')
+          else if (role === 'admin' && to.path === '/admin/applications') next()
+          else if (role !== 'admin' && to.path.startsWith('/admin/')) next('/')
           else if (to.path === '/login') next({path: '/'})
           else next()
         }
@@ -45,7 +46,7 @@ export const adminCheck = (to, from, next) => {
         if (res.data.X_TOKEN) {
           store.commit(types.LOGIN, res.data.profileData)
           if (to.path === from.path) next(false)
-          if (res.data.profileData.role === 'admin') next('/adminApplications')
+          if (res.data.profileData.role === 'admin') next('/admin/applications')
           else next()
         }
         else {

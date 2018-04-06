@@ -1,80 +1,74 @@
-<!--An empty component to replace the header and/or footer on pages where it is not required-->
 
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <h1>Camp Application</h1>
     <hr>
     <form v-on:submit.prevent="submit">
       <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-sm-6">
           <label for="inputFullName">Full Name</label>
           {{profileData.full_name}}
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-sm-6">
             <label for="inputEmail">Email</label>
             {{profileData.email}}
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-group col-sm-6">
         <label for="inputAddress1">Child's Address line 1</label>
         <input type="text" name="address1" class="form-control" id="inputAddress1" placeholder="1234 Main St">
       </div>
-      <div class="form-row">
+      <div class="form-group col-sm-6">
         <label for="inputAddress2">Child's Address line 2</label>
         <input type="text" name="address2" class="form-control" id="inputAddress1" placeholder="1234 Main St">
       </div>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
       <label for="city">City</label>
       <input name="city" type="text" class="form-control" id="city" placeholder="City">
       </div>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
         <label for="stateProvince">State/Province</label>
         <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
       </div>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
         <label for="zipCode">Zip Code</label>
         <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
       </div>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
         <label for="country">Country</label>
         <input name="country" type="text" class="form-control" id="country" placeholder="Country">
       </div>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
         <label for="inputPhone">Phone Number</label>
         <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number" name="phoneNumber">
       </div>
       <hr>
-      <div class="form-group">
+      <div class="form-group col-sm-6">
         <label for="inputChildName">Child's Name</label>
         <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" name="childName">
       </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputChildAge">Child's Age</label>
-          <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
-        </div>
-        <div class="form-group col-md-6">
-          <label for="inputChildGender">Child's Gender</label>
-          <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
-        </div>
+      <div class="form-group col-sm-6">
+        <label for="inputChildAge">Child's Age</label>
+        <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
       </div>
-      <p>Camp your child would like to attend (Select one):</p>
-      <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="camp" value="camp1">
-            Camp 1
-        </label>
+      <div class="form-group col-sm-6">
+        <label for="inputChildGender">Child's Gender</label>
+        <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
       </div>
-      <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="camp" value="camp2">
-            Camp 2
-        </label>
+      <div class="form-group">
+        <label for="textarea">How do you think they could benefit from Creativity Camp?</label>
+        <textarea class="form-control" id="textarea" rows="3" placeholder="" name="bio"></textarea>
+        {{charactersLeft}}
       </div>
-      <p>How do you think they could benefit from Creativity Camp?</p>
-      <div class="form-row">
-        <textarea class="form-control" id="inputBenefit" rows="3" placeholder="" name="bio"></textarea>
+    <div>
+      <div class="form-group">
+        <label for="selector">Which camp would you like your child to attend? (Select one):</label>
+        <select v-model="chosencamp" class="form-control" id="selector">
+            <option value="" disabled hidden>Select Camp</option>
+            <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+        </select>
       </div>
+    </div>
     <div class="waiver">
       <h3>Parent Release and Waiver of Liability Form</h3>
       <br>
@@ -115,14 +109,15 @@
     data () {
       return {
         profileData: {},
-        bio: ''
+        bio: '',
+        camps: [],
+        chosencamp: ''
       }
     },
     methods: {
       submit: function(evt){
             localforage.getItem('X_TOKEN')
             .then(session => {
-                console.log('submit session: ', {headers: { 'x-token': session }})
                 axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
@@ -139,7 +134,7 @@
                         age: evt.target.age.value,
                         gender: evt.target.gender.value,
                         bio: evt.target.bio.value,
-                        camp: evt.target.camp.value,
+                        camp: this.chosencamp,
                         date_signed: evt.target.dateSigned.value,
                         type: 'camper',
                         status: 'pending'
@@ -148,6 +143,9 @@
                 .catch(console.error)})
             .catch(console.error)
 
+        },
+        orderedCamps(list) {
+            return _.orderBy(list, 'created_at', 'desc');
         }
     },
     computed: {
@@ -161,6 +159,13 @@
     created() {
       localforage.getItem('X_TOKEN')
       .then(session => {
+        axios.get('/api/v1/camp/session/get', {
+                    'headers': { 'x-token': session }
+                })
+                .then(response => {
+                    this.camps = response.data
+                })
+                .catch(console.log)
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
         .then(response => {
           this.profileData = response.data
@@ -181,5 +186,17 @@
     margin: 25px;
     padding: 25px;
     border: 2px solid gray;
+  }
+
+  input {
+    text-align: center;
+  }
+
+  textarea {
+    text-align: center;
+  }
+
+  select {
+    text-align: center;
   }
 </style>
