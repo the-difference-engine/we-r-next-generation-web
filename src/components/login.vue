@@ -99,8 +99,8 @@
     margin-bottom: 20px;
   }
   #background-img {
-    background: white url("http://www.jsums.edu/education/files/2012/12/bigstock-Four-Children-At-Computer-Term-3917429.jpg?x56568") no-repeat fixed center;
-    opacity: 0.7;
+    background: white url("http://res.cloudinary.com/wernextgeneration/image/upload/v1522972807/wernextgen-login.jpg") no-repeat fixed center;
+    opacity: 0.8;
     width: 100%;
     height: 100vh;
   }
