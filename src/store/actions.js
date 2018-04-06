@@ -77,6 +77,26 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     console.error(err)
   })
 
+// Get Waiver Page Resources
+export const getWaiverResources = ({ commit }, { resource }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        axios.get('/api/v1/resources/' + resource)
+          .then(response => {
+            console.log("Response Received from getWaiverResources", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from getWaiverResources");
+            reject(e)
+          })
+      })
+  })
+}
+
+
 export const getApplications = ({commit}, {that, type}) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
@@ -142,7 +162,6 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       })
       .catch(err => {
         setTimeout(() => {  }, 3000);
-        console.error(err);
       })
   });
 
@@ -166,7 +185,6 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 
 
 // Get one Camp Experience Session by ID Number
-
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {

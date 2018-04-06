@@ -29,9 +29,24 @@ export default {
     margin-left: 0;
     margin-right: 0;
   }
+  .mx-1 {
+    margin-left: 0.25rem !important;
+    margin-right: 0.25rem !important;
+  }
+  .mx-2 {
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+  }
+  .mx-3 {
+    margin-left: 0.75rem !important;
+    margin-right: 0.75rem !important;
+  }
   .px-0 {
     padding-right: 0;
     padding-left: 0;
+  }
+  .pr-0 {
+    padding-right: 0;
   }
   .my-1 {
     margin-top: 0.25rem !important;
@@ -53,7 +68,24 @@ export default {
     margin-top: 1.25rem !important;
     margin-bottom: 1.25rem !important;
   }
+  .mr-1 {
+    margin-right: 0.25rem !important;
+  }
+  .mr-2 {
+    margin-right: 0.5rem !important;
+  }
   .float-right {
     float: right;
+  }
+
+
+  .font-weight-bold {
+    font-weight: bold;
+  }
+  .font-size-1 {
+    font-size: 1em;
+  }
+  .font-size-2 {
+    font-size: 1.25em;
   }
 </style>
