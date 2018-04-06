@@ -56,8 +56,8 @@
             </select>
         </div>
     </div>
-    <div ref="waiver_el">
-        <div class="waiver">
+    <div ref="waiver_el" class="waiver mx-auto">
+        <div class="mx-auto">
             <h3>Volunteer Release and Waiver of Liability Form</h3>
             <p class="col-md-12 text-left my-3">This Release and Waiver of Liability (the “release”) executed on
                 <span class="mx-2 font-size-2"><u ref="waiver_date_string">{{get_date_as_string}}</u></span>
@@ -221,10 +221,8 @@ export default {
             
             // validate the waiver was signed before submitting
             if (this.confirm_waiver_signed()) {
-                console.log("camp stuff", this.testcamp)
                 localforage.getItem('X_TOKEN')
                 .then(session => {
-                    console.log('submit session: ', {headers: { 'x-token': session }})
                     axios.post('/api/v1/applications', {
                         headers: { 'x-token': session },
                         params: {
@@ -262,8 +260,8 @@ export default {
                             }
                         })
                         .then(res => {
-                            console.log(res);
-                            
+                            // redirect to application submitted page
+                            this.$router.push('/applications/' + app_id + '/submitted');
                         })
                         .catch(err => {
                             console.log(err);
@@ -347,9 +345,6 @@ export default {
 </script>
 
 <style scoped>
-    .container{
-        margin: 30px;
-    }
     table > tbody > tr > td {
         vertical-align: top !important;
         padding-top: 1em !important;
@@ -358,9 +353,11 @@ export default {
     .hide-me {
         display: none;
     }
-  .waiver{
-    margin: 25px;
-    padding: 25px;
+  .waiver {
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+    max-width: 950px;
+    padding: 20px;
     border: 2px solid gray;
   }
   input {

@@ -7,6 +7,7 @@ import adminNavbar from '@/components/adminNavbar'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
 import applications from '@/components/applications'
+import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
@@ -139,6 +140,16 @@ export default new Router({
       name: 'applications',
       components: {
         default: applications,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/applications/:id/submitted',
+      name: 'application_submitted',
+      components: {
+        default: application_submitted,
         header: wernxgHeader,
         footer: wernxgFooter
       },

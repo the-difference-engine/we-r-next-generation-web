@@ -25,6 +25,9 @@ export default {
   .container{
     margin: 30px;
   }
+  .mx-auto {
+    margin: auto auto;
+  }
   .mx-0 {
     margin-left: 0;
     margin-right: 0;
