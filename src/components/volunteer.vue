@@ -1,4 +1,3 @@
-<!--An empty component to replace the header and/or footer on pages where it is not required-->
 <template>
 <div class="container-fluid">
   <h1>Volunteer Application</h1>
@@ -67,7 +66,7 @@
             </p>
             <table class="col-md-12 text-left my-3">
                 <tbody>
-                    <tr v-for='index in waiver.items.length'>
+                    <tr v-for='index in waiver.items.length' :key="index">
                         <td class="col-sm-1 pr-0 text-center">
                             <span ref="waiver_initials">
                                 <input :readonly="disable_edits" type="text" class="col-sm-12 form-control text-center" v-model="waiver.initials[index-1]">
@@ -118,7 +117,7 @@
                 <div v-if="errors.length" class="col-md-12 my-4 text-left">
                     <h4 class="font-weight-bold text-danger"><u>Please correct the following error(s) before proceeding:</u></h4>
                     <ul>
-                        <li v-for="error in errors" class="font-weight-bold text-dark">{{error}}</li>
+                        <li v-for="(error, index) in errors" v-bind:key="index" class="font-weight-bold text-dark">{{error}}</li>
                     </ul>
                 </div>
                 <button :class="{ 'hide-me': disable_edits }" type="submit" class="btn btn-primary my-5">Save & Submit</button>
@@ -181,11 +180,39 @@ export default {
             this.$refs.waiver_signed_date.innerHTML = this.waiver.signed_date;
             this.$refs.waiver_form_submit.innerHTML = "";
         },
-        confirm_waiver_signed: function() {
+        confirm_waiver_signed: function(event) {
             // validates waiver fields are filled out
             // appends error messages and returns false if any validations fail
             // returns true if validation succeeds
             let no_errors = true;
+            if (event.target.address1.value == '') {
+                this.errors.push("Address line 1 is required")
+                no_errors = false;
+            }
+            if (event.target.city.value == '') {
+                this.errors.push("City is required")
+                no_errors = false;
+            }
+            if (event.target.stateProvince.value == '') {
+                this.errors.push("State/Province is required")
+                no_errors = false;
+            }
+            if (event.target.zipCode.value == '') {
+                this.errors.push("Zip Code is required")
+                no_errors = false;
+            }
+            if (event.target.country.value == '') {
+                this.errors.push("Country is required")
+                no_errors = false;
+            }
+            if (event.target.phoneNumber.value == '') {
+                this.errors.push("Phone Number is required")
+                no_errors = false;
+            }
+            if (event.target.address1.value == '') {
+                this.errors.push("Camp is required")
+                no_errors = false;
+            }
             for (let idx=0; idx<this.waiver.items.length; idx++) {
                 let item_position = idx + 1;
                 if (this.waiver.initials[idx] == '' || this.waiver.initials[idx] == null) {
@@ -218,9 +245,10 @@ export default {
 
         submit: function(evt){
             this.errors = [];       // clear all previous errors before validating the form again
-            
+
             // validate the waiver was signed before submitting
-            if (this.confirm_waiver_signed()) {
+
+            if (this.confirm_waiver_signed(evt)) {
                 localforage.getItem('X_TOKEN')
                 .then(session => {
                     axios.post('/api/v1/applications', {
@@ -314,7 +342,7 @@ export default {
                 "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
-            
+
             let dt = new Date(this.waiver.signed_date);
             let day = dt.getDate() + 1;
             let month = monthNames[dt.getMonth()];
