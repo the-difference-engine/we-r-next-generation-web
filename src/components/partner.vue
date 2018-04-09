@@ -1,12 +1,12 @@
 <template>
-<div class="container">
+<div class="container-fluid">
   <h1>Partner Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
     <div>
       <div class="form-group col-sm-6">
         <label for="companyName">Company Name</label>
-        <input name="companyName" type="text" class="form-control" id="companyName" placeholder="Fictional Holdings LC">
+        <input name="companyName" type="text" class="form-control" id="companyName" placeholder="Fictional Holdings LC" required>
       </div>
       <div class="form-group col-sm-6">
         <label for="companyLogo">Company Logo URL</label>
@@ -25,6 +25,7 @@
       <label for="inputBio">Optional Note</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
     </div>
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
 </template>
@@ -136,5 +137,8 @@
       #inputImage {
           padding-left: 17%;
       }
+  }
+  #submit {
+      margin-bottom: 20px;
   }
 </style>

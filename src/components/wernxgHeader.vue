@@ -24,7 +24,7 @@
               v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
             </button>
             <router-link to="/signup" v-if="(!this.loggedIn && !loginStatus)">Sign Up</router-link>
-            <a href="https://www.paypal.com/donate/?token=ufL1ssPQsJFFnR3pkIe5KWP31pQIN60cJGTqvFlU4dW_KkXvZhJeat2x111V_waHb3E0s0&country.x=US&locale.x=US"> <button id="donate" class="btn btn-primary btn-md">Donate</button></a>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y2Q2Y3R7WK46C"> <button id="donate" class="btn btn-primary btn-md">Donate</button></a>
             <router-link to="/profile" v-html="profileImage"></router-link>
           </div>
     </div>
