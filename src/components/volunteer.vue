@@ -46,14 +46,12 @@
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <div>
-        <div class="form-group">
-            <label for="selector">Which camp would you like to teach at (Select one):</label>
-            <select v-model="chosencamp" class="form-control" id="selector">
-                <option value="" disabled hidden>Select Camp</option>
-                <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
-            </select>
-        </div>
+    <div class="form-group">
+      <label for="selector">Which camp would you like to teach at (Select one):</label>
+      <select v-model="chosencamp" class="form-control">
+        <option value="" disabled hidden>Select Camp</option>
+        <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+      </select>
     </div>
     <div ref="waiver_el" class="waiver mx-auto">
         <div class="mx-auto">
@@ -373,13 +371,13 @@ export default {
 </script>
 
 <style scoped>
-    table > tbody > tr > td {
-        vertical-align: top !important;
-        padding-top: 1em !important;
-        padding-bottom: 1em !important;
+  table > tbody > tr > td {
+    vertical-align: top !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
     }
-    .hide-me {
-        display: none;
+  .hide-me {
+    display: none;
     }
   .waiver {
     margin-top: 30px !important;
@@ -389,9 +387,19 @@ export default {
     border: 2px solid gray;
   }
   input {
-      text-align: center;
+    text-align: center;
   }
   textarea {
-      text-align: center;
+    text-align: center;
+  }
+  select {
+    width:50%;
+    margin-left: 25%;
+    text-align: center;
+    text-align-last: center;
+  }
+  option {
+    text-align: center;
+    text-align-last: center;
   }
 </style>
