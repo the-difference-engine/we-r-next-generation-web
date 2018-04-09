@@ -46,7 +46,7 @@
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <div id="select-container" class="form-group">
+    <div class="form-group">
       <label for="selector">Which camp would you like to teach at (Select one):</label>
       <select v-model="chosencamp" class="form-control">
         <option value="" disabled hidden>Select Camp</option>
@@ -401,8 +401,5 @@ export default {
   option {
     text-align: center;
     text-align-last: center;
-  }
-  #select-container{
-    text-align: center
   }
 </style>
