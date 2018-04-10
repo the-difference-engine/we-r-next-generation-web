@@ -23,7 +23,9 @@
       <p id="SSparagragh">{{homePageData.sStories[0].text}}</p>
       <div id="crayon-button-div">
         <img src="static/assets/crayons-min.jpg" alt="crayon image" id="crayon-image"/>
-        <button id="crayon-button" type="button" class="btn btn-primary btn-lg read-button">Read more</button>
+        <router-link to="/successStories">
+          <button id="crayon-button" type="button" class="btn btn-primary btn-lg read-button">Read more</button>
+        </router-link>
       </div>
     </div>
     <div id="success-right-outer" class="col-sm-6 col-xs-12">

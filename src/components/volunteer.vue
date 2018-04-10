@@ -3,7 +3,7 @@
   <h1>Volunteer Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
-    <div>
+    <div class="row">
       <div class="form-group col-sm-6">
         <label for="inputFullName">Full Name</label>
         {{profileData.full_name}}
@@ -13,35 +13,41 @@
         {{profileData.email}}
       </div>
     </div>
-    <div class="form-group col-sm-12">
+    <div class="form-group">
       <label for="inputAddress1">Address Line 1</label>
       <input name="address1" type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
     </div>
-    <div class="form-group col-sm-6">
-      <label for="inputAddress2">Address Line 2</label>
-      <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="inputAddress2">Address Line 2</label>
+        <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="city">City</label>
+        <input name="city" type="text" class="form-control" id="city" placeholder="City">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="city">City</label>
-      <input name="city" type="text" class="form-control" id="city" placeholder="City">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="stateProvince">State/Province</label>
+        <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="zipCode">Zip Code</label>
+        <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="stateProvince">State/Province</label>
-      <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="country">Country</label>
+        <input name="country" type="text" class="form-control" id="country" placeholder="Country">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="inputPhone">Phone Number</label>
+        <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="zipCode">Zip Code</label>
-      <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="country">Country</label>
-      <input name="country" type="text" class="form-control" id="country" placeholder="Country">
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="inputPhone">Phone Number</label>
-      <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
-    </div>
-    <div class="form-group col-sm-12">
+    <div class="form-group">
       <label for="inputBio">Please tell us a little bit about yourself:</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
@@ -395,10 +401,6 @@ export default {
   select {
     width:50%;
     margin-left: 25%;
-    text-align: center;
-    text-align-last: center;
-  }
-  option {
     text-align: center;
     text-align-last: center;
   }
