@@ -4,7 +4,7 @@
     <h1>Camp Application</h1>
     <hr>
     <form v-on:submit.prevent="submit">
-      <div class="form-row">
+      <div class="row">
         <div class="form-group col-sm-6">
           <label for="inputFullName">Full Name</label>
           {{profileData.full_name}}
@@ -14,46 +14,55 @@
             {{profileData.email}}
         </div>
       </div>
-      <div class="form-group col-sm-6">
-        <label for="inputAddress1">Child's Address line 1</label>
-        <input type="text" name="address1" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="inputAddress1">Child's Address line 1</label>
+          <input type="text" name="address1" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="inputAddress2">Child's Address line 2</label>
+          <input type="text" name="address2" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+        </div>
       </div>
-      <div class="form-group col-sm-6">
-        <label for="inputAddress2">Child's Address line 2</label>
-        <input type="text" name="address2" class="form-control" id="inputAddress1" placeholder="1234 Main St">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="city">City</label>
+          <input name="city" type="text" class="form-control" id="city" placeholder="City">
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="stateProvince">State/Province</label>
+          <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+        </div>
       </div>
-      <div class="form-group col-sm-6">
-      <label for="city">City</label>
-      <input name="city" type="text" class="form-control" id="city" placeholder="City">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="zipCode">Zip Code</label>
+          <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="country">Country</label>
+          <input name="country" type="text" class="form-control" id="country" placeholder="Country">
+        </div>
       </div>
-      <div class="form-group col-sm-6">
-        <label for="stateProvince">State/Province</label>
-        <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="inputPhone">Phone Number</label>
+          <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number" name="phoneNumber">
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="inputChildName">Child's Name</label>
+          <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" name="childName">
+        </div>
       </div>
-      <div class="form-group col-sm-6">
-        <label for="zipCode">Zip Code</label>
-        <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="country">Country</label>
-        <input name="country" type="text" class="form-control" id="country" placeholder="Country">
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="inputPhone">Phone Number</label>
-        <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number" name="phoneNumber">
-      </div>
-      <hr>
-      <div class="form-group col-sm-6">
-        <label for="inputChildName">Child's Name</label>
-        <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" name="childName">
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="inputChildAge">Child's Age</label>
-        <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="inputChildGender">Child's Gender</label>
-        <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="inputChildAge">Child's Age</label>
+          <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="inputChildGender">Child's Gender</label>
+          <input type="text" class="form-control" id="inputChildGender" placeholder="Child's Gender" name="gender">
+        </div>
       </div>
       <div class="form-group">
         <label for="textarea">How do you think they could benefit from Creativity Camp?</label>
@@ -137,7 +146,7 @@
                         camp: this.chosencamp,
                         date_signed: evt.target.dateSigned.value,
                         type: 'camper',
-                        status: 'pending'
+                        status: 'submitted'
                         }
                 })
                 .catch(console.error)})
@@ -197,6 +206,9 @@
   }
 
   select {
+    width:50%;
+    margin-left: 25%;
     text-align: center;
+    text-align-last: center;
   }
 </style>

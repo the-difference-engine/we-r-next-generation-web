@@ -1,7 +1,7 @@
 <template>
   <div class="opportunities">
     <h1>Opportunities</h1>
-    <h3>...to foster creativity in our kids</h3>
+    <h3 id="subtitle">...to foster creativity in our kids</h3>
     <div class="opportunity">
       <div class="row">
         <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.camper.imgSrc" :alt="pageContent.camper.imgAlt" class="img-responsive"></div>
@@ -80,8 +80,12 @@
     font-size: larger
   }
 
-  h2{
-    font-weight: bolder
+  h3{
+    margin-top: 0;
+    font-weight: bolder;
+  }
+  #subtitle {
+    margin-top: 10px;
   }
 
   .opportunity{

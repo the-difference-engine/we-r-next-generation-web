@@ -3,23 +3,22 @@
   <h1>Partner Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
-    <div>
+    <div class="row">
       <div class="form-group col-sm-6">
         <label for="companyName">Company Name</label>
         <input name="companyName" type="text" class="form-control" id="companyName" placeholder="Fictional Holdings LC" required>
       </div>
       <div class="form-group col-sm-6">
-        <label for="companyLogo">Company Logo URL</label>
-        <input name="companyLogo" type="text" class="form-control" id="companyLogo" placeholder="optional">
+        <label for="companyUrl">Company URL</label>
+        <input name="companyUrl" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
+      </div>
     </div>
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="companyUrl">Company URL</label>
-      <input name="companyUrl" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="inputImage">Upload Photo</label>
-      <input type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="upload">
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="form-group col-sm-6">
+        <label for="inputImage">Upload Logo/Partner Picture (for Home Page)</label>
+        <input type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="upload">
+      </div>
     </div>
     <div class="form-group">
       <label for="inputBio">Optional Note</label>
@@ -73,6 +72,8 @@
                         companyLogo: evt.target.companyLogo.value,
                         companyUrl: evt.target.companyUrl.value,
                         bio: evt.target.bio.value,
+                        status: 'submitted',
+                        type: 'partner'
                         }
                 })
                 .catch(console.error)})
