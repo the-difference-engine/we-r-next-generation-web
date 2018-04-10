@@ -160,7 +160,7 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       .then(res => {
         router.push('/camp/' + res.data.$oid)
       })
-      .catch(err => {
+      .catch(() => {
         setTimeout(() => {  }, 3000);
       })
   });
