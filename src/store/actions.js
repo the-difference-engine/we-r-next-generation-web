@@ -3,7 +3,7 @@ import axios from 'axios'
 import localforage from '../sessionUtils'
 
 export const login = ({commit}, {email, password, router, that}) =>
-  axios.post(`/api/v1/sessions/${email}/${password}`)
+  axios.post(`/api/v1/sessions`, {email, password})
   .then(res => {
     commit(types.LOGIN, res.data.profileData)
     commit(types.LOGSTATUS, true)
