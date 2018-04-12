@@ -29,7 +29,7 @@
     methods: {
       submitLogin: function(evt) {
         this.$store.dispatch('login', {
-          user_name: evt.target.email.value,
+          email: evt.target.email.value,
           password: evt.target.password.value,
           router: this.$router,
           that: this
