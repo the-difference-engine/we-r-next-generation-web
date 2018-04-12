@@ -40,6 +40,7 @@ export const adminCheck = (to, from, next) => {
   localforage.getItem('X_TOKEN')
   .then(session => {
     if (session) {
+      console.log('session is: ', session)
       const config = {headers: {'x-token': session}}
       axios.get(`/api/v1/sessions/${session}`, config)
       .then(res => {

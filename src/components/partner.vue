@@ -59,7 +59,7 @@
             }
             axios.post(this.clUrl, formData).then(res => {
                 this.imageUrl = res.data
-                })
+            })
         },
         submit: function(evt){
 
