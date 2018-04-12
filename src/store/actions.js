@@ -54,7 +54,7 @@ export const signup = ({commit}, {name, email, password, that}) =>
   })
 
 export const resetPassword = ({commit}, {email, that}) =>
-  axios.put(`/api/v1/profiles/resetPassword/${email}`)
+  axios.put(`/api/v1/profiles/resetPassword`, {email})
   .then(res => {
     console.log('password reset res data: ', res.data)
     that.requestMade = true
@@ -66,7 +66,7 @@ export const resetPassword = ({commit}, {email, that}) =>
   })
 
 export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
-  axios.put(`/api/v1/profiles/newPassword/${resetToken}/${password}`)
+  axios.put(`/api/v1/profiles/newPassword`, {resetToken, password})
   .then(res => {
     that.passwordSuccess = true
     console.log('new pswd submission res data:', res.data)
