@@ -12,7 +12,7 @@
       </div>
       <div class="form-group">
         <label for="companyLogo">Company Logo URL</label>
-        <input name="companyLogo" type="text" class="form-control" id="companyLogo" placeholder="optional">
+        <input name="companyLogo" type="file" v-on:change="upload($event.target.files)" accept="image/*" class="form-control" id="companyLogo" placeholder="optional">
     </div>
     </div>
     <div class="form-group">
@@ -22,10 +22,6 @@
     <div class="form-group">
       <label for="inputBio">Optional Note</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="inputImage">Upload Photo</label>
-      <input type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="upload">
     </div>
   <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
@@ -120,23 +116,29 @@
               cloudName: 'wernextgeneration',
               apiKey: '234871425639756'
           },
-          imageUrl
+          thumbs: []
       }
     },
     methods: {
         upload: function(file) {
+            console.log('ATTEMPTING UPLOAD METHOD');
+            console.log('FILE', file);
             const formData = new FormData()
             formData.append('file', file[0]);
             formData.append('upload_preset', this.cloudinary.uploadPreset);
             formData.append('tags', 'gs-vue,gs-vue-uploaded');
+            console.log('FORM DATA TO BE SENT', formData);
             // For debug purpose only
             // Inspects the content of formData
             for(var pair of formData.entries()) {
                 console.log(pair[0]+', '+pair[1]);
             }
             axios.post(this.clUrl, formData).then(res => {
-                this.imageUrl = res.data
+                console.log('URL SENT BACK', res.data.secure_url);
+                this.thumbs.unshift({
+                url: res.data.secure_url
                 })
+            })
         },
         submit: function(evt){
 
