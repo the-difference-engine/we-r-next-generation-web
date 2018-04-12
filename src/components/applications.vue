@@ -5,7 +5,7 @@
       <router-link class="btn btn-primary appButtons" to="/partner">Become a Partner</router-link>
       <router-link id="volunteer" class="btn btn-primary appButtons" to="/volunteer">Volunteer</router-link>
 
-      <router-link class="btn btn-primary appButtons" to="/signup">Sign up a Camper</router-link>
+      <router-link class="btn btn-primary appButtons" to="/camper">Sign up a Camper</router-link>
 
   </div>
   </div>

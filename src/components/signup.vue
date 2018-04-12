@@ -31,7 +31,7 @@
 
 <script>
   export default {
-    name: 'newLogin',
+    name: 'signup',
     methods: {
       signup: function(evt) {
         this.$store.dispatch('signup', {

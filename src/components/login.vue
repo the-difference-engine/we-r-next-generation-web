@@ -4,7 +4,7 @@
       <h1 id="login-header">Log In</h1>
       <div class="row">
         <div id="sign-up-div" class="col-xs-12 col-sm-6"><span id="sign-up"><i>Aren't a member yet?</i></span></div>
-        <div class="col-xs-12 col-sm-6"><router-link to="/newlogin"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
+        <div class="col-xs-12 col-sm-6"><router-link to="/signup"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
       </div>
       <p id="login-err" v-if="loginErr">You were unable to login with the information provided.</p>
       <div class="row">
