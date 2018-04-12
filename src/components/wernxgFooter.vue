@@ -7,7 +7,7 @@
             <h4>The Company</h4>
             <ul>
               <li><router-link to="/home">Home</router-link></li>
-              <li><router-link to="/applications">Applications</router-link></li>
+              <li><router-link to="/opportunities">Applications</router-link></li>
               <li><router-link to="/signup">Sign Up</router-link></li>
               <li><router-link to="/login">Login</router-link></li>
               <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y2Q2Y3R7WK46C">Donate</a></li>

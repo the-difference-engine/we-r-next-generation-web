@@ -47,6 +47,7 @@
 <style scoped>
   span {
     color: gray;
+    font-size: 16px;
   }
   #login-err{
     color: red;
@@ -55,8 +56,8 @@
     padding: 12px 0;
   }
   #login-header {
-    margin-bottom: 25px;
-    font-size: 26px;
+    margin-bottom: 20px;
+    font-size: 28px;
     font-weight: bold;
   }
   #login-submit {
@@ -77,8 +78,8 @@
     text-align: center;
   }
   #form-row > span {
-    margin-bottom: 8px;
-    font-size: 15px;
+    margin-bottom: 5px;
+    font-size: 16px;
   }
   #form-row > input {
     margin-bottom: 20px;
@@ -106,7 +107,7 @@
   }
   #login-container {
     /* desktop */
-    width: 33%;
+    width: 37%;
     padding: 20px 70px;
     /* all sizes */
     height: auto;

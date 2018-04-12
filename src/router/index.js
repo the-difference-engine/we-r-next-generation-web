@@ -6,7 +6,6 @@ import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
-import applications from '@/components/applications'
 import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
@@ -218,16 +217,6 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       }
-    },
-    {
-      path: '/admin/applications',
-      name: 'Admin Applications',
-      components: {
-        default: adminApplications,
-        header: adminNavbar,
-        footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
     },
     {
       path: '/admin/camp/create',
