@@ -17,7 +17,7 @@
             <router-link v-if="isAdmin" to="/admin/applications"><button class="btn btn-warning">Admin Site</button></router-link>
             <router-link to="/campInfo">The Camp</router-link>
             <router-link to="/successStories">Success Stories</router-link>
-            <router-link to="/opportunities">Applications</router-link>
+            <router-link to="/applications">Applications</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
             <button id="logout-button"
               class="btn btn-primary"
@@ -56,7 +56,7 @@
       localforage.getItem('X_TOKEN')
       .then(session => {
         if (session == null) {
-        console.log('user not logged in')}
+        }
         else {
           axios.get('/api/v1/sessions/' + session, { 'headers': { 'x-token': session } })
           .then((response, err) => {

@@ -4,7 +4,7 @@
       <h1 id="login-header">Log In</h1>
       <div class="row">
         <div id="sign-up-div" class="col-xs-12 col-sm-6"><span id="sign-up"><i>Aren't a member yet?</i></span></div>
-        <div class="col-xs-12 col-sm-6"><router-link to="/newlogin"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
+        <div class="col-xs-12 col-sm-6"><router-link to="/signup"><button class="green-btn btn btn-primary" id="sign-up-btn">Sign Up</button></router-link></div>
       </div>
       <p id="login-err" v-if="loginErr">You were unable to login with the information provided.</p>
       <div class="row">
@@ -29,7 +29,7 @@
     methods: {
       submitLogin: function(evt) {
         this.$store.dispatch('login', {
-          user_name: evt.target.email.value,
+          email: evt.target.email.value,
           password: evt.target.password.value,
           router: this.$router,
           that: this
@@ -47,6 +47,7 @@
 <style scoped>
   span {
     color: gray;
+    font-size: 16px;
   }
   #login-err{
     color: red;
@@ -55,8 +56,8 @@
     padding: 12px 0;
   }
   #login-header {
-    margin-bottom: 25px;
-    font-size: 26px;
+    margin-bottom: 20px;
+    font-size: 28px;
     font-weight: bold;
   }
   #login-submit {
@@ -77,8 +78,8 @@
     text-align: center;
   }
   #form-row > span {
-    margin-bottom: 8px;
-    font-size: 15px;
+    margin-bottom: 5px;
+    font-size: 16px;
   }
   #form-row > input {
     margin-bottom: 20px;
@@ -106,7 +107,7 @@
   }
   #login-container {
     /* desktop */
-    width: 33%;
+    width: 37%;
     padding: 20px 70px;
     /* all sizes */
     height: auto;

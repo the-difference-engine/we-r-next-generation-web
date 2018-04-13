@@ -10,7 +10,7 @@
           <p>{{ pageContent.camper.caption }}</p>
           <p>{{ pageContent.camper.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="/signup">Sign up a Camper</router-link>
+            <router-link class="btn btn-primary appButtons" to="/camper">Sign up a Camper</router-link>
           </div>
         </div>
       </div>
@@ -41,14 +41,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-        <h3>If you are interested in helping children embrace their creative side, sign up and submit an application</h3>
-        <router-link to="/signup">
-          <button id="getInvolved" type="button" class="btn btn-primary btn-lg">Sign Up</button>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 

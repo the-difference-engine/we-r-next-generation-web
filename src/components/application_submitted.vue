@@ -1,15 +1,15 @@
 <template>
   <div class="container mx-auto my-4">
-	<div class="row col-sm-12">
-		<h1>Thank you for your Application</h1>
-		<div class="row col-sm-12 my-4 text-left">
-			<p>Your application submitted successfully. Our staff and leadership team will review your application and contact you about next steps or if we need any further information.</p>
-			<p>Please print and save a copy of the signed waiver for your records.</p>
-		</div>
-		<div class="col-sm-12 my-4 waiver">
-			<span v-html="waiver"></span>
-		</div>
-	</div>
+    <div class="row col-sm-12">
+      <h1>Thank you for your Application</h1>
+      <div class="row col-sm-12 my-4 text-left">
+        <p>Your application submitted successfully. Our staff and leadership team will review your application and contact you about next steps or if we need any further information.</p>
+        <p>Please print and save a copy of the signed waiver for your records.</p>
+      </div>
+      <div class="col-sm-12 my-4 waiver">
+        <span v-html="waiver"></span>
+      </div>
+    </div>
   </div>
 </template>
 
