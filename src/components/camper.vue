@@ -286,7 +286,7 @@
                         camp: this.chosencamp,
                         date_signed: this.waiver.signed_date,
                         type: 'camper',
-                        status: 'pending'
+                        status: 'submitted'
                       },
                       waiver: {
                         applicant: this.profileData._id.$oid,
