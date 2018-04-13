@@ -136,13 +136,12 @@ export default new Router({
     },
     {
       path: '/applications',
-      name: 'applications',
+      name: 'opportunities',
       components: {
-        default: applications,
+        default: opportunities,
         header: wernxgHeader,
         footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
+      }
     },
     {
       path: '/applications/:id/submitted',
@@ -208,15 +207,6 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
-    },
-    {
-      path: '/opportunities',
-      name: 'Opportunities',
-      components: {
-        default: opportunities,
-        header: wernxgHeader,
-        footer: wernxgFooter
-      }
     },
     {
       path: '/admin/camp/create',
