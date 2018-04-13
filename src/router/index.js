@@ -4,6 +4,8 @@ import {sessionCheck, adminCheck} from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
+import admin_waiver_view from '@/components/admin_waiver_view'
+import admin_waiver_all_applicant from '@/components/admin_waiver_all_applicant'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
 import applications from '@/components/applications'
@@ -224,6 +226,26 @@ export default new Router({
       name: 'Admin Applications',
       components: {
         default: adminApplications,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/users/:id/waivers',
+      name: 'AdminUserWaivers',
+      components: {
+        default: admin_waiver_all_applicant,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/waiver/:id',
+      name: 'AdminUserWaiverSingle',
+      components: {
+        default: admin_waiver_view,
         header: adminNavbar,
         footer: wernxgFooter
       },
