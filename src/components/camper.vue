@@ -51,13 +51,13 @@
         </div>
         <div class="form-group col-sm-6">
           <label for="inputChildName">Child's Name</label>
-          <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" name="childName">
+          <input type="text" class="form-control" id="inputChildName" placeholder="Child's Name" v-model="child_name">
         </div>
       </div>
       <div class="row">
         <div class="form-group col-sm-6">
           <label for="inputChildAge">Child's Age</label>
-          <input type="text" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
+          <input type="number" class="form-control" id="inputChildAge" placeholder="Child's Age" name="age">
         </div>
         <div class="form-group col-sm-6">
           <label for="inputChildGender">Child's Gender</label>
@@ -69,7 +69,6 @@
         <textarea class="form-control" id="textarea" rows="3" placeholder="" name="bio"></textarea>
         {{charactersLeft}}
       </div>
-    <div>
       <div class="form-group">
         <label for="selector">Which camp would you like your child to attend? (Select one):</label>
         <select v-model="chosencamp" class="form-control" id="selector">
@@ -77,36 +76,83 @@
             <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
         </select>
       </div>
-    </div>
-    <div class="waiver">
-      <h3>Parent Release and Waiver of Liability Form</h3>
-      <br>
-      This Release and Waiver of Liability is executed on behalf of __________________________________ as beneficiary to We R NextGeneration, Inc., a nonprofit corporation organized and existing under the laws of the State of Maryland, USA (and in partnership with Young Innovators Initiative (YII) Nigeria CAC/IT/NO 73171) and each of its directors, officers, employees, and agents. I _________________________________ allows the named beneficiary to engage in activities related to We R NextGeneration, Inc.’s iCreativity Camp program.<br>
-      <br>
-      <ol>
-        <li>Waiver and Release: I release and forever discharge and hold harmless We R NextGeneration, Inc. and its successors and assigns from any and all liability, claims, and demands of whatever kind of nature, either in law or in equity, which arise or may hereafter arise from the participation in We R NextGeneration, Inc. activities and program. I understand and acknowledge that this release, discharges We R NextGeneration, Inc. from any liability or claim that may have against We R NextGeneration, Inc. with respect to bodily injury, personal injury, illness, death, or property damage that may result from the participation with We R NextGeneration, Inc.</li>
-        <li>Insurance: Further I understand that We R NextGeneration, Inc. does not assume any responsibility for or obligation to provide the beneficiary with financial or other assistance, including but not limited to medical, health, or disability benefits or insurance. I expressly waive any such claim for compensation or liability on the part of We R NextGeneration, Inc. beyond what may be offered freely by We R NextGeneration, Inc. in the event of injury or medical expenses incurred by me.</li>
-        <li>Medical Treatment: I hereby release and forever discharge We R NextGeneration, Inc. from any claim whatsoever which arises or may hereafter arise on account of any first-aid treatment or other medical services rendered in connection with an emergency during my child’s participation in the iCreativity Camp program organized by We R NextGeneration, Inc.</li>
-        <li>Assumption of Risk: I understand as a parent/guardian, I hereby expressly assume risk of injury or harm from these activities and release We R NextGeneration, Inc. from all liability.</li>
-        <li>Photographic Release: I grant and convey to We R NextGeneration, Inc. all right, title, and interests in any and all photographs, images, video, or audio recordings of the beneficiary or the beneficiary’s likeness or voice made by We R NextGeneration, Inc. in connection with participating in the iCreativity Camp program with We R NextGeneration, Inc.</li>
-        <li>OProgram Participation: The beneficiary will follow all rules of the We R NextGeneration, Inc.’s iCreativity Camp program. The beneficiary will attend all sessions of the program as indicated in the program schedule.</li>
-      </ol>
-      <p>By signing below, I express my understanding and intent to enter into this Release and Waiver of Liability willingly and voluntarily.</p>
-
-      <br>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputSignature">Signature of parent/guardian:</label>
-          <input type="text" class="form-control" id="inputSignature" placeholder="">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="inputDate">Date:</label>
-          <input type="text" class="form-control" id="inputDate" placeholder="" name="dateSigned">
+      <div ref="waiver_el" class="waiver mx-auto">
+        <div class="mx-auto">
+          <h3 ref="waiver_title">{{waiver.title}}</h3>
+          <p class="col-md-12 text-left my-3">
+            <span ref="waiver_header_0">{{waiver.header[0]}}</span>
+            <span class="mx-2 font-size-2"><u ref="waiver_date_string">{{get_date_as_string}}</u></span>
+            <span ref="waiver_header_1">{{waiver.header[1]}}</span>
+            <span class="ml-2 font-size-2"><u ref="waiver_child_name">{{child_name}}</u></span>
+            <span ref="waiver_header_2">{{waiver.header[2]}}</span>
+            <span class="ml-2 font-size-2"><u ref="waiver_full_name">{{profileData.full_name}}</u></span>
+            <span ref="waiver_header_3">{{waiver.header[3]}}</span>
+          </p>
+          <table class="col-md-12 text-left my-3">
+            <tbody>
+            <tr v-for='index in waiver.items.length'>
+              <td class="col-sm-1 pr-0 text-center">
+                            <span ref="waiver_initials">
+                                <input :readonly="disable_edits" type="text" class="col-sm-12 form-control text-center" v-model="waiver.initials[index-1]">
+                            </span>
+                <small class="col-sm-12">Initial</small>
+              </td>
+              <td class="col-sm-1 text-right">
+                            <span ref="waiver_item_numbers">
+                                {{waiver.items[index-1].order}}
+                            </span>.
+              </td>
+              <td class="col-sm-10 text-left">
+                            <span class="mr-2">
+                                <strong><u>
+                                    <span ref="waiver_item_titles">
+                                        {{waiver.items[index-1].title}}:
+                                    </span>
+                                </u></strong>
+                            </span>
+                <span ref="waiver_item_texts">
+                                {{waiver.items[index-1].text}}
+                            </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <p class="col-md-12 text-left my-3">
+                <span ref="waiver_footer">
+                    {{waiver.footer}}
+                </span>
+          </p>
+          <div class="col-md-12 row my-5">
+            <div class="col-md-8">
+              <label class="col-sm-12" for="inputSignature">Please type your full name*:</label>
+              <u><strong><span ref="waiver_signature">
+                        <input :readonly="disable_edits" type="text" class="form-control text-center" v-model="waiver.signature">
+                    </span></strong></u>
+              <small class="col-sm-12">* If you are under 18, your parent/guardian must sign for you.</small>
+            </div>
+            <div class="col-md-4">
+              <label for="inputDate" class="col-sm-12">Today's Date (mm/dd/yyyy):</label>
+              <u><strong><span ref="waiver_signed_date">
+                        <input :readonly="disable_edits" type="date" class="form-control text-center" v-model="waiver.signed_date">
+                    </span></strong></u>
+            </div>
+          </div>
+          <div ref="waiver_form_submit">
+            <div v-if="errors.length" class="col-md-12 my-4 text-left">
+              <h4 class="font-weight-bold text-danger"><u>Please correct the following error(s) before proceeding:</u></h4>
+              <ul>
+                <li v-for="error in errors" class="font-weight-bold text-dark">{{error}}</li>
+              </ul>
+            </div>
+            <button :class="{ 'hide-me': disable_edits }" type="submit" class="btn btn-primary my-5">Save & Submit</button>
+          </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Save & Submit</button>
-    </div>
     </form>
+
+    {{init_waiver}}
+    {{init_today_date}}
+
   </div>
 </template>
 
@@ -120,16 +166,110 @@
         profileData: {},
         bio: '',
         camps: [],
-        chosencamp: ''
+        chosencamp: '',
+
+        errors: [],
+        disable_edits: false,
+
+        child_name: '',
+
+        waiver: {
+          title: '',
+          header: [],
+          items: [],
+          footer: '',
+
+          initials: [],
+          signature: '',
+          signed_date: '',
+        },
       }
     },
     methods: {
+      lock_waiver_inputs: function() {
+        return new Promise((resolve, reject) => {
+          // locks all inputs in the waiver form -- replaces input fields
+          // with the text of the input values -- removes errors and submit button
+          this.$refs.waiver_title.innerHTML = this.waiver.title;
+          this.$refs.waiver_date_string.innerHTML = this.get_date_as_string;
+          this.$refs.waiver_child_name.innerHTML = this.child_name;
+          this.$refs.waiver_full_name.innerHTML = this.profileData.full_name;
+
+          this.$refs.waiver_header_0.innerHTML = this.waiver.header[0];
+          this.$refs.waiver_header_1.innerHTML = this.waiver.header[1];
+          this.$refs.waiver_header_2.innerHTML = this.waiver.header[2];
+          this.$refs.waiver_header_3.innerHTML = this.waiver.header[3];
+
+          for (let idx=0; idx<this.waiver.items.length; idx++) {
+            this.$refs.waiver_initials[idx].innerHTML = this.waiver.initials[idx];
+            this.$refs.waiver_item_numbers[idx].innerHTML = this.waiver.items[idx].order;
+            this.$refs.waiver_item_titles[idx].innerHTML = this.waiver.items[idx].title;
+            this.$refs.waiver_item_texts[idx].innerHTML = this.waiver.items[idx].text;
+          }
+
+          this.$refs.waiver_footer.innerHTML = this.waiver.footer;
+          this.$refs.waiver_signature.innerHTML = this.waiver.signature;
+          this.$refs.waiver_signed_date.innerHTML = this.waiver.signed_date;
+          this.$refs.waiver_form_submit.innerHTML = "";
+          resolve(true);
+        });
+      },
+
+      confirm_waiver_signed: function() {
+        // validates waiver fields are filled out
+        // appends error messages and returns false if any validations fail
+        // returns true if validation succeeds
+        let no_errors = true;
+        if (this.child_name == '' || this.child_name == null) {
+          this.errors.push("Please add your child's name");
+          no_errors = false;
+        }
+        for (let idx=0; idx<this.waiver.items.length; idx++) {
+          let item_position = idx + 1;
+          if (this.waiver.initials[idx] == '' || this.waiver.initials[idx] == null) {
+            this.errors.push("Please initial your agreement with item #" + item_position);
+            no_errors = false;
+          }
+          else if (this.waiver.initials[idx].length > 3) {
+            this.errors.push("Initials should be no longer than three characters. (Reference Item #" + item_position + ")");
+            no_errors = false;
+          }
+        }
+        if (this.waiver.signature == '' || this.waiver.signature == null) {
+          this.errors.push("Please sign your name to the waiver to indicate your understanding and agreement");
+          no_errors = false;
+        }
+        else if (this.waiver.signature.length > 50) {
+          this.errors.push("Your signature is too long");
+          no_errors = false;
+        }
+        if (this.waiver.signature.length < this.profileData.full_name.length) {
+          this.errors.push("Your signature must include your full name");
+          no_errors = false;
+        }
+        if (this.waiver.signed_date == '' || this.waiver.signed_date == null) {
+          this.errors.push("Please add a date to record the date you signed the waiver");
+          no_errors = false;
+        }
+        return no_errors;
+      },
+
       submit: function(evt){
-            localforage.getItem('X_TOKEN')
-            .then(session => {
-                axios.post('/api/v1/applications', {
-                    headers: { 'x-token': session },
+        this.errors = [];       // clear all previous errors before validating the form again
+
+        // validate the waiver was signed before submitting
+        if (this.confirm_waiver_signed()) {
+          this.disable_edits = true;              // make inputs read-only
+          this.lock_waiver_inputs()               // convert the waiver form to static HTML
+            .then(resolved => {
+              let waiver_form = this.$refs.waiver_el.innerHTML;   // waiver static HTML
+              localforage.getItem('X_TOKEN')
+                .then(session => {
+                  // post the application and waiver; returns the application id string
+                  axios.post('/api/v1/applications/waiver', {
+                    headers: {'x-token': session},
                     params: {
+                      application: {
                         full_name: this.profileData.full_name,
                         email: this.profileData.email,
                         address_line_1: evt.target.address1.value,
@@ -139,23 +279,48 @@
                         zip_code: evt.target.zipCode.value,
                         country: evt.target.country.value,
                         phone_number: evt.target.phoneNumber.value,
-                        childName: evt.target.childName.value,
+                        childName: this.child_name,
                         age: evt.target.age.value,
                         gender: evt.target.gender.value,
                         bio: evt.target.bio.value,
                         camp: this.chosencamp,
-                        date_signed: evt.target.dateSigned.value,
+                        date_signed: this.waiver.signed_date,
                         type: 'camper',
-                        status: 'submitted'
-                        }
+                        status: 'pending'
+                      },
+                      waiver: {
+                        applicant: this.profileData._id.$oid,
+                        waiver_form: waiver_form,
+                        signed_by: this.waiver.signature,
+                        signed_date: this.waiver.signed_date
+                      }
+                    }
+                  })
+                    .then(res => {
+                      // redirect to application submitted page -- API returns application ID
+                      this.$router.push('/applications/' + res.data + '/submitted');
+                    })
+                    .catch(console.error);
                 })
-                .catch(console.error)})
-            .catch(console.error)
-
-        },
-        orderedCamps(list) {
-            return _.orderBy(list, 'created_at', 'desc');
+                .catch(console.error);
+            })
         }
+      },
+      getWaiver: function() {
+        // get waiver text from database storage
+        this.$store.dispatch('getWaiverResources', {
+          resource: "waiver_camper"
+        })
+        .then(data => {
+          this.waiver.title = data['title'];
+          this.waiver.header = data['headers'];
+          this.waiver.items = data['items'];
+          this.waiver.footer = data['footer'];
+        })
+      },
+      orderedCamps(list) {
+          return _.orderBy(list, 'created_at', 'desc');
+      }
     },
     computed: {
         charactersLeft(){
@@ -163,7 +328,36 @@
             let count = words.length
             let cap = 300
             return (cap-count) + ' / ' + cap + ' words remaining'
-        }
+        },
+        init_waiver() {
+          // launches the get waiver function on page load
+          this.getWaiver();
+        },
+        init_today_date() {
+          // initializes today's date for the waiver form
+          let today = new Date();
+          let day = today.getDate();
+          if (day < 10) { day = '0' + day }
+          let month_num = today.getMonth() + 1;
+          if (month_num < 10) { month_num = '0' + month_num }
+          let year = today.getFullYear();
+
+          this.waiver.signed_date = year + '-' + month_num + '-' + day;
+        },
+        get_date_as_string() {
+          // initializes today's date as readable string
+          const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+
+          let dt = new Date(this.waiver.signed_date);
+          let day = dt.getDate() + 1;
+          let month = monthNames[dt.getMonth()];
+          let year = dt.getFullYear();
+
+          return month + ' ' + day + ', ' + year;
+        },
     },
     created() {
       localforage.getItem('X_TOKEN')
@@ -174,7 +368,7 @@
                 .then(response => {
                     this.camps = response.data
                 })
-                .catch(console.log)
+                .catch(console.error)
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
         .then(response => {
           this.profileData = response.data
@@ -187,24 +381,27 @@
 </script>
 
 <style scoped>
-  .container{
-    margin: 30px;
+  table > tbody > tr > td {
+    vertical-align: top !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
   }
-
   .waiver{
-    margin: 25px;
-    padding: 25px;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+    max-width: 950px;
+    padding: 20px;
     border: 2px solid gray;
   }
-
+  .hide-me {
+    display: none;
+  }
   input {
     text-align: center;
   }
-
   textarea {
     text-align: center;
   }
-
   select {
     width:50%;
     margin-left: 25%;

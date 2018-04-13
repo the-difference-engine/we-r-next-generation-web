@@ -26,15 +26,23 @@
           <th class="col-header">Gender</th>
           <th class="col-header">Type</th>
           <th class="col-header">Date Signed</th>
+          <th class="col-header">Waiver</th>
           <th class="col-header">Change Status</th>
         </tr>
         <tr class="application" v-for="(application, app_id) in appByStatus.apps" :key="app_id">
           <td>{{application.full_name}}</td>
-          <td v-if="applicationType === 'camper'">{{application.camper_name}}</td>
+          <td v-if="applicationType === 'camper'">{{application.childName}}</td>
           <td>{{application.age}}</td>
           <td>{{application.gender}}</td>
           <td>{{application.type}}</td>
           <td>{{application.date_signed}}</td>
+          <td>
+            <div class="list-icon-sm">
+              <router-link :to="{ name: 'AdminUserWaiverSingle', params: { id: application._id.$oid } }">
+                <i class="fa fa-file-text"></i>
+              </router-link>
+            </div>
+          </td>
           <td>
             <button name="moveBack" v-if="appByStatus.prev"
               v-on:click.prevent="updateStatus(application, appByStatus.prev)"
@@ -104,6 +112,11 @@ export default {
     font-size: 32px;
     width: 75px;
     float: left;
+  }
+  .list-icon-sm {
+    font-size: 28px;
+    width: 50px;
+    text-align: center;
   }
   .all-apps {
     width: 100% !important;
