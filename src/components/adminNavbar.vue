@@ -18,6 +18,15 @@
         <router-link to="/admin/applications">Applications</router-link>
         <router-link to="/admin/users">Members</router-link>
         <router-link to="/admin/camp/create">New CampEx</router-link>
+        <button @click="toggleEdit" class="edit-button">Edit
+          <ul v-if="show" class="edit-list">
+            <li class="edit-options"><router-link to="/home">Home</router-link></li>
+            <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
+            <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
+            <li class="edit-options"><router-link to="/home">Camper Waiver</router-link></li>
+            <li class="edit-options"><router-link to="/home">Volunteer Waiver</router-link></li>
+          </ul>
+        </button>
         <button id="logout-button"
           class="btn btn-primary"
           v-on:click.prevent="submitLogout"
@@ -31,66 +40,85 @@
 <script>
 export default {
   name: 'adminNavbar',
-  data () {
+  data() {
     return {
-      menuClicked: false
-    }
-  },
-  methods :{
-    submitLogout: function (evt) {
-      this.$store.dispatch('logout', {router: this.$router})
-    },
-    toggleMenu: function(){
-        this.menuClicked = !this.menuClicked
+      menuClicked: false,
+      show: false,
+      edits: {
+        home: 'Home',
+        faqs: 'FAQs',
+        sucessStories: 'Success Stories',
+        waiver: 'Waiver'
       }
+    };
+  },
+  methods: {
+    submitLogout: function(evt) {
+      this.$store.dispatch('logout', { router: this.$router });
+    },
+    toggleMenu: function() {
+      this.menuClicked = !this.menuClicked;
+    },
+    toggleEdit: function() {
+      this.show = !this.show;
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-  #navbar-container {
-    width: 100%;
-    height: 100px;
-    border-bottom: 1px solid black;
-  }
-  #admin-header {
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+#navbar-container {
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid black;
+}
+#admin-header {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.menu-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s linear;
+}
+#menu-button {
+  display: none;
+}
+.edit-button {
+  border-radius: 4px;
+}
+.edit-list {
+  padding-left: 0px;
+}
+.edit-options {
+  list-style-type: none;
+}
+@media (max-width: 700px) {
   .menu-items {
+    visibility: hidden;
+    height: 1px;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all .3s linear;
   }
   #menu-button {
-    display: none;
+    display: inline-block;
+    width: 30%;
   }
-  @media (max-width: 700px) {
-    .menu-items {
-      visibility: hidden;
-      height:1px;
-      width:100%;
-      display: flex;
-    }
-    #menu-button {
-      display: inline-block;
-      width: 30%;
-    }
-    #header-left {
-      width: 60%
-    }
-    .showMenu {
+  #header-left {
+    width: 60%;
+  }
+  .showMenu {
     width: 100%;
     visibility: visible;
     height: 50px;
-    }
   }
-  @media (min-width: 875px) {
-    .menu-items {
-      padding-right: 5%;
-    }
+}
+@media (min-width: 875px) {
+  .menu-items {
+    padding-right: 5%;
   }
+}
 </style>
