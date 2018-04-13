@@ -1,10 +1,9 @@
-<!--An empty component to replace the header and/or footer on pages where it is not required-->
 <template>
 <div class="container-fluid">
   <h1>Volunteer Application</h1>
   <hr>
   <form v-on:submit.prevent="submit">
-    <div>
+    <div class="row">
       <div class="form-group col-sm-6">
         <label for="inputFullName">Full Name</label>
         {{profileData.full_name}}
@@ -14,47 +13,51 @@
         {{profileData.email}}
       </div>
     </div>
-    <div class="form-group col-sm-12">
+    <div class="form-group">
       <label for="inputAddress1">Address Line 1</label>
       <input name="address1" type="text" class="form-control" id="inputAddress1" placeholder="1234 Main St">
     </div>
-    <div class="form-group col-sm-6">
-      <label for="inputAddress2">Address Line 2</label>
-      <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="inputAddress2">Address Line 2</label>
+        <input name="address2" type="text" class="form-control" id="inputAddress1" placeholder="Address Line 2 as needed">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="city">City</label>
+        <input name="city" type="text" class="form-control" id="city" placeholder="City">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="city">City</label>
-      <input name="city" type="text" class="form-control" id="city" placeholder="City">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="stateProvince">State/Province</label>
+        <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="zipCode">Zip Code</label>
+        <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="stateProvince">State/Province</label>
-      <input name="stateProvince" type="text" class="form-control" id="stateProvince" placeholder="State/Province">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="country">Country</label>
+        <input name="country" type="text" class="form-control" id="country" placeholder="Country">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="inputPhone">Phone Number</label>
+        <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
+      </div>
     </div>
-    <div class="form-group col-sm-6">
-      <label for="zipCode">Zip Code</label>
-      <input name="zipCode" type="text" class="form-control" id="zipCode" placeholder="Zip Code">
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="country">Country</label>
-      <input name="country" type="text" class="form-control" id="country" placeholder="Country">
-    </div>
-    <div class="form-group col-sm-6">
-      <label for="inputPhone">Phone Number</label>
-      <input name="phoneNumber" type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
-    </div>
-    <div class="form-group col-sm-12">
+    <div class="form-group">
       <label for="inputBio">Please tell us a little bit about yourself:</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="Bio" name="bio"></textarea>
       {{charactersLeft}}
     </div>
-    <div>
-        <div class="form-group">
-            <label for="selector">Which camp would you like to teach at (Select one):</label>
-            <select v-model="chosencamp" class="form-control" id="selector">
-                <option value="" disabled hidden>Select Camp</option>
-                <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
-            </select>
-        </div>
+    <div class="form-group">
+      <label for="selector">Which camp would you like to teach at (Select one):</label>
+      <select v-model="chosencamp" class="form-control">
+        <option value="" disabled hidden>Select Camp</option>
+        <option v-for="(camp, index) in orderedCamps(camps)" v-bind:key="index" name="camp" :value="camp._id.$oid">{{ camp.name }}</option>
+      </select>
     </div>
     <div ref="waiver_el" class="waiver mx-auto">
         <div class="mx-auto">
@@ -68,7 +71,7 @@
             </p>
             <table class="col-md-12 text-left my-3">
                 <tbody>
-                    <tr v-for='index in waiver.items.length'>
+                    <tr v-for='index in waiver.items.length' :key="index">
                         <td class="col-sm-1 pr-0 text-center">
                             <span ref="waiver_initials">
                                 <input :readonly="disable_edits" type="text" class="col-sm-12 form-control text-center" v-model="waiver.initials[index-1]">
@@ -119,7 +122,7 @@
                 <div v-if="errors.length" class="col-md-12 my-4 text-left">
                     <h4 class="font-weight-bold text-danger"><u>Please correct the following error(s) before proceeding:</u></h4>
                     <ul>
-                        <li v-for="error in errors" class="font-weight-bold text-dark">{{error}}</li>
+                        <li v-for="(error, index) in errors" v-bind:key="index" class="font-weight-bold text-dark">{{error}}</li>
                     </ul>
                 </div>
                 <button :class="{ 'hide-me': disable_edits }" type="submit" class="btn btn-primary my-5">Save & Submit</button>
@@ -189,11 +192,39 @@ export default {
             resolve(true);
           });
         },
-        confirm_waiver_signed: function() {
+        confirm_waiver_signed: function(event) {
             // validates waiver fields are filled out
             // appends error messages and returns false if any validations fail
             // returns true if validation succeeds
             let no_errors = true;
+            if (event.target.address1.value == '') {
+                this.errors.push("Address line 1 is required")
+                no_errors = false;
+            }
+            if (event.target.city.value == '') {
+                this.errors.push("City is required")
+                no_errors = false;
+            }
+            if (event.target.stateProvince.value == '') {
+                this.errors.push("State/Province is required")
+                no_errors = false;
+            }
+            if (event.target.zipCode.value == '') {
+                this.errors.push("Zip Code is required")
+                no_errors = false;
+            }
+            if (event.target.country.value == '') {
+                this.errors.push("Country is required")
+                no_errors = false;
+            }
+            if (event.target.phoneNumber.value == '') {
+                this.errors.push("Phone Number is required")
+                no_errors = false;
+            }
+            if (event.target.address1.value == '') {
+                this.errors.push("Camp is required")
+                no_errors = false;
+            }
             for (let idx=0; idx<this.waiver.items.length; idx++) {
                 let item_position = idx + 1;
                 if (this.waiver.initials[idx] == '' || this.waiver.initials[idx] == null) {
@@ -228,7 +259,7 @@ export default {
             this.errors = [];       // clear all previous errors before validating the form again
 
             // validate the waiver was signed before submitting
-            if (this.confirm_waiver_signed()) {
+            if (this.confirm_waiver_signed(evt)) {
               this.disable_edits = true;              // make inputs read-only
               this.lock_waiver_inputs()               // convert the waiver form to static HTML
                 .then(resolved => {
@@ -253,7 +284,7 @@ export default {
                               camp: this.chosencamp,
                               date_signed: this.waiver.signed_date,
                               type: 'volunteer',
-                              status: 'submitted'
+                              status: 'pending'
                             },
                             waiver: {
                               applicant: this.profileData._id.$oid,
@@ -351,10 +382,10 @@ export default {
 </script>
 
 <style scoped>
-    table > tbody > tr > td {
-        vertical-align: top !important;
-        padding-top: 1em !important;
-        padding-bottom: 1em !important;
+  table > tbody > tr > td {
+    vertical-align: top !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
     }
   .waiver {
     margin-top: 30px !important;
@@ -367,9 +398,15 @@ export default {
     display: none;
   }
   input {
-      text-align: center;
+    text-align: center;
   }
   textarea {
-      text-align: center;
+    text-align: center;
+  }
+  select {
+    width:50%;
+    margin-left: 25%;
+    text-align: center;
+    text-align-last: center;
   }
 </style>

@@ -14,27 +14,8 @@
     <!-- Submit button to retrieve applications of different types -->
     <input class="btn btn-primary" type="button" value="Get Applications" :disabled="!canGetApps" v-on:click.prevent="getApplications"/>
     <br><br>
-    <!-- Renders in the case of all applications -->
-    <div id="all-applications" v-if="applicationType === 'all'">
-      <table class="apps-by-status all-apps">
-        <tr>
-          <th class="col-header">Name</th>
-          <th class="col-header">Age</th>
-          <th class="col-header">Gender</th>
-          <th class="col-header">Type</th>
-          <th class="col-header">Date Signed</th>
-        </tr>
-        <tr class="application" v-for="application in applications" :key="application._id.$oid">
-          <td>{{application.full_name}}</td>
-          <td>{{application.age}}</td>
-          <td>{{application.gender}}</td>
-          <td>{{application.type}}</td>
-          <td>{{application.date_signed}}</td>
-        </tr>
-      </table>
-    </div>
-    <!-- Renders in the case of camper, volunteer and partner apps -->
-    <div v-if="applicationType !== 'all' && Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="status" class="app-list">
+    <!-- Renders all and specific types of applications sorted by status -->
+    <div v-if="Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="status" class="app-list">
       <div class="list-icon"><i :class="appByStatus.icon"></i></div>
       <table class="apps-by-status">
         <tr class="status"><th>{{status}}</th></tr>

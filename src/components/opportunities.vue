@@ -1,7 +1,7 @@
 <template>
   <div class="opportunities">
     <h1>Opportunities</h1>
-    <h3>...to foster creativity in our kids</h3>
+    <h3 id="subtitle">...to foster creativity in our kids</h3>
     <div class="opportunity">
       <div class="row">
         <div class="col-sm-5 col-xs-offset-1 col-xs-10"><img :src="pageContent.camper.imgSrc" :alt="pageContent.camper.imgAlt" class="img-responsive"></div>
@@ -10,7 +10,7 @@
           <p>{{ pageContent.camper.caption }}</p>
           <p>{{ pageContent.camper.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="/signup">Sign up a Camper</router-link>
+            <router-link class="btn btn-primary appButtons" to="/camper">Sign up a Camper</router-link>
           </div>
         </div>
       </div>
@@ -41,14 +41,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-        <h3>If you are interested in helping children embrace their creative side, sign up and submit an application</h3>
-        <router-link to="/signup">
-          <button id="getInvolved" type="button" class="btn btn-primary btn-lg">Sign Up</button>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -80,8 +72,12 @@
     font-size: larger
   }
 
-  h2{
-    font-weight: bolder
+  h3{
+    margin-top: 0;
+    font-weight: bolder;
+  }
+  #subtitle {
+    margin-top: 10px;
   }
 
   .opportunity{

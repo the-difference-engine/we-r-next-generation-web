@@ -8,14 +8,13 @@ import admin_waiver_view from '@/components/admin_waiver_view'
 import admin_waiver_all_applicant from '@/components/admin_waiver_all_applicant'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
-import applications from '@/components/applications'
 import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
-import newLogin from '@/components/newLogin'
+import signup from '@/components/signup'
 import forgotPassword from '@/components/forgotPassword'
 import campex_create from '@/components/campex_create'
 import campex_single from '@/components/campex_single'
@@ -62,16 +61,16 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/newlogin',
-      name: 'newLogin',
+      path: '/signup',
+      name: 'signup',
       components: {
-        default: newLogin,
+        default: signup,
         header: wernxgHeader,
         footer: nullComp
       },
     },
     {
-      path: '/signup',
+      path: '/camper',
       name: 'camper',
       components: {
         default: camper,
@@ -139,13 +138,12 @@ export default new Router({
     },
     {
       path: '/applications',
-      name: 'applications',
+      name: 'opportunities',
       components: {
-        default: applications,
+        default: opportunities,
         header: wernxgHeader,
         footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
+      }
     },
     {
       path: '/applications/:id/submitted',
@@ -211,15 +209,6 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
-    },
-    {
-      path: '/opportunities',
-      name: 'Opportunities',
-      components: {
-        default: opportunities,
-        header: wernxgHeader,
-        footer: wernxgFooter
-      }
     },
     {
       path: '/admin/applications',
