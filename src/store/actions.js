@@ -9,7 +9,6 @@ export const login = ({commit}, {email, password, router, that}) =>
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => {
-      axios.defaults.headers.common['x-token'] = res.data.X_TOKEN
       if (res.data.profileData.role === 'admin') {
         router.push('/admin/applications')
         commit(types.ISADMIN, true)
@@ -32,7 +31,6 @@ export const logout = ({commit}, {router}) =>
       .then(() => {
         localforage.removeItem('X_TOKEN')
         .then(() => {
-          axios.defaults.headers.common['x-token'] = null
           commit(types.LOGOUT)
           commit(types.LOGSTATUS, false)
           commit(types.ISADMIN, false)

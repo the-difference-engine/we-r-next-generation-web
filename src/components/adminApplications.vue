@@ -20,12 +20,14 @@
       <table class="apps-by-status">
         <tr class="status"><th>{{status}}</th></tr>
         <tr>
-          <th class="col-header">Name</th>
+          <th v-if="applicationType === 'camper'" class="col-header">Parent Name</th>
+          <th v-else class="col-header">Name</th>
           <th class="col-header" v-if="applicationType === 'camper'">Camper Name</th>
           <th class="col-header">Age</th>
           <th class="col-header">Gender</th>
           <th class="col-header">Type</th>
           <th class="col-header">Date Signed</th>
+          <th v-if="applicationType === 'camper'" class="col-header">Camp</th>
           <th class="col-header">Change Status</th>
         </tr>
         <tr class="application" v-for="(application, app_id) in appByStatus.apps" :key="app_id">
@@ -35,6 +37,7 @@
           <td>{{application.gender}}</td>
           <td>{{application.type}}</td>
           <td>{{application.date_signed}}</td>
+          <td v-if="applicationType === 'camper'">{{application.camp}}</td>
           <td>
             <button name="moveBack" v-if="appByStatus.prev"
               v-on:click.prevent="updateStatus(application, appByStatus.prev)"
