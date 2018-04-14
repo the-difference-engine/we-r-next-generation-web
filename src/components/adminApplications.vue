@@ -27,7 +27,7 @@
           <th class="col-header">Gender</th>
           <th class="col-header">Type</th>
           <th class="col-header">Date Signed</th>
-          <th v-if="applicationType === 'camper'" class="col-header">Camp</th>
+          <th v-if="applicationType === 'camper'" class="col-header">Camp Start</th>
           <th class="col-header">Waiver</th>
           <th class="col-header">Change Status</th>
         </tr>
@@ -38,7 +38,7 @@
           <td>{{application.gender}}</td>
           <td>{{application.type}}</td>
           <td>{{application.date_signed}}</td>
-          <td v-if="applicationType === 'camper'">{{application.camp}}</td>
+          <td v-if="applicationType === 'camper'">{{application.camp_data.date_start}}</td>
           <td>
             <div class="list-icon-sm">
               <router-link :to="{ name: 'AdminUserWaiverSingle', params: { id: application._id.$oid } }">
