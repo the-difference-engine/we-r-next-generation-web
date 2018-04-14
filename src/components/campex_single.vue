@@ -167,8 +167,6 @@
                 }
             },
             downloadCSV: function() {
-                console.log("DOWNLOAD Method");
-
                 var data, filename, link;
                 var csv = this.csv_delimited_applicants;
                 if (csv == null) return;
@@ -241,10 +239,10 @@
 
                 columnDelimiter = ',';
                 lineDelimiter = '\n';
-                
+
                 // use this line for all keys in object
                 // keys = Object.keys(data[0]);
-                
+
                 // defined set of keys
                 keys = [
                     'full_name',

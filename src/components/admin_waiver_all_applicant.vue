@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto my-4">
     <div class="row col-sm-12">
-      <h1>All Waivers</h1>
+      <h1>All Waivers --- NOT USED YET (AS OF APRIL 12, 2018)</h1>
     </div>
   </div>
 </template>
