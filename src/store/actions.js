@@ -9,7 +9,11 @@ export const login = ({commit}, {user_name, password, router, that}) =>
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => {
-      if (res.data.profileData.role === 'admin') router.push('/adminApplications')
+      axios.defaults.headers.common['x-token'] = res.data.X_TOKEN
+      if (res.data.profileData.role === 'admin') {
+        router.push('/admin/applications')
+        commit(types.ISADMIN, true)
+      }
       else router.push('/')
     })
   })
@@ -31,6 +35,7 @@ export const logout = ({commit}, {router}) =>
           axios.defaults.headers.common['x-token'] = null
           commit(types.LOGOUT)
           commit(types.LOGSTATUS, false)
+          commit(types.ISADMIN, false)
           router.push('/login')
         }).catch(err => console.error(err))
       }).catch(err => console.error(err))
@@ -40,7 +45,6 @@ export const logout = ({commit}, {router}) =>
 export const signup = ({commit}, {name, email, password, that}) =>
   axios.post(`/api/v1/profiles`, {params: {name, email, password}})
   .then(res => {
-    console.log('res is: ', res.data)
     that.signedUp = true
   })
   .catch(err => {
@@ -73,26 +77,67 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     console.error(err)
   })
 
-export const getVolunteerApps = ({ commit }, { that }) =>
+export const getApplications = ({commit}, {that, type}) =>
   localforage.getItem('X_TOKEN')
+  .then(session => {
+    if (session) {
+      const config = {headers: {'x-token': session}}
+      axios.get(`/api/v1/applications/${type}`, config)
+      .then(res => {
+        that.applications = res.data.applications
+        that.applicationType = res.data.type
+        console.log(res.data);
+      })
+      .catch(err => console.error(err))
+    }
+  })
+
+  export const updateApplication = ({commit}, {that, type, app, statusChange}) =>
+    localforage.getItem('X_TOKEN')
     .then(session => {
       if (session) {
-        const config = { headers: { 'x-token': session } }
-        axios.get('/api/v1/applications/volunteers', config)
-          .then(res => { that.applications = res.data })
-          .catch(err => console.error(err))
+        const config = {
+          headers: {'x-token': session},
+          params: {app, type, statusChange}}
+        axios.put(`/api/v1/applications/status/${app._id.$oid}`, config)
+        .then(res => {
+          const updatedApp = res.data
+          that.applications[statusChange].apps[updatedApp._id.$oid] = res.data
+          delete that.applications[app.status].apps[updatedApp._id.$oid]
+          that.canGetApps = true
+        })
+        .catch(err => {
+          that.canGetApps = true
+          console.error(err)
+        })
+      }
+    })
+
+  export const deleteApplication = ({commit}, {that, app}) =>
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = {headers: {'x-token': session}}
+        axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
+        .then(() => {
+          delete that.applications[app.status].apps[app._id.$oid]
+          that.canGetApps = true
+        })
+        .catch(err => {
+          that.canGetApps = true
+          console.error(err)
+        })
       }
     })
 
 export const campSessionCreate = ({ commit }, { new_camp, router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.post(`/api/v1/camp/session/create`, { 
+    axios.post(`/api/v1/camp/session/create`, {
       headers: { 'x-token': session },
-      params: new_camp 
+      params: new_camp
     })
       .then(res => {
-        console.log('res is: ', res);
         router.push('/camp/' + res.data.$oid)
       })
       .catch(err => {
@@ -125,7 +170,7 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
-    axios.get(`/api/v1/camp/session/get`, { 
+    axios.get(`/api/v1/camp/session/get`, {
       headers: { 'x-token': session }
     })
       .then(res => {
@@ -157,6 +202,26 @@ export const campSessionGet = ({ commit }, { camp_id }) => {
   })
 }
 
+// Get all applicants related to a Camp Session by ID Number
+export const campSessionGetApplicants = ({ commit }, { camp_id }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
+        axios.get('/api/v1/camp/session/' + camp_id + '/applicants')
+          .then(response => {
+            console.log("Response Received from campSessionGetApplicants", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from campSessionGetApplicants");
+            reject(e)
+          })
+      })
+  })
+}
+
 // Get all Camp Experience Sessions, sorted by field
 //  Default field = Start Date (descending)
 export const campSessionsGetAll = ({commit}, {field_name, order}) => {
@@ -176,6 +241,6 @@ export const campSessionsGetAll = ({commit}, {field_name, order}) => {
             reject(e)
           })
       })
-  })  
+  })
 }
 

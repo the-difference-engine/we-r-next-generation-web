@@ -183,7 +183,6 @@
       .then(session => {
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
         .then(response => {
-            // console.log(response.data)
           this.profileData = response.data
         })
         .catch(console.error)
