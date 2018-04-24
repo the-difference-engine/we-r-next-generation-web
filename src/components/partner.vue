@@ -23,6 +23,9 @@
       <label for="inputBio">Optional Note</label>
       <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
     </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
   <!-- <div class="waiver">
       <h3>Volunteer Release and Waiver of Liability Form</h3>
       <br>
@@ -112,9 +115,9 @@
           profileData: {},
           bio: '',
           cloudinary: {
-              uploadPreset: 'tpg3m6fv',
-              cloudName: 'wernextgeneration',
-              apiKey: '234871425639756'
+              uploadPreset: 'loazbic8',
+              apiKey: '234871425639756',
+              cloudName: 'wernextgeneration'
           },
           thumbs: []
       }
@@ -123,6 +126,8 @@
         upload: function(file) {
             console.log('ATTEMPTING UPLOAD METHOD');
             console.log('FILE', file);
+            const urlTest = `https://api.cloudinary.com/v1_1/${this.cloudinary.cloudName}/upload`;
+            console.log('URL TEST', urlTest);
             const formData = new FormData()
             formData.append('file', file[0]);
             formData.append('upload_preset', this.cloudinary.uploadPreset);
@@ -133,30 +138,33 @@
             for(var pair of formData.entries()) {
                 console.log(pair[0]+', '+pair[1]);
             }
+            delete axios.defaults.headers.common['x-token']
             axios.post(this.clUrl, formData).then(res => {
                 console.log('URL SENT BACK', res.data.secure_url);
                 this.thumbs.unshift({
                 url: res.data.secure_url
                 })
             })
+
+
         },
         submit: function(evt){
-
+            console.log('SUBMITTING')
             localforage.getItem('X_TOKEN')
             .then(session => {
-                console.log('submit session: ', {headers: { 'x-token': session }})
-                axios.post('/api/v1/partner/apply', {
+                axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
                         companyName: evt.target.companyName.value,
-                        companyLogo: evt.target.companyLogo.value,
+                        companyLogo: this.thumbs[0]['url'],
                         companyUrl: evt.target.companyUrl.value,
-                        bio: evt.target.bio.value,
+                        type: 'partner',
+                        status: 'submitted',
+                        bio: evt.target.bio.value
                         }
                 })
                 .catch(console.error)})
             .catch(console.error)
-
         }
     },
     computed: {
