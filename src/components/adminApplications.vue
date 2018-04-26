@@ -30,6 +30,7 @@
           <th v-if="applicationType === 'camper'" class="col-header">Camp Start</th>
           <th class="col-header">Waiver</th>
           <th class="col-header">Change Status</th>
+          <th class="col-header">Details</th>
         </tr>
         <tr class="application" v-for="(application, app_id) in appByStatus.apps" :key="app_id">
           <td>{{application.full_name}}</td>
@@ -64,11 +65,18 @@
               class="btn btn-sm btn-success">approve
             </button>
           </td>
+          <td>
+            <div class="list-icon-sm">
+              <router-link :to="{ name: 'adminApp', params: { id: application._id.$oid } }">
+                <i class="fa fa-eye"></i>
+              </router-link>
+            </div>
+          </td>
         </tr>
       </table>
     </div>
     <!-- Renders in case there are no apps of a certain status -->
-    <div v-if="applicationType !== 'all' && !Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="`${status}-empty`" class="app-list-empty">
+    <div v-if="!Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="`${status}-empty`" class="app-list-empty">
       <p>There are no <strong>{{applicationType}}</strong> applications with a status of: <em>{{status}}</em></p>
     </div>
   </div>
@@ -107,6 +115,7 @@ export default {
   }
   .app-list {
     padding-bottom: 50px;
+    margin-right: 20px;
   }
   .app-list-empty{
     padding-bottom: 50px;
