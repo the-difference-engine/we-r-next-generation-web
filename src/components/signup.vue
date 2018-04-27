@@ -8,7 +8,7 @@
       </div>
       <h1 id="signup-header">Sign Up</h1>
       <div class="row narrow-spacing">
-        <div class="account col-xs-12 col-sm-6"><span>Already have an account?</span></div>
+        <div class="account col-xs-12 col-sm-6"><span><i>Already have an account?</i></span></div>
         <div class="col-xs-12 col-sm-6">
           <router-link to="/login"><button id="login" class="green-btn btn btn-primary">Login</button></router-link>
         </div>
@@ -31,7 +31,7 @@
 
 <script>
   export default {
-    name: 'newLogin',
+    name: 'signup',
     methods: {
       signup: function(evt) {
         this.$store.dispatch('signup', {
@@ -108,6 +108,7 @@
   #signup-header {
     font-weight: bold;
     font-size: 28px;
+    margin-bottom: 20px;
   }
   .green-btn {
     background-color: #7ddbd4;
@@ -134,12 +135,14 @@
   }
   #form-row > span{
     float: left;
-    margin-top: 20px;
     margin-bottom: 5px;
   }
+  #form-row > input{
+    margin-bottom: 20px;
+  }
   #background-img {
-    background: white url("http://www.jsums.edu/education/files/2012/12/bigstock-Four-Children-At-Computer-Term-3917429.jpg?x56568") no-repeat fixed center;
-    opacity: 0.7;
+    background: white url("http://res.cloudinary.com/wernextgeneration/image/upload/v1522972807/wernextgen-login.jpg") no-repeat fixed center;
+    opacity: 0.8;
     width: 100%;
     height: 100vh;
     min-width: 180px;
@@ -147,7 +150,7 @@
   #signup-container {
     /* desktop */
     width: 37%;
-    padding: 10px 70px;
+    padding: 20px 70px;
     /* all sizes */
     height: auto;
     opacity: 1 !important;

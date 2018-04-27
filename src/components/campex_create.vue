@@ -97,22 +97,18 @@
         name: 'campex_create',
         methods: {
             campCreate: function(evt) {
-                console.log("Camp Create Method");
                 this.$store.dispatch('campSessionCreate', {
                 new_camp: this.new_camp,
                 router: this.$router,
                 })
             },
             campsGetAll: function() {
-                console.log("Get Camp Method");
                 this.$store.dispatch('campSessionsGetAll', {
                 field_name: "date_start",
                 order: "DESC"
                 })
                 .then(data => {
-                    console.log("Received data", data)
                     this.all_camps = data;
-                    console.log("Camps Now:", this.all_camps);
                 })
             }
         },

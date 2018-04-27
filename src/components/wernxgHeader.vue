@@ -17,14 +17,14 @@
             <router-link v-if="isAdmin" to="/admin/applications"><button class="btn btn-warning">Admin Site</button></router-link>
             <router-link to="/campInfo">The Camp</router-link>
             <router-link to="/successStories">Success Stories</router-link>
-            <router-link to="/opportunities">Applications</router-link>
+            <router-link to="/applications">Applications</router-link>
             <router-link to="/login" v-if="(!this.loggedIn && !loginStatus)">Log In</router-link>
             <button id="logout-button"
               class="btn btn-primary"
               v-on:click.prevent="submitLogout" v-if="(this.loggedIn || loginStatus)">Logout
             </button>
             <router-link to="/signup" v-if="(!this.loggedIn && !loginStatus)">Sign Up</router-link>
-            <a href="https://www.paypal.com/donate/?token=ufL1ssPQsJFFnR3pkIe5KWP31pQIN60cJGTqvFlU4dW_KkXvZhJeat2x111V_waHb3E0s0&country.x=US&locale.x=US"> <button id="donate" class="btn btn-primary btn-md">Donate</button></a>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y2Q2Y3R7WK46C"> <button id="donate" class="btn btn-primary btn-md">Donate</button></a>
             <router-link to="/profile" v-html="profileImage"></router-link>
           </div>
     </div>
@@ -56,7 +56,7 @@
       localforage.getItem('X_TOKEN')
       .then(session => {
         if (session == null) {
-        console.log('user not logged in')}
+        }
         else {
           axios.get('/api/v1/sessions/' + session, { 'headers': { 'x-token': session } })
           .then((response, err) => {

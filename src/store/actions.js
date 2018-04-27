@@ -2,14 +2,13 @@ import * as types from './types'
 import axios from 'axios'
 import localforage from '../sessionUtils'
 
-export const login = ({commit}, {user_name, password, router, that}) =>
-  axios.post(`/api/v1/sessions/${user_name}/${password}`)
+export const login = ({commit}, {email, password, router, that}) =>
+  axios.post(`/api/v1/sessions`, {email, password})
   .then(res => {
     commit(types.LOGIN, res.data.profileData)
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => {
-      axios.defaults.headers.common['x-token'] = res.data.X_TOKEN
       if (res.data.profileData.role === 'admin') {
         router.push('/admin/applications')
         commit(types.ISADMIN, true)
@@ -32,7 +31,6 @@ export const logout = ({commit}, {router}) =>
       .then(() => {
         localforage.removeItem('X_TOKEN')
         .then(() => {
-          axios.defaults.headers.common['x-token'] = null
           commit(types.LOGOUT)
           commit(types.LOGSTATUS, false)
           commit(types.ISADMIN, false)
@@ -43,8 +41,8 @@ export const logout = ({commit}, {router}) =>
   })
 
 export const signup = ({commit}, {name, email, password, that}) =>
-  axios.post(`/api/v1/profiles`, {params: {name, email, password}})
-  .then(res => {
+  axios.post(`/api/v1/profiles`, {name, email, password})
+  .then(() => {
     that.signedUp = true
   })
   .catch(err => {
@@ -54,7 +52,7 @@ export const signup = ({commit}, {name, email, password, that}) =>
   })
 
 export const resetPassword = ({commit}, {email, that}) =>
-  axios.put(`/api/v1/profiles/resetPassword/${email}`)
+  axios.put(`/api/v1/profiles/resetPassword`, {email})
   .then(res => {
     console.log('password reset res data: ', res.data)
     that.requestMade = true
@@ -66,7 +64,7 @@ export const resetPassword = ({commit}, {email, that}) =>
   })
 
 export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
-  axios.put(`/api/v1/profiles/newPassword/${resetToken}/${password}`)
+  axios.put(`/api/v1/profiles/newPassword`, {resetToken, password})
   .then(res => {
     that.passwordSuccess = true
     console.log('new pswd submission res data:', res.data)
@@ -75,6 +73,38 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
     that.passwordFail = true
     setTimeout(() => {that.passwordFail = false}, 3000)
     console.error(err)
+  })
+
+// Get Waiver Page Resources
+export const getWaiverResources = ({ commit }, { resource }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+      .then(session => {
+        axios.get('/api/v1/resources/' + resource)
+          .then(response => {
+            console.log("Response Received from getWaiverResources", response.data);
+            resolve(response.data);
+          })
+          .catch(e => {
+            setTimeout(() => { }, 3000);
+            console.log("Error Received from getWaiverResources");
+            reject(e)
+          })
+      })
+  })
+}
+
+export const getApplication = ({commit}, {that, id}) =>
+  localforage.getItem('X_TOKEN')
+  .then(session => {
+    if (session) {
+      const config = {headers: {'x-token': session}}
+      axios.get(`/api/v1/applications/app/${id}`, config)
+      .then(res => {
+        that.application = res.data
+      })
+      .catch(err => console.error(err))
+    }
   })
 
 export const getApplications = ({commit}, {that, type}) =>
@@ -102,12 +132,17 @@ export const getApplications = ({commit}, {that, type}) =>
         axios.put(`/api/v1/applications/status/${app._id.$oid}`, config)
         .then(res => {
           const updatedApp = res.data
-          that.applications[statusChange].apps[updatedApp._id.$oid] = res.data
-          delete that.applications[app.status].apps[updatedApp._id.$oid]
-          that.canGetApps = true
+          if (that.applications) {
+            that.applications[statusChange].apps[updatedApp._id.$oid] = res.data
+            delete that.applications[app.status].apps[updatedApp._id.$oid]
+            that.canGetApps = true
+          }
+          else {
+            that.application = updatedApp
+          }
         })
         .catch(err => {
-          that.canGetApps = true
+          if (that.applications) that.canGetApps = true
           console.error(err)
         })
       }
@@ -120,11 +155,16 @@ export const getApplications = ({commit}, {that, type}) =>
         const config = {headers: {'x-token': session}}
         axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
         .then(() => {
-          delete that.applications[app.status].apps[app._id.$oid]
-          that.canGetApps = true
+          if (that.applications) {
+            delete that.applications[app.status].apps[app._id.$oid]
+            that.canGetApps = true
+          }
+          else {
+            that.$router.push('/admin/applications')
+          }
         })
         .catch(err => {
-          that.canGetApps = true
+          if (that.applications) that.canGetApps = true
           console.error(err)
         })
       }
@@ -140,9 +180,8 @@ export const campSessionCreate = ({ commit }, { new_camp, router }) =>
       .then(res => {
         router.push('/camp/' + res.data.$oid)
       })
-      .catch(err => {
+      .catch(() => {
         setTimeout(() => {  }, 3000);
-        console.error(err);
       })
   });
 
@@ -166,7 +205,6 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
 
 
 // Get one Camp Experience Session by ID Number
-
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
