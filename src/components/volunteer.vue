@@ -61,12 +61,13 @@
     </div>
     <div ref="waiver_el" class="waiver mx-auto">
         <div class="mx-auto">
-            <h3>Volunteer Release and Waiver of Liability Form</h3>
-            <p class="col-md-12 text-left my-3">This Release and Waiver of Liability (the “release”) executed on
-                <span class="mx-2 font-size-2"><u ref="waiver_date_string">{{get_date_as_string}}</u></span>
-                (date) by
-                <span class="mx-2 font-size-2"><u ref="waiver_full_name">{{profileData.full_name}}</u></span>
-                (“Volunteer”) releases <span ref="waiver_header">{{waiver.header}}</span>
+            <h3 ref="waiver_title">{{waiver.title}}</h3>
+            <p class="col-md-12 text-left my-3">
+              <span ref="waiver_header_0">{{waiver.header[0]}}</span>
+              <span class="mx-2 font-size-2"><u ref="waiver_date_string">{{get_date_as_string}}</u></span>
+              (date) by
+              <span class="mx-2 font-size-2"><u ref="waiver_full_name">{{profileData.full_name}}</u></span>
+              (“Volunteer”), releases <span ref="waiver_header_1">{{waiver.header[1]}}</span>
             </p>
             <table class="col-md-12 text-left my-3">
                 <tbody>
@@ -154,7 +155,8 @@ export default {
             disable_edits: false,
 
             waiver: {
-                header: '',
+                title: '',
+                header: [],
                 items: [],
                 footer: '',
 
@@ -166,11 +168,15 @@ export default {
     },
     methods: {
         lock_waiver_inputs: function() {
+          return new Promise((resolve, reject) => {
             // locks all inputs in the waiver form -- replaces input fields
             // with the text of the input values -- removes errors and submit button
+            this.$refs.waiver_title.innerHTML = this.waiver.title;
             this.$refs.waiver_date_string.innerHTML = this.get_date_as_string;
             this.$refs.waiver_full_name.innerHTML = this.profileData.full_name;
-            this.$refs.waiver_header.innerHTML = this.waiver.header;
+
+            this.$refs.waiver_header_0.innerHTML = this.waiver.header[0];
+            this.$refs.waiver_header_1.innerHTML = this.waiver.header[1];
 
             for (let idx=0; idx<this.waiver.items.length; idx++) {
                 this.$refs.waiver_initials[idx].innerHTML = this.waiver.initials[idx];
@@ -183,6 +189,8 @@ export default {
             this.$refs.waiver_signature.innerHTML = this.waiver.signature;
             this.$refs.waiver_signed_date.innerHTML = this.waiver.signed_date;
             this.$refs.waiver_form_submit.innerHTML = "";
+            resolve(true);
+          });
         },
         confirm_waiver_signed: function(event) {
             // validates waiver fields are filled out
@@ -220,7 +228,7 @@ export default {
             for (let idx=0; idx<this.waiver.items.length; idx++) {
                 let item_position = idx + 1;
                 if (this.waiver.initials[idx] == '' || this.waiver.initials[idx] == null) {
-                    this.errors.push("Please initial your agreement with item #" + item_position + ".");
+                    this.errors.push("Please initial your agreement with item #" + item_position);
                     no_errors = false;
                 }
                 else if (this.waiver.initials[idx].length > 3) {
@@ -229,19 +237,19 @@ export default {
                 }
             }
             if (this.waiver.signature == '' || this.waiver.signature == null) {
-                this.errors.push("Please sign your name to the waiver to indicate your understanding and agreement.");
+                this.errors.push("Please sign your name to the waiver to indicate your understanding and agreement");
                 no_errors = false;
             }
             else if (this.waiver.signature.length > 50) {
-                this.errors.push("Your signature is too long.");
+                this.errors.push("Your signature is too long");
                 no_errors = false;
             }
             if (this.waiver.signature.length < this.profileData.full_name.length) {
-                this.errors.push("Your signature must include your full name.");
+                this.errors.push("Your signature must include your full name");
                 no_errors = false;
             }
             if (this.waiver.signed_date == '' || this.waiver.signed_date == null) {
-                this.errors.push("Please add a date to record the date you signed the waiver.");
+                this.errors.push("Please add a date to record the date you signed the waiver");
                 no_errors = false;
             }
             return no_errors;
@@ -251,55 +259,51 @@ export default {
             this.errors = [];       // clear all previous errors before validating the form again
 
             // validate the waiver was signed before submitting
-
             if (this.confirm_waiver_signed(evt)) {
-                localforage.getItem('X_TOKEN')
-                .then(session => {
-                    axios.post('/api/v1/applications', {
-                        headers: { 'x-token': session },
-                        params: {
-                            full_name: this.profileData.full_name,
-                            email: this.profileData.email,
-                            address_line_1: evt.target.address1.value,
-                            address_line_2: evt.target.address2.value,
-                            city: evt.target.city.value,
-                            state_province: evt.target.stateProvince.value,
-                            zip_code: evt.target.zipCode.value,
-                            country: evt.target.country.value,
-                            phone_number: evt.target.phoneNumber.value,
-                            bio: evt.target.bio.value,
-                            camp: this.chosencamp,
-                            date_signed: this.waiver.signed_date,
-                            type: 'volunteer',
-                            status: 'pending'
+              this.disable_edits = true;              // make inputs read-only
+              this.lock_waiver_inputs()               // convert the waiver form to static HTML
+                .then(resolved => {
+                  let waiver_form = this.$refs.waiver_el.innerHTML;   // waiver static HTML
+                  localforage.getItem('X_TOKEN')
+                  .then(session => {
+                      // post the application and waiver; returns the application id string
+                      axios.post('/api/v1/applications/waiver', {
+                          headers: { 'x-token': session },
+                          params: {
+                            application: {
+                              full_name: this.profileData.full_name,
+                              email: this.profileData.email,
+                              address_line_1: evt.target.address1.value,
+                              address_line_2: evt.target.address2.value,
+                              city: evt.target.city.value,
+                              state_province: evt.target.stateProvince.value,
+                              zip_code: evt.target.zipCode.value,
+                              country: evt.target.country.value,
+                              phone_number: evt.target.phoneNumber.value,
+                              bio: evt.target.bio.value,
+                              camp: this.chosencamp,
+                              date_signed: this.waiver.signed_date,
+                              type: 'volunteer',
+                              status: 'submitted'
+                            },
+                            waiver: {
+                              applicant: this.profileData._id.$oid,
+                              waiver_form: waiver_form,
+                              signed_by: this.waiver.signature,
+                              signed_date: this.waiver.signed_date
                             }
-                    })
-                    .then(response => {
-                        // submit and record the signed waiver after submitting the application
-                        this.lock_waiver_inputs();          // convert the waiver form to static HTML
-                        this.disable_edits = true;
-                        let app_id = response.data.$oid;    // the application Mongo ID
-                        let waiver_form = this.$refs.waiver_el.innerHTML;   // waiver static HTML
-
-                        axios.post('/api/v1/applications/waiver', {
-                            headers: { 'x-token': session },
-                            params: {
-                                application: app_id,
-                                applicant: this.profileData._id.$oid,
-                                waiver_form: waiver_form,
-                                signed_by: this.waiver.signature,
-                                signed_date: this.waiver.signed_date
-                            }
-                        })
-                        .then(res => {
-                            // redirect to application submitted page
-                            this.$router.push('/applications/' + app_id + '/submitted');
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                    })
-                    .catch(console.error)})
+                          }
+                      })
+                      .then(res => {
+                          // redirect to application submitted page -- API returns application ID
+                          this.$router.push('/applications/' + res.data + '/submitted');
+                      })
+                      .catch(err => {
+                          console.log(err);
+                      });
+                  })
+                  .catch(console.error);
+                })
                 .catch(console.error);
             }
         },
@@ -309,7 +313,8 @@ export default {
                 resource: "waiver_volunteer"
             })
             .then(data => {
-                this.waiver.header = data['header'];
+                this.waiver.title = data['title'];
+                this.waiver.header = data['headers'];
                 this.waiver.items = data['items'];
                 this.waiver.footer = data['footer'];
             })
@@ -364,7 +369,7 @@ export default {
                 .then(response => {
                     this.camps = response.data
                 })
-                .catch(console.log)
+                .catch(console.error)
             axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': session } })
             .then(response => {
             this.profileData = response.data
@@ -382,15 +387,15 @@ export default {
     padding-top: 1em !important;
     padding-bottom: 1em !important;
     }
-  .hide-me {
-    display: none;
-    }
   .waiver {
     margin-top: 30px !important;
     margin-bottom: 30px !important;
     max-width: 950px;
     padding: 20px;
     border: 2px solid gray;
+  }
+  .hide-me {
+    display: none;
   }
   input {
     text-align: center;

@@ -17,10 +17,6 @@ Vue.use(VueMq, {
 })
 
 axios.defaults.baseURL = process.env.BASE_URL
-localforage.getItem('X_TOKEN')
-.then(token => {
-  if (token) axios.defaults.headers.common['x-token'] = token
-}).catch(err => console.error(err))
 
 sync(store, router)
 
