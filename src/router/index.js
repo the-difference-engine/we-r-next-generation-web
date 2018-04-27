@@ -49,7 +49,7 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      beforeEnter: adminCheck
+      //beforeEnter: adminCheck
     },
     {
       path: '/login',
