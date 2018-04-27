@@ -124,15 +124,10 @@
     },
     methods: {
         upload: function(file) {
-            console.log('ATTEMPTING UPLOAD METHOD');
-            console.log('FILE', file);
-            const urlTest = `https://api.cloudinary.com/v1_1/${this.cloudinary.cloudName}/upload`;
-            console.log('URL TEST', urlTest);
             const formData = new FormData()
             formData.append('file', file[0]);
             formData.append('upload_preset', this.cloudinary.uploadPreset);
             formData.append('tags', 'gs-vue,gs-vue-uploaded');
-            console.log('FORM DATA TO BE SENT', formData);
             // For debug purpose only
             // Inspects the content of formData
             for(var pair of formData.entries()) {
@@ -149,14 +144,27 @@
 
         },
         submit: function(evt){
-            console.log('SUBMITTING')
+            var url = this.thumbs[0]['url'];
+            var urlToSave = ''
+            for (var i = 0; i < url.length; i++) {
+                if (url[i] === '/') {
+                    var upload = url.slice(i, i+8);
+                    if (upload === '/upload/') {
+                        var front = url.slice(0, i+8)
+                        var back = url.slice(i+8)
+                        urlToSave = `${front}q_auto/${back}`
+                    }
+                }
+            }
             localforage.getItem('X_TOKEN')
             .then(session => {
+                console.log('SENDING TO DB')
+                console.log('URL TO BE SENT', urlToSave)
                 axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
                         companyName: evt.target.companyName.value,
-                        companyLogo: this.thumbs[0]['url'],
+                        companyLogo: urlToSave,
                         companyUrl: evt.target.companyUrl.value,
                         type: 'partner',
                         status: 'submitted',
