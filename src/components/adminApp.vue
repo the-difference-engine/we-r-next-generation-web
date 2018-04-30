@@ -3,7 +3,7 @@
     <div class="row">
       <div id="back-btn" class="col-xs-12">
         <router-link to="/admin/applications">
-          <button class="btn btn-lg btn-primary">Back</button>
+          <button class="btn btn-lg btn-primary">All Applications</button>
         </router-link>
       </div>
       <div class="col-xs-12">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div id="app-data" class="col-xs-12 col-md-12">
-        <table class="table app-table" v-if="application.type === 'partner'">
+        <table class="table table-striped app-table" v-if="application.type === 'partner'">
           <tbody>
             <tr>
               <td>Company Name</td>
@@ -43,9 +43,13 @@
               <td>Company Website</td>
               <td><a :href="application.companyUrl">Website</a></td>
             </tr>
+            <tr>
+              <td>Company Logo</td>
+              <td><img class="logo" :src="application.companyLogo"/></td>
+            </tr>
           </tbody>
         </table>
-        <table class="table app-table">
+        <table class="table table-striped app-table">
           <tbody>
             <tr>
               <td>Name</td>
@@ -55,7 +59,7 @@
               <td>Camper Name</td>
               <td>{{application.childName}}</td>
             </tr>
-            <tr>
+            <tr v-if="application.type === 'camper'">
               <td>Gender</td>
               <td>{{application.gender}}</td>
             </tr>
@@ -95,14 +99,20 @@
               <td>Phone</td>
               <td>{{application.phone_number}}</td>
             </tr>
+            <tr v-if="application.type === 'volunteer'">
+              <td>Waiver</td>
+              <td>
+                <div class="list-icon-sm">
+                  <router-link :to="{ name: 'AdminUserWaiverSingle', params: { id: application._id.$oid } }">
+                    <i class="fa fa-file-text"></i>
+                  </router-link>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
-        <table v-if="application.type === 'camper'" class="table app-table">
+        <table v-if="application.type === 'camper' || application.type === 'volunteer'" class="table table-striped app-table">
           <tbody>
-            <tr>
-              <td>Camp name</td>
-              <td>{{application.camp_data.name}}</td>
-            </tr>
             <tr>
               <td>Camp Start</td>
               <td>{{application.camp_data.date_start}}</td>
@@ -191,4 +201,7 @@ export default {
   .app-table td {
     width: 50%;
   }
+  .logo {
+    width: 50px;
+    }
 </style>
