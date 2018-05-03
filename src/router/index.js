@@ -5,7 +5,7 @@ import {sessionCheck, adminCheck} from '../sessionUtils'
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
 import admin_waiver_view from '@/components/admin_waiver_view'
-import admin_waiver_all_applicant from '@/components/admin_waiver_all_applicant'
+import admin_waiver_edit from '@/components/admin_waiver_edit'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
 import application_submitted from '@/components/application_submitted'
@@ -29,6 +29,7 @@ import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
 import homeEdit from '@/components/homeEdit'
+import adminApp from '@/components/adminApp'
 
 Vue.use(Router)
 
@@ -49,7 +50,7 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      beforeEnter: adminCheck
+      //beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -222,10 +223,10 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/admin/users/:id/waivers',
-      name: 'AdminUserWaivers',
+      path: '/admin/waiver/:type/edit',
+      name: 'AdminUserWaiverEdit',
       components: {
-        default: admin_waiver_all_applicant,
+        default: admin_waiver_edit,
         header: adminNavbar,
         footer: wernxgFooter
       },
@@ -266,6 +267,16 @@ export default new Router({
       name: 'homeEdit',
       components: {
         default: homeEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/application/:id',
+      name: 'adminApp',
+      components: {
+        default: adminApp,
         header: adminNavbar,
         footer: wernxgFooter
       },

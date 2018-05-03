@@ -12,6 +12,10 @@
         <label for="companyUrl">Company URL</label>
         <input name="companyUrl" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
       </div>
+      <div class="form-group">
+        <label for="companyLogo">Company Logo URL</label>
+        <input name="companyLogo" type="file" v-on:change="upload($event.target.files)" accept="image/*" class="form-control" id="companyLogo" placeholder="optional">
+    </div>
     </div>
     <div class="row">
       <div class="col-sm-3"></div>
@@ -39,11 +43,11 @@
           profileData: {},
           bio: '',
           cloudinary: {
-              uploadPreset: 'tpg3m6fv',
-              cloudName: 'wernextgeneration',
-              apiKey: '234871425639756'
+              uploadPreset: 'loazbic8',
+              apiKey: '234871425639756',
+              cloudName: 'wernextgeneration'
           },
-          imageUrl: ''
+          thumbs: []
       }
     },
     methods: {
@@ -57,28 +61,46 @@
             for(var pair of formData.entries()) {
                 console.log(pair[0]+', '+pair[1]);
             }
+            delete axios.defaults.headers.common['x-token']
             axios.post(this.clUrl, formData).then(res => {
-                this.imageUrl = res.data
+                console.log('URL SENT BACK', res.data.secure_url);
+                this.thumbs.unshift({
+                url: res.data.secure_url
                 })
+            })
+
+
         },
         submit: function(evt){
-
+            var url = this.thumbs[0]['url'];
+            var urlToSave = ''
+            for (var i = 0; i < url.length; i++) {
+                if (url[i] === '/') {
+                    var upload = url.slice(i, i+8);
+                    if (upload === '/upload/') {
+                        var front = url.slice(0, i+8)
+                        var back = url.slice(i+8)
+                        urlToSave = `${front}q_auto/${back}`
+                    }
+                }
+            }
             localforage.getItem('X_TOKEN')
             .then(session => {
+                console.log('SENDING TO DB')
+                console.log('URL TO BE SENT', urlToSave)
                 axios.post('/api/v1/applications', {
                     headers: { 'x-token': session },
                     params: {
                         companyName: evt.target.companyName.value,
-                        companyLogo: evt.target.companyLogo.value,
+                        companyLogo: urlToSave,
                         companyUrl: evt.target.companyUrl.value,
-                        bio: evt.target.bio.value,
+                        type: 'partner',
                         status: 'submitted',
-                        type: 'partner'
+                        bio: evt.target.bio.value
                         }
                 })
                 .catch(console.error)})
             .catch(console.error)
-
         }
     },
     computed: {
