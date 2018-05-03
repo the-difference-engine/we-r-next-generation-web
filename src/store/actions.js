@@ -94,35 +94,40 @@ export const getWaiverResources = ({ commit }, { resource }) => {
   })
 }
 
-export const getApplication = ({commit}, {that, id}) =>
-  localforage.getItem('X_TOKEN')
-  .then(session => {
-    if (session) {
-      const config = {headers: {'x-token': session}}
-      axios.get(`/api/v1/applications/app/${id}`, config)
-      .then(res => {
-        that.application = res.data
-      })
-      .catch(err => console.error(err))
-    }
+export const getApplication = ({commit}, {id}) =>
+  new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = {headers: {'x-token': session}}
+        axios.get(`/api/v1/applications/app/${id}`, config)
+        .then(res => resolve(res.data))
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+      }
+    })
   })
 
-export const getApplications = ({commit}, {that, type}) =>
-  localforage.getItem('X_TOKEN')
-  .then(session => {
-    if (session) {
-      const config = {headers: {'x-token': session}}
-      axios.get(`/api/v1/applications/${type}`, config)
-      .then(res => {
-        that.applications = res.data.applications
-        that.applicationType = res.data.type
-        console.log(res.data);
-      })
-      .catch(err => console.error(err))
-    }
+export const getApplications = ({commit}, {type}) =>
+  new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      if (session) {
+        const config = {headers: {'x-token': session}}
+        axios.get(`/api/v1/applications/${type}`, config)
+        .then(res => resolve(res.data))
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+      }
+    })
   })
 
-  export const updateApplication = ({commit}, {that, type, app, statusChange}) =>
+export const updateApplication = ({commit}, {type, app, statusChange}) =>
+  new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
     .then(session => {
       if (session) {
@@ -130,45 +135,30 @@ export const getApplications = ({commit}, {that, type}) =>
           headers: {'x-token': session},
           params: {app, type, statusChange}}
         axios.put(`/api/v1/applications/status/${app._id.$oid}`, config)
-        .then(res => {
-          const updatedApp = res.data
-          if (that.applications) {
-            that.applications[statusChange].apps[updatedApp._id.$oid] = res.data
-            delete that.applications[app.status].apps[updatedApp._id.$oid]
-            that.canGetApps = true
-          }
-          else {
-            that.application = updatedApp
-          }
-        })
+        .then(res => resolve(res.data))
         .catch(err => {
-          if (that.applications) that.canGetApps = true
           console.error(err)
+          reject(err)
         })
       }
     })
+  })
 
-  export const deleteApplication = ({commit}, {that, app}) =>
+export const deleteApplication = ({commit}, {app}) =>
+  new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
     .then(session => {
       if (session) {
         const config = {headers: {'x-token': session}}
         axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
-        .then(() => {
-          if (that.applications) {
-            delete that.applications[app.status].apps[app._id.$oid]
-            that.canGetApps = true
-          }
-          else {
-            that.$router.push('/admin/applications')
-          }
-        })
+        .then(() => resolve())
         .catch(err => {
-          if (that.applications) that.canGetApps = true
+          reject(err)
           console.error(err)
         })
       }
     })
+  })
 
 export const campSessionCreate = ({ commit }, { new_camp, router }) =>
   localforage.getItem('X_TOKEN')
