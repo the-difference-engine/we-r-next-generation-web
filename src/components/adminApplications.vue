@@ -3,13 +3,13 @@
   <div id="admin-applications">
     <!-- Radio buttons to choose application type -->
     <div id="radio-btns">
-      <input type="radio" id="all" value="all" v-model="newAppType">
+      <input type="radio" id="all" value="all" v-model="appType">
       <label for="all">All</label>
-      <input type="radio" id="volunteer" value="volunteer" v-model="newAppType">
+      <input type="radio" id="volunteer" value="volunteer" v-model="appType">
       <label for="volunteer">Volunteer</label>
-      <input type="radio" id="camper" value="camper" v-model="newAppType">
+      <input type="radio" id="camper" value="camper" v-model="appType">
       <label for="camper">Camper</label>
-      <input type="radio" id="partner" value="partner" v-model="newAppType">
+      <input type="radio" id="partner" value="partner" v-model="appType">
       <label for="partner">Partner</label>
     </div>
     <!-- Submit button to retrieve applications of different types -->
@@ -48,26 +48,26 @@
       <table class="apps-by-status">
         <tr class="status"><th>{{status}}</th></tr>
         <tr>
-          <th v-if="applicationType === 'camper'" class="col-header">Parent Name</th>
+          <th v-if="currAppType === 'camper'" class="col-header">Parent Name</th>
           <th v-else class="col-header">Name</th>
-          <th class="col-header" v-if="applicationType === 'camper'">Camper Name</th>
+          <th class="col-header" v-if="currAppType === 'camper'">Camper Name</th>
           <th class="col-header">Age</th>
           <th class="col-header">Gender</th>
           <th class="col-header">Type</th>
           <th class="col-header">Date Signed</th>
-          <th v-if="applicationType === 'camper'" class="col-header">Camp Start</th>
+          <th v-if="currAppType === 'camper'" class="col-header">Camp Start</th>
           <th class="col-header">Waiver</th>
           <th class="col-header">Change Status</th>
           <th class="col-header">Details</th>
         </tr>
         <tr class="application" v-for="(application, app_id) in appByStatus.apps" :key="app_id">
           <td>{{application.full_name}}</td>
-          <td v-if="applicationType === 'camper'">{{application.childName}}</td>
+          <td v-if="currAppType === 'camper'">{{application.childName}}</td>
           <td>{{application.age}}</td>
           <td>{{application.gender}}</td>
           <td>{{application.type}}</td>
           <td>{{application.date_signed}}</td>
-          <td v-if="applicationType === 'camper'">{{application.camp_data.date_start}}</td>
+          <td v-if="currAppType === 'camper'">{{application.camp_data.date_start}}</td>
           <td>
             <div class="list-icon-sm">
               <router-link :to="{ name: 'AdminUserWaiverSingle', params: { id: application._id.$oid } }">
@@ -105,7 +105,7 @@
     </div>
     <!-- Renders in case there are no apps of a certain status -->
     <div v-if="!Object.keys(appByStatus.apps).length" v-for="(appByStatus, status) in applications" v-bind:key="`${status}-empty`" class="app-list-empty">
-      <p>There are no <strong>{{applicationType}}</strong> applications with a status of: <em>{{status}}</em></p>
+      <p>There are no <strong>{{currAppType}}</strong> applications with a status of: <em>{{status}}</em></p>
     </div>
   </div>
 </div>
@@ -117,8 +117,8 @@ export default {
   data () {
     return {
       applications : {},
-      applicationType: 'all',
-      newAppType: 'all',
+      appType: 'all',
+      currAppType: 'all',
       canGetApps: true,
       all_camps: [],
       camp_index: {},
@@ -137,14 +137,28 @@ export default {
   },
   methods: {
     getApplications: function (evt) {
-      this.$store.dispatch('getApplications', {that: this, type: this.newAppType})
+      this.$store.dispatch('getApplications', {type: this.appType})
+      .then(data => {
+        console.log('data from get all apps: ', data)
+        this.applications = data.applications
+        this.appType = data.type
+        this.currAppType = data.type
+      }).catch(err => console.error(err))
     },
     updateStatus: function (app, statusChange) {
       this.canGetApps = false;
-      if (statusChange === 'delete') this.$store.dispatch('deleteApplication', {that: this, app});
-      else this.$store.dispatch('updateApplication', {that: this, type: this.applicationType, app, statusChange})
+      if (statusChange === 'delete') this.$store.dispatch('deleteApplication', {app})
+      .then(() => {
+        delete this.applications[app.status].apps[app._id.$oid]
+        this.canGetApps = true
+      }).catch(err => this.canGetApps = true)
+      else this.$store.dispatch('updateApplication', {type: this.appType, app, statusChange})
+      .then(newApp => {
+        this.applications[statusChange].apps[newApp._id.$oid] = newApp
+        delete this.applications[app.status].apps[newApp._id.$oid]
+        this.canGetApps = true
+      }).catch(err => this.canGetApps = true)
     },
-
     downloadCSV: function() {                       // compile csv data; create and download csv file
       let data, filename, link;
       let csv = this.csv_delimited_applications;    // collect comma delimited applications
@@ -284,7 +298,12 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('getApplications', {that: this, type: this.applicationType});
+    this.$store.dispatch('getApplications', {type: this.appType})
+    .then(data => {
+      console.log('all apps data on created: ', data)
+        this.applications = data.applications
+        this.appType = data.type
+      }).catch(err => console.error(err))
     this.$store.dispatch('campSessionsGetAll', {    // get all camp sessions to ascribe a camp label over camp id
       field_name: "date_start",
       order: "DESC"

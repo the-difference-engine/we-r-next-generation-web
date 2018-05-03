@@ -99,7 +99,7 @@
               <td>Phone</td>
               <td>{{application.phone_number}}</td>
             </tr>
-            <tr v-if="application.type === 'volunteer'">
+            <tr v-if="application.type === 'volunteer' || application.type === 'camper'">
               <td>Waiver</td>
               <td>
                 <div class="list-icon-sm">
@@ -147,8 +147,10 @@ export default {
   },
   methods: {
     updateStatus: function (app, statusChange) {
-      if (statusChange === 'delete') this.$store.dispatch('deleteApplication', {that: this, app})
-      else this.$store.dispatch('updateApplication', {that: this, type: this.applicationType, app, statusChange})
+      if (statusChange === 'delete') this.$store.dispatch('deleteApplication', {app})
+      .then(() => this.$router.push('/admin/applications'))
+      else this.$store.dispatch('updateApplication', {type: this.applicationType, app, statusChange})
+      .then(newApp => this.application = newApp)
     },
     changeLocalStatuses: function (app) {
       if (app.status === 'submitted') this.statuses.next = 'pending'
@@ -164,7 +166,9 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('getApplication', {that: this, id: this.$route.params.id})
+    this.$store.dispatch('getApplication', {id: this.$route.params.id})
+    .then(data => this.application = data)
+    .catch(err => console.error(err))
   },
   watch: {
     application: function(app) {
