@@ -23,8 +23,16 @@
             <li class="edit-options"><router-link to="/home">Home</router-link></li>
             <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
             <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
-            <li class="edit-options"><router-link to="/home">Camper Waiver</router-link></li>
-            <li class="edit-options"><router-link to="/home">Volunteer Waiver</router-link></li>
+            <li class="edit-options">
+              <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'camper' } }">
+                Camper Waiver
+              </router-link>
+            </li>
+            <li class="edit-options">
+              <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'volunteer' } }">
+                Volunteer Waiver
+              </router-link>
+            </li>
           </ul>
         </button>
         <button id="logout-button"
