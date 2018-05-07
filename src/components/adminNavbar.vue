@@ -21,7 +21,7 @@
         <button @click="toggleEdit" class="edit-button">Edit
           <ul v-if="show" class="edit-list">
             <li class="edit-options"><router-link to="/home">Home</router-link></li>
-            <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
+            <li class="edit-options"><router-link to="/faqEdit">FAQs</router-link></li>
             <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
             <li class="edit-options">
               <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'camper' } }">

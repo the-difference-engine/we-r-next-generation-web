@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {sessionCheck, adminCheck} from '../sessionUtils'
+import {
+  sessionCheck,
+  adminCheck
+} from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
@@ -12,6 +15,9 @@ import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
+import faqEdit from '@/components/faqEdit'
+import faqAddNew from '@/components/faqAddNew'
+import faqEditSingle from '@/components/faqEditSingle'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import signup from '@/components/signup'
@@ -33,15 +39,17 @@ import adminApp from '@/components/adminApp'
 Vue.use(Router)
 
 export default new Router({
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return {
+        x: 0,
+        y: 0
+      }
     }
   },
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Root',
       components: {
@@ -162,6 +170,33 @@ export default new Router({
       components: {
         default: faq,
         header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqEdit',
+      name: 'faqEdit',
+      components: {
+        default: faqEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
         footer: wernxgFooter
       }
     },
