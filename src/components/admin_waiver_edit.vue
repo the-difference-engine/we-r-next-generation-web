@@ -439,8 +439,26 @@
             break;
           }
         }
-      }
+      },
 
+      update_waiver() {
+        let dataObj = {
+          'title': this.waiver.title,
+          'headers': this.waiver.header,
+          'items': this.waiver.items,
+          'footer': this.waiver.footer
+        }
+        localforage.getItem('X_TOKEN')
+        .then(session => {
+          axios.put('/api/v1/admin/waiver/' + this.type + '/update', {
+            headers: { 'x-token': session },
+            dataObj: dataObj
+          })
+          .then(res => {
+            this.$router.push('/admin/applications');
+          })
+        })
+      }
     },
     computed: {
       init_today_date() {
