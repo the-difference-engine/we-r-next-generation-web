@@ -2,6 +2,10 @@
   <div>
     <h3>Add New FAQ</h3>
     <h4 class="text-success" v-if="messages">Your FAQ was successfully added!</h4>
+    <div v-if="errors.length">
+      <h4 class="text-danger">Please correct the following errors:</h4>
+      <li v-for="error in errors">{{ error }}</li>
+    </div>
     <div class="row mx-0 my-3">
       <form v-on:submit.prevent="faqAdd">
         <div class="form-group row">
@@ -13,7 +17,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Answer</label>
           <div class="col-md-10">
-            <textarea rows="4" class="form-control" v-model="newFaq.answer"></textarea>
+            <vue-editor v-model="newFaq.answer"></vue-editor>
           </div>
         </div>
         <div class="form-group row">
@@ -42,18 +46,28 @@
 <script>
 import axios from 'axios';
 import localforage from '../sessionUtils';
-import sessionUtils from '../sessionUtils';
+import { VueEditor, Quill } from '../../node_modules/vue2-editor';
 export default {
   name: 'faqAdd',
+  components: {
+    VueEditor
+  },
   data() {
     return {
       newFaq: {},
-      messages: null
+      messages: null,
+      errors: []
     };
   },
   methods: {
     faqAdd() {
+      this.errors = [];
       console.log('new FAQ: ', this.newFaq);
+      this.checkError();
+      console.log('Jailbreak!');
+      if (this.errors.length) {
+        return;
+      }
       localforage.getItem('X_TOKEN').then(session => {
         console.log('session:', session);
         axios
@@ -66,35 +80,32 @@ export default {
             setTimeout(() => {
               this.messages = null;
               this.$router.push('/faqEdit');
-            }, 5000);
+            }, 3000);
           })
           .catch(() => {
             setTimeout(() => {}, 500);
           });
       });
+    },
+    checkError() {
+      console.log('checking for errors');
+      if (this.newFaq.question && this.newFaq.answer && this.newFaq.category) {
+        this.errors = [];
+        return true;
+      }
+      if (!this.newFaq.question) this.errors.push('Question Required');
+      if (!this.newFaq.answer) this.errors.push('Answer Required');
+      if (!this.newFaq.category) this.errors.push('Category Required');
     }
   },
 
   created() {
     localforage.getItem('X_TOKEN').then(session => {
       console.log('created session: ', session);
-      //   if (session) {
-      //     const config = { headers: { 'x-token': session } };
-      //     axios
-      //       .get(`/api/v1/faqEdit/${this.$route.params.id}`, config)
-      //       .then(res => {
-      //         this.qaObject = res.data;
-      //         console.log('qaObject: ', this.qaObject);
-      //       })
-      //       .catch(err => console.error(err));
-      //   }
-      // });
+      if (session) {
+        const config = { headers: { 'x-token': session } };
+      }
     });
   }
 };
 </script>
-
-<style scoped>
-
-</style>
-

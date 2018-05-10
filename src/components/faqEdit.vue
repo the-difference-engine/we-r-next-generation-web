@@ -25,7 +25,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Answer</label>
           <div class="col-md-10">
-            <textarea readonly rows="4" class="form-control" v-model="faq.answer" v-bind:placeholder="faq.answer"></textarea>
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="faq.answer" v-bind:placeholder="faq.answer"></div>
           </div>
         </div>
         <div class="form-group row">
@@ -48,7 +48,6 @@
 <script>
 import axios from 'axios';
 import localforage from '../sessionUtils';
-import sessionUtils from '../sessionUtils';
 export default {
   name: 'faq',
   methods: {
@@ -57,8 +56,7 @@ export default {
       this.$store.dispatch('faqUpdate', {
         updated_faq: this.faq,
         faqs_id: this.faq_id,
-        router: this.$router,
-        that: this
+        router: this.$router
       });
       this.editFAQ();
     },
@@ -86,9 +84,9 @@ export default {
           .then(res => {
             this.messages = true;
             setTimeout(() => {
-              this.messages = null;
+              this.messages = false;
               this.$router.go(this.$router.currentRoute);
-            }, 5000);
+            }, 3000);
           })
           .catch(() => {
             setTimeout(() => {}, 3000);
@@ -101,7 +99,7 @@ export default {
       category_set: new Set(),
       curr_category: 'all',
       faqs: {},
-      messages: null
+      messages: false
     };
   },
   computed: {
@@ -125,7 +123,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-</style>

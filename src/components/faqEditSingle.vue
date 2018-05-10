@@ -2,6 +2,10 @@
   <div>
     <h3>Edit FAQ</h3>
     <h4 class="text-success" v-if="messages">Your FAQ was successfully edited!</h4>
+    <div v-if="errors.length">
+      <h4 class="text-danger">Please correct the following errors:</h4>
+      <li v-for="error in errors">{{ error }}</li>
+    </div>
     <div class="row mx-0 my-3">
       <form v-on:submit.prevent="faqEditSingle">
         <div class="form-group row">
@@ -13,7 +17,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Answer</label>
           <div class="col-md-10">
-            <textarea rows="4" class="form-control" v-model="qaObject.answer"></textarea>
+            <vue-editor v-model="qaObject.answer"></vue-editor>
           </div>
         </div>
         <div class="form-group row">
@@ -42,18 +46,27 @@
 <script>
 import axios from 'axios';
 import localforage from '../sessionUtils';
-import sessionUtils from '../sessionUtils';
+import { VueEditor, Quill } from '../../node_modules/vue2-editor';
 export default {
   name: 'faqEditSingle',
+  components: {
+    VueEditor
+  },
   data() {
     return {
       qaObject: {},
-      messages: null
+      messages: false,
+      errors: []
     };
   },
   methods: {
     faqEditSingle() {
       console.log('edit qaObject: ', this.qaObject);
+      this.checkError();
+      console.log('Jailbreak!');
+      if (this.errors.length) {
+        return;
+      }
       localforage.getItem('X_TOKEN').then(session => {
         console.log('session:', session);
         axios
@@ -64,14 +77,29 @@ export default {
           .then(res => {
             this.messages = true;
             setTimeout(() => {
-              this.messages = null;
+              this.messages = false;
               this.$router.push('/faqEdit');
-            }, 5000);
+            }, 3000);
           })
           .catch(() => {
             setTimeout(() => {}, 3000);
           });
       });
+    },
+    checkError() {
+      console.log('checking for errors');
+      if (
+        this.qaObject.question &&
+        this.qaObject.answer &&
+        this.qaObject.category
+      ) {
+        this.errors = [];
+        return true;
+      }
+
+      if (!this.qaObject.question) this.errors.push('Question Required');
+      if (!this.qaObject.answer) this.errors.push('Answer Required');
+      if (!this.qaObject.category) this.errors.push('Category Required');
     }
   },
 
@@ -92,7 +120,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-</style>
