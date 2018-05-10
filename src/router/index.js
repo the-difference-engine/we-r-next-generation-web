@@ -28,6 +28,7 @@ import users from '@/components/users'
 import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
+import homeEdit from '@/components/homeEdit'
 import adminApp from '@/components/adminApp'
 
 Vue.use(Router)
@@ -262,6 +263,16 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
+      path: '/admin/home-edit',
+      name: 'homeEdit',
+      components: {
+        default: homeEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
       path: '/admin/application/:id',
       name: 'adminApp',
       components: {
@@ -270,6 +281,6 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
-    }
+    },
   ]
 })
