@@ -91,6 +91,7 @@
     border: none;
     outline: none;
     cursor: pointer;
+    font-size: 17px;
   }
   #toggle-container {
     font-size: 14px;
