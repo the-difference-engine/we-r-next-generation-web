@@ -452,7 +452,7 @@
         .then(session => {
           axios.put('/api/v1/admin/waiver/' + this.type + '/update', {
             headers: { 'x-token': session },
-            dataObj: dataObj
+            data: dataObj
           })
           .then(res => {
             this.$router.push('/admin/applications');
