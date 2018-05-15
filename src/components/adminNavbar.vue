@@ -20,9 +20,9 @@
         <router-link to="/admin/camp/create">New CampEx</router-link>
         <button @click="toggleEdit" class="edit-button">Edit
           <ul v-if="show" class="edit-list">
-            <li class="edit-options"><router-link to="/admin/home-edit">Home</router-link></li>
-            <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
-            <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
+            <li class="edit-options"><router-link to="/home">Home</router-link></li>
+            <li class="edit-options"><router-link to="/admin/faqEdit">FAQs</router-link></li>
+            <li class="edit-options"><router-link to="/admin/addSuccessStory">Success Stories</router-link></li>
             <li class="edit-options">
               <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'camper' } }">
                 Camper Waiver
@@ -81,8 +81,8 @@ export default {
   border-bottom: 1px solid black;
 }
 #logout-button {
-    background-color: #5FAAF6;
-    border-color: #5FAAF6;
+  background-color: #5faaf6;
+  border-color: #5faaf6;
 }
 #admin-header {
   margin-bottom: 5px;

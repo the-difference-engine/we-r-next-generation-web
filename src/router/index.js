@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {sessionCheck, adminCheck} from '../sessionUtils'
+import {
+  sessionCheck,
+  adminCheck
+} from '../sessionUtils'
 
+import addSuccess from '@/components/addSuccess'
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
 import admin_waiver_view from '@/components/admin_waiver_view'
@@ -34,15 +38,17 @@ import adminApp from '@/components/adminApp'
 Vue.use(Router)
 
 export default new Router({
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return {
+        x: 0,
+        y: 0
+      }
     }
   },
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Root',
       components: {
@@ -281,6 +287,42 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/faqEdit',
+      name: 'faqEdit',
+      components: {
+        default: faqEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/admin/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/admin/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/admin/addSuccessStory',
+      name: 'addSuccess',
+      components: {
+        default: addSuccess,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
     },
   ]
 })
