@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="container">
     <h3>Add New FAQ</h3>
     <h4 class="text-success" v-if="messages">Your FAQ was successfully added!</h4>
     <div v-if="errors.length">
       <h4 class="text-danger">Please correct the following errors:</h4>
-      <li v-for="error in errors">{{ error }}</li>
+      <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
     </div>
     <div class="row mx-0 my-3">
       <form v-on:submit.prevent="faqAdd">
@@ -34,6 +34,9 @@
         </div>
         <div class="form-group row">
           <div class="col-md-12 text-right">
+            <router-link :to="'faqEdit'">
+              <button type="submit" class="btn btn-danger">Cancel</button>
+            </router-link>
             <button type="submit" class="btn btn-primary">Save & Submit</button>
           </div>
         </div>
@@ -79,12 +82,10 @@ export default {
             this.messages = true;
             setTimeout(() => {
               this.messages = null;
-              this.$router.push('/faqEdit');
+              this.$router.push('/admin/faqEdit');
             }, 3000);
           })
-          .catch(() => {
-            setTimeout(() => {}, 500);
-          });
+          .catch(console.error);
       });
     },
     checkError() {

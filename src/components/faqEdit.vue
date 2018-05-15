@@ -6,15 +6,15 @@
     </h1>
   </div>
   <hr>
-  <h3>Edit Current FAQS</h3>
+  <h3 class="scroller-catch">Edit Current FAQS</h3>
   <h4 class="text-success" v-if="messages">Your FAQ was successfully deleted!</h4>
   <div class="row">
     <div class="col-md-14 text-right">
-      <router-link :to="'faqAddNew'"><button type="submit" class="btn btn-success">Add New FAQ</button></router-link>
+      <router-link :to="'faqAddNew'" class="btn btn-success">Add New FAQ</router-link>
     </div>
   </div>
   <div class="row">
-    <div class="row mx-0 my-3" v-for="faq in faqs">
+    <div class="row mx-0 my-3" v-for="(faq, index) in faqs" :key="index">
       <form>
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Question</label>
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group row">
           <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-danger" v-on:click.self="faqDelete(faq)">Delete Question</button>
+            <button type="submit" class="btn btn-danger" v-on:click.self="faqDelete(faq); scrollToPreview()">Delete Question</button>
             <router-link :to="{ name: 'faqEditSingle', params: { id: faq._id.$oid } }">
               <button type="submit" class="btn btn-primary">Edit</button>
             </router-link>
@@ -47,6 +47,7 @@
 
 <script>
 import axios from 'axios';
+import 'vue-scrollto';
 import localforage from '../sessionUtils';
 export default {
   name: 'faq',
@@ -86,12 +87,16 @@ export default {
             setTimeout(() => {
               this.messages = false;
               this.$router.go(this.$router.currentRoute);
-            }, 3000);
+            }, 5000);
           })
-          .catch(() => {
-            setTimeout(() => {}, 3000);
-          });
+          .catch(console.error);
       });
+    },
+    scrollToPreview() {
+      let element = '.scroller-catch';
+      let duration = 2000;
+      var VueScrollTo = require('vue-scrollto');
+      VueScrollTo.scrollTo(element, duration);
     }
   },
   data() {
