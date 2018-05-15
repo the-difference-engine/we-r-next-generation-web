@@ -65,14 +65,11 @@ export default {
   methods: {
     faqAdd() {
       this.errors = [];
-      console.log('new FAQ: ', this.newFaq);
       this.checkError();
-      console.log('Jailbreak!');
       if (this.errors.length) {
         return;
       }
       localforage.getItem('X_TOKEN').then(session => {
-        console.log('session:', session);
         axios
           .post(`/api/v1/faqAdd`, {
             headers: { 'x-token': session },
@@ -89,7 +86,6 @@ export default {
       });
     },
     checkError() {
-      console.log('checking for errors');
       if (this.newFaq.question && this.newFaq.answer && this.newFaq.category) {
         this.errors = [];
         return true;
@@ -102,7 +98,6 @@ export default {
 
   created() {
     localforage.getItem('X_TOKEN').then(session => {
-      console.log('created session: ', session);
       if (session) {
         const config = { headers: { 'x-token': session } };
       }

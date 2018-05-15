@@ -64,14 +64,11 @@ export default {
   },
   methods: {
     faqEditSingle() {
-      console.log('edit qaObject: ', this.qaObject);
       this.checkError();
-      console.log('Jailbreak!');
       if (this.errors.length) {
         return;
       }
       localforage.getItem('X_TOKEN').then(session => {
-        console.log('session:', session);
         axios
           .post(`/api/v1/faqEdit/${this.qaObject._id.$oid}`, {
             headers: { 'x-token': session },
@@ -88,7 +85,6 @@ export default {
       });
     },
     checkError() {
-      console.log('checking for errors');
       if (
         this.qaObject.question &&
         this.qaObject.answer &&
@@ -106,14 +102,12 @@ export default {
 
   created() {
     localforage.getItem('X_TOKEN').then(session => {
-      console.log('session: ', session);
       if (session) {
         const config = { headers: { 'x-token': session } };
         axios
           .get(`/api/v1/faqEdit/${this.$route.params.id}`, config)
           .then(res => {
             this.qaObject = res.data;
-            console.log('qaObject: ', this.qaObject);
           })
           .catch(err => console.error(err));
       }

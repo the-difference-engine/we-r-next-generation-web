@@ -53,7 +53,6 @@ export default {
   name: 'faq',
   methods: {
     faqUpdate: function(evt) {
-      console.log('FAQ Update Method');
       this.$store.dispatch('faqUpdate', {
         updated_faq: this.faq,
         faqs_id: this.faq_id,
@@ -62,20 +61,16 @@ export default {
       this.editFAQ();
     },
     faqGet: function() {
-      console.log('Get FAQ Method');
       this.$store
         .dispatch('faqGet', {
           faq_id: this.$route.params.id
         })
         .then(data => {
-          console.log('Received FAQ data', data);
           this.faq = data;
           this.faq_id = this.faq._id.$oid;
-          console.log('FAQ Now:', this.faq);
         });
     },
     faqDelete: function(value) {
-      console.log('Delete FAQ Method', value._id);
       localforage.getItem('X_TOKEN').then(session => {
         axios
           .delete(`/api/v1/faqEdit/${value._id.$oid}`, {
