@@ -17,7 +17,14 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">What They Learned</label>
           <div class="col-md-10">
-            <vue-editor v-model="newStory.about"></vue-editor>
+            <vue-editor v-model="newStory.learned"></vue-editor>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label text-right">Image</label>
+          <div class="col-md-10">
+            <input name="image" type="file" v-on:change="previewImage" accept="image/*">
+            <button v-on:submit="submitImage" type="submit" class="btn btn-primary submit-button">Submit</button>
           </div>
         </div>
         <div class="form-group row">
