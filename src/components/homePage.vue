@@ -279,7 +279,12 @@
   .partners {
     display: inline-block;
     margin: auto;
-    padding: 20px;
+    padding: 15px;
+  }
+  @media (max-width: 600px) {
+    .partners {
+      padding: 7px
+    }
   }
   #signup {
     position: relative;

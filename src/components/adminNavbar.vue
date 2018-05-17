@@ -22,6 +22,8 @@
           <ul v-if="show" class="edit-list">
             <li class="edit-options"><router-link to="/home">Home</router-link></li>
             <li class="edit-options"><router-link to="/faqEdit">FAQs</router-link></li>
+            <li class="edit-options"><router-link to="/admin/home-edit">Home</router-link></li>
+            <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
             <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
             <li class="edit-options">
               <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'camper' } }">
@@ -79,6 +81,10 @@ export default {
   width: 100%;
   height: 100px;
   border-bottom: 1px solid black;
+}
+#logout-button {
+    background-color: #5FAAF6;
+    border-color: #5FAAF6;
 }
 #admin-header {
   margin-bottom: 5px;

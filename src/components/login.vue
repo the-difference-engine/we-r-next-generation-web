@@ -12,8 +12,14 @@
           <div class="row" id="form-row">
             <span id="email-tag">Email</span>
             <input class="form-control form-highlight" name="email" id="email" />
-            <span id="password-tag">Password</span>
-            <input class="form-control form-highlight" name="password" id="password" type="password" />
+            <div id="password-container">
+              <span id="password-tag">Password</span>
+              <div>
+                <span id="toggle-container">{{toggleText}}</span>
+                <button id="password-toggle" type="button" v-on:click="switchVisibility"><i :class="toggleClass" aria-hidden="true"></i></button>
+              </div>
+            </div>
+              <input class="form-control form-highlight" name="password" :type="passwordFieldType" />
             <p><router-link id="password-reminder" to="/forgotPassword">I forgot my password</router-link></p>
             <input class="green-btn btn btn-primary" id="login-submit" type="submit" value="Log In" />
           </div>
@@ -34,11 +40,19 @@
           router: this.$router,
           that: this
         })
+      },
+      switchVisibility() {
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+        this.toggleClass = this.toggleClass === 'fa fa-toggle-on' ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
+        this.toggleText = this.toggleText === 'Show' ? 'Hide' : 'Show'
       }
     },
     data () {
       return {
-        loginErr: false
+        loginErr: false,
+        passwordFieldType: 'password',
+        toggleClass: 'fa fa-toggle-on',
+        toggleText: 'Show'
       }
     }
   }
@@ -67,6 +81,20 @@
   }
   #password-reminder {
     color: #ff9327;
+  }
+  #password-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  #password-toggle {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 17px;
+  }
+  #toggle-container {
+    font-size: 14px;
   }
   #email-tag {
     float: left;
