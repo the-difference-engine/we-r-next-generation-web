@@ -289,33 +289,6 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/admin/faqEdit',
-      name: 'faqEdit',
-      components: {
-        default: faqEdit,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
-      path: '/admin/faqEditSingle',
-      name: 'faqEditSingle',
-      components: {
-        default: faqEditSingle,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
-      path: '/admin/faqAddNew',
-      name: 'faqAddNew',
-      components: {
-        default: faqAddNew,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
       path: '/admin/addSuccessStory',
       name: 'addSuccess',
       components: {
