@@ -16,6 +16,9 @@ import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
+import faqEdit from '@/components/faqEdit'
+import faqAddNew from '@/components/faqAddNew'
+import faqEditSingle from '@/components/faqEditSingle'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import signup from '@/components/signup'
@@ -169,6 +172,33 @@ export default new Router({
       components: {
         default: faq,
         header: wernxgHeader,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqEdit',
+      name: 'faqEdit',
+      components: {
+        default: faqEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
         footer: wernxgFooter
       }
     },
