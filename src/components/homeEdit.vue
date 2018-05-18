@@ -1,13 +1,16 @@
 <template>
-<div class='container-fluid'>
+<div class='container'>
   <div class='row'>
-    The width to height ratio of the Hero image should be 2.8 : 1
+    <h1 class="big" >Home Page Edit</h1>
   </div>
+  <hr>
   <div class='row'>
-    <div class="img-container1">
-      <span>current hero image</span>
-      <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
-    </div>
+    <h3 class="big" >Current Hero Image</h3>
+  </div>
+  <h5 class="text-success" v-if="messages">Your FAQ was successfully deleted!</h5>
+  <h5>The width to height ratio of the Hero image should be 2.8 : 1</h5>
+  <div class='row'>
+    <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
   </div>
   <div class='row'>
     <span>There are two methods of uploading a new hero image. One is to upload an image then hit the submit button. The other is to input an image url (this can be used to easily reverse changes if you saved the previous image address)</span>
@@ -65,6 +68,7 @@
         file: [],
         imageData: '',
         heroImageManualUrl: '',
+        messages: ''
       }
     },
     created() {
@@ -166,10 +170,9 @@
     /* padding-bottom: 35.67%;
     height:0;
     overflow: hidden; */
-    display:flex;
+    /* display:flex;
     justify-content: center;
-    flex-direction: column;
-    align-items: center
+    align-items: center */
   }
   .fit-image1 {
     /* position: absolute;
