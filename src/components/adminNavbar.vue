@@ -80,6 +80,10 @@ export default {
   height: 100px;
   border-bottom: 1px solid black;
 }
+#logout-button {
+    background-color: #5FAAF6;
+    border-color: #5FAAF6;
+}
 #admin-header {
   margin-bottom: 5px;
   display: flex;

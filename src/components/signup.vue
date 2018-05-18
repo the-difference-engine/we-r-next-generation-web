@@ -19,7 +19,14 @@
           <div class="row" id="form-row">
             <span id="name-tag">Name</span><input class="form-control form-highlight" name="name" id="name" />
             <span id="email-tag">Email</span><input class="form-control form-highlight" name="email" id="email" />
-            <span id="password-tag">Password</span><input class="form-control form-highlight" name="password" id="password" type="password" />
+            <div id="password-container">
+              <span id="password-tag">Password</span>
+              <div>
+                <span id="toggle-container">{{toggleText}}</span>
+                <button id="password-toggle" type="button" v-on:click="switchVisibility"><i :class="toggleClass" aria-hidden="true"></i></button>
+              </div>
+            </div>
+            <input class="form-control form-highlight" name="password" :type="passwordFieldType" />
             <p id="agreement-terms">By clicking sign up you are agreeing to WeRNextGeneration terms of use.</p>
             <input id="signup-submit" class="green-btn btn btn-primary" type="submit" value="Sign Up" />
           </div>
@@ -40,12 +47,20 @@
           password: evt.target.password.value,
           that: this
         })
+      },
+      switchVisibility() {
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+        this.toggleClass = this.toggleClass === 'fa fa-toggle-on' ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
+        this.toggleText = this.toggleText === 'Show' ? 'Hide' : 'Show'
       }
     },
     data () {
       return {
         signedUp: false,
-        signUpErr: false
+        signUpErr: false,
+        passwordFieldType: 'password',
+        toggleClass: 'fa fa-toggle-on',
+        toggleText: 'Show'
       }
     }
   }
@@ -89,6 +104,20 @@
   }
   .account{
     margin-bottom: 5px;
+  }
+  #password-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  #password-toggle {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 17px;
+  }
+  #toggle-container {
+    font-size: 14px;
   }
   label {
     font-size: 12px;
