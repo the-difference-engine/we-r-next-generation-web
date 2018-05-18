@@ -20,19 +20,17 @@
         <router-link to="/admin/camp/create">New CampEx</router-link>
         <button @click="toggleEdit" class="edit-button">Edit
           <ul v-if="show" class="edit-list">
-            <li class="edit-options"><router-link to="/home">Home</router-link></li>
-            <li class="edit-options"><router-link to="/faqEdit">FAQs</router-link></li>
+            <li class="edit-options"><router-link to="/admin/faqEdit">FAQs</router-link></li>
             <li class="edit-options"><router-link to="/admin/home-edit">Home</router-link></li>
-            <li class="edit-options"><router-link to="/faq">FAQs</router-link></li>
-            <li class="edit-options"><router-link to="/successStories">Success Stories</router-link></li>
+            <li class="edit-options"><router-link to="/admin/addSuccessStory">Success Stories</router-link></li>
             <li class="edit-options">
               <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'camper' } }">
-                Camper Waiver
+               Camper Waiver
               </router-link>
             </li>
             <li class="edit-options">
               <router-link :to="{ name: 'AdminUserWaiverEdit', params: { type: 'volunteer' } }">
-                Volunteer Waiver
+               Volunteer Waiver
               </router-link>
             </li>
           </ul>
