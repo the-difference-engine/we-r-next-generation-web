@@ -5,14 +5,8 @@
       <i id="userIcon" class="fa fa-users col-md-6"></i>
     </div>
     <div>
-      <input type="text" v-model="filterTest" placeholder="search...">
-      <p>Here is: {{ filterTest }}</p>
-      <!-- {{ users.map(u => {
-        console.log('MAP STUFF');
-        console.log(u);
-        console.log(u.name);
-      }) }} -->
-      <!-- {{all.map(function(user){if (user.contains(filterTest))return <p>entry.name</P})}} -->
+      <input type="text" v-model="filterTest" v-on:change="testing" placeholder="search...">
+      <p>{{ filteredUsers }}</p>
     </div>
     <div id="blackLine">
       <table class="table table-striped">
@@ -34,10 +28,10 @@
         </thead>
         <tbody>
           <tr v-for="(user, index) in users" v-bind:key="index">
-            <td>{{ user.full_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user._id.$oid }}</td>
-            <td>{{ user.role }}</td>
+            <td v-if="user">{{ user.full_name }}</td>
+            <td v-if="user">{{ user.email }}</td>
+            <td v-if="user">{{ user._id.$oid }}</td>
+            <td v-if="user">{{ user.role }}</td>
           </tr>
         </tbody>
       </table>
@@ -58,6 +52,7 @@
     data(){
       return {
         filterTest: '',
+        filteredUsers: [],
         users: [],
         result: [],
         columns: ['name', 'email', 'registered', 'role'],
@@ -70,6 +65,16 @@
       }
     },
     computed: {
+      // filterUsers: function() {
+      //   console.log('GOT TO FILTERUSERS');
+      //   this.filteredUsers = this.users.map(u => {
+      //     if (u.full_name.includes(this.filterTest)) {
+      //       console.log('MATCHES');
+      //       console.log(u.full_name)
+      //       return u;
+      //     }
+      //   });
+      // }
     },
     methods: {
       sortBy: function(currentColumn) {
@@ -82,6 +87,21 @@
         // }
         // this.sortColumn = currentColumn;
       },
+      testing: function() {
+        console.log('GOT TO FILTERUSERS');
+        this.filteredUsers = this.users.map(u => {
+          if (u.full_name.includes(this.filterTest)) {
+            console.log('MATCHES');
+            console.log(u.full_name)
+            return u;
+          }
+        this.users = this.filteredUsers;
+        console.log("NEW USERS LSIT");
+        console.log(this.users);
+        console.log("FILTER LIST");
+        console.log(this.filteredUsers);
+        });
+      },
       getMostRecentApplicationDate: function(user) {
         let dates = [];
         user.applications.forEach(application => {
@@ -91,13 +111,6 @@
 
         return sortedDates.pop();
       },
-      // filterUsers: function() {
-      //   this.users.map(u => {
-      //     console.log("CONSOLES-------------");
-      //     console.log(u.name);
-      //     console.log(u);
-      //   })
-      // }
     },
     created() {
       localforage.getItem('X_TOKEN')
