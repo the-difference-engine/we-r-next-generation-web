@@ -9,7 +9,6 @@
         <i id="searchIcon" class="fa fa-search"></i>
         <input id="searchbar" type="text" v-model="filterString" placeholder="search..." class="form-control form-group">
         <p>{{ filterUsers }}</p>
-        <!-- <p>{{ testing }}</p> -->
       </div>
       <div id="blackLine">
         <table class="table table-striped">
@@ -124,7 +123,6 @@
           dates.push(application.date)
         });
         let sortedDates = dates.sort();
-
         return sortedDates.pop();
       },
     },
@@ -135,7 +133,6 @@
         .then(response => {
           this.users = response.data.reverse()
           this.filteredUsers = response.data.reverse()
-          
         })
         .catch(console.error)
       })
