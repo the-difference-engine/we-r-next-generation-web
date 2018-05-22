@@ -35,30 +35,3 @@ export const sessionCheck = (to, from, next) => {
     }
   }).catch(err => console.error(err))
 }
-
-export const adminCheck = (to, from, next) => {
-  localforage.getItem('X_TOKEN')
-  .then(session => {
-    if (session) {
-      console.log('session is: ', session)
-      const config = {headers: {'x-token': session}}
-      axios.get(`/api/v1/sessions/${session}`, config)
-      .then(res => {
-        if (res.data.X_TOKEN) {
-          store.commit(types.LOGIN, res.data.profileData)
-          if (to.path === from.path) next(false)
-          if (res.data.profileData.role === 'admin') next('/admin/applications')
-          else next()
-        }
-        else {
-          localforage.removeItem('X_TOKEN')
-          .then(() => next())
-          .catch(err => console.error(err))
-        }
-      }).catch(err => console.error(err))
-    }
-    else {
-      next()
-    }
-  }).catch(err => console.error(err))
-}
