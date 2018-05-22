@@ -106,7 +106,7 @@
           this.status.Name = 'fa fa-angle-right';
           this.status.Email = 'fa fa-angle-right';
           this.status.Registered = 'fa fa-angle-down';
-          this.status.Role = 'fa fa-angle-down';
+          this.status.Role = 'fa fa-angle-right';
           this.filteredUsers = this.users;
         }
         if (column === 'Role') {
