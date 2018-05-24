@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {
-  sessionCheck,
-  adminCheck
-} from '../sessionUtils'
+import { sessionCheck } from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
@@ -58,7 +55,6 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      //beforeEnter: adminCheck
     },
     {
       path: '/login',
