@@ -1,11 +1,11 @@
 <template>
 <div class='container'>
   <div class='row'>
-    <h1 class="big" >Home Page Edit</h1>
+    <h1>Home Page Edit</h1>
   </div>
   <hr>
   <div class='row'>
-    <h3 class="big" >Current Hero Image</h3>
+    <h3>Current Hero Image</h3>
   </div>
   <h5 class="text-success" v-if="messages">Your FAQ was successfully deleted!</h5>
   <h5>The width to height ratio of the Hero image should be 2.8 : 1</h5>
@@ -13,23 +13,31 @@
     <img :src="homePageData.heroImage" alt="top-image" class="fit-image1">
   </div>
   <div class='row'>
-    <span>There are two methods of uploading a new hero image. One is to upload an image then hit the submit button. The other is to input an image url (this can be used to easily reverse changes if you saved the previous image address)</span>
+    <h5 class="text-center">There are two methods of uploading a new hero image. One is to upload an image then hit the submit button. The other is to input an image url (this can be used to easily reverse changes if you saved the previous image address)</h5>
   </div>
   <div class='row'>
-    <form v-on:submit="submitHeroImageFile">
-      <input name="companyLogo" type="file" v-on:change="previewImage" accept="image/*">
-      <button type="submit" class="btn btn-primary submit-button">add a new hero image to replace existing</button>
+    <form v-on:submit="submitHeroImageFile" class="flexer">
+      <input name="companyLogo" type="file" v-on:change="previewImage" accept="image/*" class="pad">
+      <button type="submit" class="btn btn-primary submit-button pad">add a new hero image to replace existing</button>
     </form>
   </div>
-  <div class='row'>
-    <span>preview section:</span>
-    <img :src="imageData"/>
-  </div>
-  <div class='row'>
-    <form v-on:submit="submitHeroImageUrl">
-    <input required name="url" type='text'/>
-    <button type="submit" class="btn btn-primary submit-button">Submit hero image url</button>
+  <div class="row">
+    <form v-on:submit="submitHeroImageUrl" id="url-form" class="flexer">
+      <input required name="url" type='text' class="form-control pad"/>
+      <button type="submit" class="btn btn-primary submit-button pad">Submit hero image url</button>
     </form>
+  </div>
+  <div v-if="imageData">
+    <div class='row'>
+      <h3>Preview:</h3>
+    </div>
+    <div class='row'>
+      <img :src="imageData"/>
+    </div>
+  </div>
+  <hr>
+  <div class='row'>
+    <h3>Partners</h3>
   </div>
   <div class='row'>
     The width to height ratio of Partner logos should be 1.33 : 1
@@ -44,7 +52,13 @@
     </div>
   </div>
   <div class='row'>
-    button for adding partner logo
+    Add partner:
+  </div>
+  <div class='row'>
+    <form v-on:submit="submitPartnerFile" class="flexer">
+      <input name="companyLogo" type="file" v-on:change="previewImage" accept="image/*" class="pad">
+      <button type="submit" class="btn btn-primary submit-button pad">add a new hero image to replace existing</button>
+    </form>
   </div>
 </div>
 
@@ -92,8 +106,7 @@
             reader.readAsDataURL(input.files[0]);
         }
       },
-      submitHeroImageFile: function(evt){
-        event.preventDefault()
+      submitHeroImageFile: function(){
         const formData = new FormData()
         formData.append('file', this.file[0]);
         formData.append('upload_preset', this.cloudinary.uploadPreset);
@@ -203,5 +216,16 @@
   }
   input {
     margin: auto;
+  }
+  .pad {
+    margin: 5px;
+  }
+  .flexer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-control {
+    width:60%;
   }
 </style>
