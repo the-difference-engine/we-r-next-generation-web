@@ -5,7 +5,6 @@ import {
   adminCheck
 } from '../sessionUtils'
 
-import addSuccess from '@/components/addSuccess'
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
 import admin_waiver_view from '@/components/admin_waiver_view'
@@ -31,6 +30,9 @@ import opportunities from '@/components/opportunities'
 import partner from '@/components/partner'
 import profile from '@/components/profile'
 import successStories from '@/components/successStories'
+import successEdit from '@/components/successEdit'
+import successAddNew from '@/components/successAddNew'
+import successEditSingle from '@/components/successEditSingle'
 import users from '@/components/users'
 import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
@@ -176,33 +178,6 @@ export default new Router({
       }
     },
     {
-      path: '/faqEdit',
-      name: 'faqEdit',
-      components: {
-        default: faqEdit,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
-      path: '/faqEditSingle',
-      name: 'faqEditSingle',
-      components: {
-        default: faqEditSingle,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
-      path: '/faqAddNew',
-      name: 'faqAddNew',
-      components: {
-        default: faqAddNew,
-        header: adminNavbar,
-        footer: wernxgFooter
-      }
-    },
-    {
       path: '/donate',
       name: 'donate',
       components: {
@@ -319,13 +294,64 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/admin/addSuccessStory',
-      name: 'addSuccess',
+      path: '/admin/faqEdit',
+      name: 'faqEdit',
       components: {
-        default: addSuccess,
+        default: faqEdit,
         header: adminNavbar,
         footer: wernxgFooter
-      }
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successEdit',
+      name: 'successEdit',
+      components: {
+        default: successEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successAddNew',
+      name: 'successAddNew',
+      components: {
+        default: successAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successEditSingle',
+      name: 'successEditSingle',
+      components: {
+        default: successEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
     },
   ]
 })

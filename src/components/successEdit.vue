@@ -1,37 +1,37 @@
 <template>
 <div class="container">
   <div class="row mx-0">
-    <h1 class="big">
-      Edit FAQs
+    <h1>
+      Edit Success Stories
     </h1>
   </div>
   <hr>
-  <h3 class="scroller-catch">Edit Current FAQS</h3>
-  <h4 class="text-success" v-if="messages">Your FAQ was successfully deleted!</h4>
+  <h3 class="scroller-catch">Edit Current Success Stories</h3>
+  <h4 class="text-success" v-if="messages">Your Success Story was successfully deleted!</h4>
   <div class="row">
     <div class="col-md-14 text-right">
-      <router-link :to="'faqAddNew'" class="btn btn-success">Add New FAQ</router-link>
+      <router-link :to="'successAddNew'" class="btn btn-success">Add New Success Story</router-link>
     </div>
   </div>
   <div class="row">
-    <div class="row mx-0 my-3" v-for="(faq, index) in faqs" :key="index">
+    <div class="row mx-0 my-3" v-for="(successStory, index) in successStories" :key="index">
       <form>
         <div class="form-group row">
-          <label class="col-md-2 col-form-label text-right">Question</label>
+          <label class="col-md-2 col-form-label text-right">About Camper</label>
           <div class="col-md-10">
-            <input readonly type="text" class="form-control" v-model="faq.question" v-bind:placeholder="faq.question">
+            <input readonly type="text" class="form-control" v-model="successStory.about" v-bind:placeholder="successStory.about">
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-md-2 col-form-label text-right">Answer</label>
+          <label class="col-md-2 col-form-label text-right">What They Learned</label>
           <div class="col-md-10">
-            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="faq.answer" v-bind:placeholder="faq.answer"></div>
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="successStory.learned" v-bind:placeholder="successStory.learned"></div>
           </div>
         </div>
         <div class="form-group row">
           <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-danger" v-on:click.self="faqDelete(faq); scrollToPreview()">Delete Question</button>
-            <router-link :to="{ name: 'faqEditSingle', params: { id: faq._id.$oid } }">
+            <button type="submit" class="btn btn-danger" v-on:click.self="successDelete(successStory); scrollToPreview()">Delete Success Story</button>
+            <router-link :to="{ name: 'successEditSingle', params: { id: successStory._id.$oid } }">
               <button type="submit" class="btn btn-primary">Edit</button>
             </router-link>
           </div>
@@ -50,20 +50,22 @@ import axios from 'axios';
 import 'vue-scrollto';
 import localforage from '../sessionUtils';
 export default {
-  name: 'faq',
+  name: 'successStory',
   data() {
     return {
-      category_set: new Set(),
-      curr_category: 'all',
-      faqs: {},
-      messages: false
+      successStories: {},
+      messages: false,
+      customToolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }]
+      ]
     };
   },
   methods: {
-    faqDelete: function(value) {
+    successDelete: function(value) {
       localforage.getItem('X_TOKEN').then(session => {
         axios
-          .delete(`/api/v1/faqEdit/${value._id.$oid}`, {
+          .delete(`/api/v1/successEdit/${value._id.$oid}`, {
             headers: { 'x-token': session },
             params: value
           })
@@ -85,16 +87,11 @@ export default {
       VueScrollTo.scrollTo(element, duration);
     }
   },
-
   created() {
     axios
-      .get('/api/v1/faq')
+      .get('/api/v1/successStories')
       .then(response => {
-        this.faqs = response.data;
-        for (let faq of response.data) {
-          this.category_set.add(faq.category);
-        }
-        this.categories = Array.from(this.category_set);
+        this.successStories = response.data;
       })
       .catch(e => {
         this.errors = e;
