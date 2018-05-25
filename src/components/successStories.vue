@@ -1,28 +1,39 @@
 <template>
-  <div class="container" id="carousel-container">
+  <div class="container-fluid" id="carousel-container">
     <div class="row" id="jumbotron">
+      <img class="image" src="http://eusic.challenges.org/wp-content/uploads/sites/6/2015/11/header-image-5.jpg" />
     </div>
     <div class="row" id="header">
-      <h1>About Student's Experiences</h1>
+      <h1>About Student's Experience</h1>
     </div>
-    <div id='action-carousel' class='row'>
-      <carousel :navigationEnabled="true" :perPage="1">
-        <slide v-for="story in stories" :key="story._id.$oid">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="about col-xs-12 col-sm-6 col-md-6">
-                <p>{{story.about}}</p>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-6">
-                <img class="pic" :src="story.image" :alt="'Child Story id: ' + story._id.$oid"/>
-              </div>
-              <div class="learned col-xs-12">
-                <p>{{story.learned}}</p>
+    <div class="container-fluid row">
+      <div id='action-carousel' class='row'>
+        <carousel :navigationEnabled="true" :perPage="1">
+          <slide v-for="story in stories" :key="story._id.$oid">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="about col-xs-12 col-sm-6 col-md-6">
+                  <p>{{story.about}}</p>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <img class="story-pic" :src="story.image" :alt="'Child Story id: ' + story._id.$oid"/>
+                </div>
+                <div class="learned col-xs-12">
+                  <h2>What did I learn?</h2>
+                  <p>{{story.learned}}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </slide>
-      </carousel>
+          </slide>
+        </carousel>
+      </div>
+    </div>
+    <div id="camp-lagos-2015" class="row">
+      <h1>Camp Lagos 2015</h1>
+      <div id="camp-image-container" class="col-xs-12">
+        <img class="image" src="http://res.cloudinary.com/wernextgeneration/image/upload/v1522972807/wernextgen-login.jpg" />
+      </div>
+      <h2>This photo was taken July 1 2015.</h2>
     </div>
   </div>
 </template>
@@ -50,6 +61,21 @@
 </script>
 
 <style scoped>
+#camp-lagos-2015 {
+  color: white;
+  background-color: #7ddbd4;
+  padding: 20px 40px;
+}
+#camp-image-container {
+  border: 20px solid white;
+  background-color: white;
+  padding: 20px 10px;
+  margin: 30px 0;
+  height: auto;
+}
+.image {
+  width: 100%;
+}
 #action-carousel {
   width: 90%;
   margin: auto;
@@ -64,17 +90,25 @@
   margin: auto !important;
 }
 .about {
-
-}
-.pic {
-  max-width: 300px;
-  max-height: 300px;
+  font-size: 22px;
+  line-height: 36px;
+  text-align: left;
+  overflow-y: scroll;
 }
 .learned {
   padding-top: 50px;
+  font-size: 22px;
+  line-height: 40px;
+}
+.learned > p {
+  text-align: left;
+}
+.story-pic {
+  max-width: 300px;
+  max-height: 300px;
 }
 @media (max-width:385px) {
-  .pic {
+  .story-pic {
     max-width:150px;
   }
 }
