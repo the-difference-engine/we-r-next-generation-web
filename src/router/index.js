@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {sessionCheck, adminCheck} from '../sessionUtils'
+import { sessionCheck } from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
 import admin_waiver_view from '@/components/admin_waiver_view'
-import admin_waiver_all_applicant from '@/components/admin_waiver_all_applicant'
+import admin_waiver_edit from '@/components/admin_waiver_edit'
 import campInfo from '@/components/campInfo'
 import camper from '@/components/camper'
 import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
+import faqEdit from '@/components/faqEdit'
+import faqAddNew from '@/components/faqAddNew'
+import faqEditSingle from '@/components/faqEditSingle'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import signup from '@/components/signup'
@@ -28,20 +31,23 @@ import users from '@/components/users'
 import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
+import homeEdit from '@/components/homeEdit'
 import adminApp from '@/components/adminApp'
 
 Vue.use(Router)
 
 export default new Router({
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return {
+        x: 0,
+        y: 0
+      }
     }
   },
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Root',
       components: {
@@ -49,7 +55,6 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      //beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -166,6 +171,33 @@ export default new Router({
       }
     },
     {
+      path: '/faqEdit',
+      name: 'faqEdit',
+      components: {
+        default: faqEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
+      path: '/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      }
+    },
+    {
       path: '/donate',
       name: 'donate',
       components: {
@@ -222,10 +254,10 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/admin/users/:id/waivers',
-      name: 'AdminUserWaivers',
+      path: '/admin/waiver/:type/edit',
+      name: 'AdminUserWaiverEdit',
       components: {
-        default: admin_waiver_all_applicant,
+        default: admin_waiver_edit,
         header: adminNavbar,
         footer: wernxgFooter
       },
@@ -262,6 +294,16 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
+      path: '/admin/home-edit',
+      name: 'homeEdit',
+      components: {
+        default: homeEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
       path: '/admin/application/:id',
       name: 'adminApp',
       components: {
@@ -270,6 +312,6 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
-    }
+    },
   ]
 })
