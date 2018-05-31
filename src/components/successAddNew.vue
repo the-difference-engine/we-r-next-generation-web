@@ -66,7 +66,7 @@ export default {
       ],
       cloudinary: {
         uploadPreset: 'loazbic8',
-        apiKey: '234871425639756',
+        apiKey: '',
         cloudName: 'wernextgeneration'
       },
       file: [],
@@ -168,6 +168,19 @@ export default {
         this.cloudinary.cloudName
       }/upload`;
     }
+  },
+
+  created() {
+     localforage.getItem('X_TOKEN').then(session => {
+      if (session) {
+        const config = { headers: { 'x-token': session } };
+        axios.get("/api/v1/resources/cloudinaryapi")
+          .then(res => {
+            this.cloudinary.apiKey = res.data.cloudinaryApi;
+          })
+          .catch(err => console.error(err));
+      }
+    })
   }
 };
 </script>

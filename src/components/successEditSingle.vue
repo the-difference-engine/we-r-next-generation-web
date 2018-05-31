@@ -69,7 +69,7 @@ export default {
       ],
       cloudinary: {
         uploadPreset: 'loazbic8',
-        apiKey: '234871425639756',
+        apiKey: '',
         cloudName: 'wernextgeneration'
       },
       file: [],
@@ -170,6 +170,11 @@ export default {
           .get(`/api/v1/successEdit/${this.$route.params.id}`, config)
           .then(res => {
             this.editedStory = res.data;
+          })
+          .catch(err => console.error(err));
+          axios.get("/api/v1/resources/cloudinaryapi")
+          .then(res => {
+            this.cloudinary.apiKey = res.data.cloudinaryApi;
           })
           .catch(err => console.error(err));
       }
