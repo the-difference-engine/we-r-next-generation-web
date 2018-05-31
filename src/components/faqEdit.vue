@@ -19,7 +19,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Question</label>
           <div class="col-md-10">
-            <input readonly type="text" class="form-control" v-model="faq.question" v-bind:placeholder="faq.question">
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="faq.question" v-bind:placeholder="faq.question"></div>
           </div>
         </div>
         <div class="form-group row">
