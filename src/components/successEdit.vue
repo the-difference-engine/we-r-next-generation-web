@@ -19,13 +19,19 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">About Camper</label>
           <div class="col-md-10">
-            <input readonly type="text" class="form-control" v-model="successStory.about" v-bind:placeholder="successStory.about">
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="successStory.about" v-bind:placeholder="successStory.about"></div>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">What They Learned</label>
           <div class="col-md-10">
             <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="successStory.learned" v-bind:placeholder="successStory.learned"></div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label text-right">Image On File</label>
+          <div class="col-md-10">
+            <img style="height: auto; max-height: 100px;" v-bind:src="successStory.image" />
           </div>
         </div>
         <div class="form-group row">
