@@ -19,7 +19,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Question</label>
           <div class="col-md-10">
-            <input readonly type="text" class="form-control" v-model="faq.question" v-bind:placeholder="faq.question">
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="faq.question" v-bind:placeholder="faq.question"></div>
           </div>
         </div>
         <div class="form-group row">
@@ -51,25 +51,15 @@ import 'vue-scrollto';
 import localforage from '../sessionUtils';
 export default {
   name: 'faq',
+  data() {
+    return {
+      category_set: new Set(),
+      curr_category: 'all',
+      faqs: {},
+      messages: false
+    };
+  },
   methods: {
-    faqUpdate: function(evt) {
-      this.$store.dispatch('faqUpdate', {
-        updated_faq: this.faq,
-        faqs_id: this.faq_id,
-        router: this.$router
-      });
-      this.editFAQ();
-    },
-    faqGet: function() {
-      this.$store
-        .dispatch('faqGet', {
-          faq_id: this.$route.params.id
-        })
-        .then(data => {
-          this.faq = data;
-          this.faq_id = this.faq._id.$oid;
-        });
-    },
     faqDelete: function(value) {
       localforage.getItem('X_TOKEN').then(session => {
         axios
@@ -81,6 +71,7 @@ export default {
             this.messages = true;
             setTimeout(() => {
               this.messages = false;
+              this.scrollToPreview();
               this.$router.go(this.$router.currentRoute);
             }, 5000);
           })
@@ -89,24 +80,12 @@ export default {
     },
     scrollToPreview() {
       let element = '.scroller-catch';
-      let duration = 2000;
+      let duration = 1000;
       var VueScrollTo = require('vue-scrollto');
       VueScrollTo.scrollTo(element, duration);
     }
   },
-  data() {
-    return {
-      category_set: new Set(),
-      curr_category: 'all',
-      faqs: {},
-      messages: false
-    };
-  },
-  computed: {
-    get_faq: function() {
-      return this.faqGet();
-    }
-  },
+
   created() {
     axios
       .get('/api/v1/faq')
