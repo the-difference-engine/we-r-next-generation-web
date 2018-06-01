@@ -5,7 +5,7 @@
   "author": "The Difference Engine",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  --host 0.0.0.0",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -13,6 +13,7 @@
     "axios": "^0.17.1",
     "localforage": "^1.5.5",
     "lodash": "^4.17.5",
+    "npm": "^6.1.0",
     "vue": "^2.5.13",
     "vue-carousel": "^0.6.5",
     "vue-mq": "^0.1.2",
