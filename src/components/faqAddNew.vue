@@ -17,7 +17,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Answer</label>
           <div class="col-md-10">
-            <vue-editor v-model="newFaq.answer"></vue-editor>
+            <vue-editor v-model="newFaq.answer" :editorToolbar="customToolbar"></vue-editor>
           </div>
         </div>
         <div class="form-group row">
@@ -58,8 +58,12 @@ export default {
   data() {
     return {
       newFaq: {},
-      messages: null,
-      errors: []
+      messages: false,
+      errors: [],
+      customToolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }]
+      ]
     };
   },
   methods: {
@@ -78,7 +82,7 @@ export default {
           .then(res => {
             this.messages = true;
             setTimeout(() => {
-              this.messages = null;
+              this.messages = false;
               this.$router.push('/admin/faqEdit');
             }, 3000);
           })

@@ -17,7 +17,7 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">Answer</label>
           <div class="col-md-10">
-            <vue-editor v-model="qaObject.answer"></vue-editor>
+            <vue-editor v-model="qaObject.answer" :editorToolbar="customToolbar"></vue-editor>
           </div>
         </div>
         <div class="form-group row">
@@ -59,7 +59,11 @@ export default {
     return {
       qaObject: {},
       messages: false,
-      errors: []
+      errors: [],
+      customToolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }]
+      ]
     };
   },
   methods: {
