@@ -4,33 +4,28 @@
   <div id="wrapper">
     <div class="row" id="boxHolder">
       <div class="boxes col" id="sideBar">
-        <h3 id="sideHeader">Profile</h3>
-        <a href="">Camp Application</a>
-        <a href="">Volunteer Application</a>
-        <a href="">Partner Application</a>
+        <h3 class="profileNav" v-on:click="changeStatus('profile')" v-bind:class="status.profile" id="profile">Profile</h3>
+        <h3 class="profileNav" v-on:click="changeStatus('camp')" v-bind:class="status.camp" id="camp">Camp Application</h3>
+        <h3 class="profileNav" v-on:click="changeStatus('volunteer')" v-bind:class="status.volunteer" id="volunteer">Volunteer Application</h3>
+        <h3 class="profileNav" v-on:click="changeStatus('partner')" v-bind:class="status.partner" id="partner">Partner Application</h3>
       </div>
       <div class="boxes col" id="main">
-        <div id="mainBox">
-          <div id="mainHeader" class="row">
-            <div id="titleDiv" class="text-left col-md-6">
-              <h2 id="mainTitle" class="text-left gray">Profile page</h2>
-            </div>
-            <div id="editDiv" class="text-right col">
-              <button id="editButton" class="btn btn-primary">Edit Profile</button>
-            </div>
+        <div id="mainHeader">
+          <div id="titleDiv">
+            <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
           </div>
-          <div id="mainMid" class="row">
-            <div id="userInfo" class="text-left col-md-6">
-              <h2 class="bold">{{ sessionInfo.full_name }}</h2>
-              <h5 class="gray bold">Address:</h5>
-              <p class="bold">{{ sessionInfo.address }}</p>
-              <h5 id="email" class="gray bold">Email:</h5>
-              <h5 id="phone" class="gray bold">Phone #:</h5>
-            </div>
-            <div id="profilePic" class="col">
-              <img src="\static\assets\saturn1.jpg" alt="">
-            </div>
+          <div id="editDiv">
+            <button id="editButton" class="btn btn-primary">Edit Profile</button>
           </div>
+        </div>
+        <div id="mainMid">
+          <div id="userInfo">
+            <h2 class="bold">{{ sessionInfo.full_name }}</h2>
+            <h3 class="bold">Address: {{ sessionInfo.address }}</h3>
+            <h3 id="email" class="bold">Email: {{ sessionInfo.email }}</h3>
+            <h3 id="phone" class="bold">Phone #: {{ sessionInfo.phone }}</h3>
+          </div>
+          <img src="\static\assets\saturn1.jpg" alt="image not found">
         </div>
       </div>
     </div>
@@ -45,7 +40,41 @@
     data () {
       return {
         sessionId: "",
-        sessionInfo: {}
+        sessionInfo: {},
+        status: {
+          profile: "active",
+          camp: "inactive",
+          volunteer: "inactive",
+          partner: "inactive",
+        }
+      }
+    },
+    methods: {
+      changeStatus: function(link) {
+        if (link === 'profile') {
+          this.status.profile = "active";
+          this.status.camp = "inactive";
+          this.status.volunteer = "inactive";
+          this.status.partner = "inactive";
+        }
+        if (link === 'camp') {
+          this.status.camp = "active";
+          this.status.profile = "inactive";
+          this.status.volunteer = "inactive";
+          this.status.partner = "inactive";
+        }
+        if (link === 'volunteer') {
+          this.status.volunteer = "active";
+          this.status.camp = "inactive";
+          this.status.profile = "inactive";
+          this.status.partner = "inactive";
+        }
+        if (link === 'partner') {
+          this.status.partner = "active";
+          this.status.camp = "inactive";
+          this.status.volunteer = "inactive";
+          this.status.profile = "inactive";
+        }
       }
     },
     created() {
@@ -68,6 +97,7 @@
   #wrapper {
     background: radial-gradient(rgb(252, 166, 109), hsla(34, 96%, 68%, 0.78));
     justify-content: center;
+    padding-bottom: 60px;
   }
   .boxes {
     background-color: white;
@@ -79,6 +109,7 @@
     width: 25%;
     margin-right: 5%;
     vertical-align: top;
+    padding-bottom: 15px;
   }
   #main {
     width: 60%;
@@ -89,17 +120,19 @@
     margin-right: 30px;
     padding-top: 60px;
   }
+  #mainMid {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5%;
+    border-bottom: 2px solid rgb(190, 190, 190);
+    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
   #mainHeader {
     border-bottom: 2px solid rgb(190, 190, 190);
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 30px;
-  }
-  #mainTitle {
-    display: inline-block;
-  }
-  #editDiv {
-    vertical-align: bottom;
+    display: flex;
+    justify-content: space-between;
   }
   .gray {
     color: gray;
@@ -113,18 +146,32 @@
     font-weight: bolder;
     border: 2px solid rgb(140, 218, 192);
     border-radius: 7px;
-    margin-top: 5%;
   }
   img {
     width: 35%;
+    height: 35%;
     border-radius: 10px;
+    margin-right: 5%;
   }
   #userInfo {
     display: inline-block;
-    vertical-align: top;
   }
-  #mainBox {
-    width: 90%;
+  #titleDiv {
+    display: inline-block;
     margin-left: 5%;
+  }
+  #editDiv {
+    padding-top: 15px;
+    margin-right: 5%;
+  }
+  .profileNav {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .active {
+    background-color: rgb(140, 218, 192);
+  }
+  .inactive {
+    background-color: white;
   }
 </style>
