@@ -12,13 +12,16 @@
           <slide v-for="story in stories" :key="story._id.$oid">
             <div class="container-fluid">
               <div class="row">
-                <div class="about col-xs-12 col-sm-6 col-md-6">
+                <div class="about col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <p>{{story.about}}</p>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                  <img class="story-pic" :src="story.image" :alt="'Child Story id: ' + story._id.$oid"/>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <img class="story-pic" :src="story.image" :alt="'Child Story'"/>
                 </div>
-                <div class="learned col-xs-12">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <img class="artwork" :src="story.artwork" :alt="'Child Artwork'"/>
+                </div>
+                <div class="learned col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <h2>What did I learn?</h2>
                   <p>{{story.learned}}</p>
                 </div>
@@ -104,6 +107,10 @@
   text-align: left;
 }
 .story-pic {
+  max-width: 300px;
+  max-height: 300px;
+}
+.artwork {
   max-width: 300px;
   max-height: 300px;
 }
