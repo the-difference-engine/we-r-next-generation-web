@@ -63,7 +63,7 @@ export default {
     faqDelete: function(value) {
       localforage.getItem('X_TOKEN').then(session => {
         axios
-          .delete(`/api/v1/faqEdit/${value._id.$oid}`, {
+          .delete(`/api/v1/admin/faqEdit/${value._id.$oid}`, {
             headers: { 'x-token': session },
             params: value
           })
