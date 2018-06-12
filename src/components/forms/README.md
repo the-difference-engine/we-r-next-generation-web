@@ -71,6 +71,7 @@ Components emit data changes and validation results to parent components. To bin
 * Note that v-model is used for two-way binding in this example. It passes data from the prescribed data property to the child component's :value prop, and it also watches for any 'input' emit events and assigns the changed input value to the corresponding parent's data property.
 
 | Emit Event | v-on:Example | Description |
+| ---------- | ------------ | ----------- |
 | input | v-model="dataField" | Emits any changes to the input field value |
 | invalid | v-on:invalid="invalidField = $event" | Emits a Boolean value to indicate whether the input field is invalid -- true indicates an invalid state; false indicates a valid state |
 | errMsgs | v-on:errMsgs="msgsField = $event" | Emits a list of error messages. In most cases this event will not be necessary, as messages are displayed locally within the inputRow, inputRowNoLabel, and inputTableRow components. |
