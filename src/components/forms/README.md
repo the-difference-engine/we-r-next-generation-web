@@ -5,12 +5,25 @@
 - The components will emit any changes to the field value, an invalid flag, and a list of error messages to the parent
 
 # Available Components
-## Input Field Sub-components
+## Input Table and Row Field Components
+These are the components that will be used most frequently. They are pre-built to style an input field with or without a label within a div row or a table.
+
+| Component | Name | HTML Tag | Description |
+| --------- | ---- | -------- | ----------- |
+| Input Row with Label | inputRow | &lt;input-row&gt; | Constructs a styled input field in a row, with a large or small label (defined in a prop), help text, and error messages. |
+| Input Row no Label | inputRowNoLabel | &lt;input-row-no-label&gt; | Constructs a styled input field in a row, with help text and error messages. This component will not include a label, but expects a label to be included in the props for error messaging. |
+| Input Table Row | inputTableRow | &lt;input-table-row&gt; | Constructs a styled input field in a table row, with a large or small label (defined in a prop), help text, and error messages. |
+
+## Sub-Components
+The following components are used to construct the main components above. They are also available for use in forms that may require unique styling (for example, a form that requires only an input field, or perhaps a table cell that needs to include more than one input).
+The following sub-components contain only small pieces of what would usually be included on a form. For example, the input field sub-component will perform validation, but it will not display error messages, and it will not include a label.
+
+### Input Field Sub-components
 | Input Component | Name | HTML Tag | Description |
 | --------- | ---- | -------- | ----------- |
 | Input Field | inputFieldOnly | &lt;input-field-only&gt; | Input field without a label or div styling. Handles validation and data. All components use this component as a child |
 
-## Label Field Sub-components
+### Label Field Sub-components
 | Label Component | Name | HTML Tag | Description |
 | --------- | ---- | -------- | ----------- |
 | Label | inputLabelOnly | &lt;input-label-only&gt; | Simply a label used with input fields |
@@ -20,9 +33,3 @@
 | Large Label Table Column | inputLabelTableLarge | &lt;input-label-table-large&gt; | Wraps a large label in a pre-defined and sized &lt;td&gt; to be used in a table |
 | Small Label Table Column | inputLabelTableSmall | &lt;input-label-table-small&gt; | Wraps a small label in a pre-defined and sized &lt;td&gt; to be used in a table |
 
-## Input Table and Row Field Components
-| Component | Name | HTML Tag | Description |
-| --------- | ---- | -------- | ----------- |
-| Input Row with Label | inputRow | &lt;input-row&gt; | asdf |
-| Input Row no Label | inputRowNoLabel | &lt;input-row-no-label&gt; | asdf |
-| Input Table Row | inputTableRow | &lt;input-table-row&gt; | asdf |
