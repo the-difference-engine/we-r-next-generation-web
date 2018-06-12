@@ -82,12 +82,10 @@ export const getWaiverResources = ({ commit }, { resource }) => {
       .then(session => {
         axios.get('/api/v1/resources/' + resource)
           .then(response => {
-            console.log("Response Received from getWaiverResources", response.data);
             resolve(response.data);
           })
           .catch(e => {
             setTimeout(() => { }, 3000);
-            console.log("Error Received from getWaiverResources");
             reject(e)
           })
       })
