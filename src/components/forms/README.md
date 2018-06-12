@@ -1,19 +1,19 @@
-# Contents
-* [Available Components](#available-components)
-    * [Main Input Components](#input-table-and-row-field-components)
-    * [Sub Components](#sub-components)
-* [Component Props](#props)
-    * [General Props](#general-props)
-    * [Validation Props](#validation-props)
-* [Emits](#emit)
-* [Importing Components](#importing-components)
-
-
 # Input Field Components
 - Use the components in this directory as input field templates
 - The components will handle validation locally, and also escape any HTML characters('&lt;' or '&gt;')
 - Components will accept the parent's v-model, a label, a type, a default, validation rules, and a custom error flag as props
 - The components will emit any changes to the field value, an invalid flag, and a list of error messages to the parent
+
+# Contents
+* [Available Components](#available-components)
+    * [Main Input Components](#input-table-and-row-field-components)
+    * [Sub Components](#sub-components)
+* [Component Props (data from parent --> child)](#props)
+    * [General Props](#general-props)
+    * [Validation Props](#validation-props)
+* [Component Emits (data from child --> parent)](#emit)
+* [Importing Components](#importing-components)
+
 
 # Available Components
 ## Input Table and Row Field Components
