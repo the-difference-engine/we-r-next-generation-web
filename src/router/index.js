@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {sessionCheck, adminCheck} from '../sessionUtils'
+import { sessionCheck } from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
@@ -12,6 +12,9 @@ import application_submitted from '@/components/application_submitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
+import faqEdit from '@/components/faqEdit'
+import faqAddNew from '@/components/faqAddNew'
+import faqEditSingle from '@/components/faqEditSingle'
 import homePage from '@/components/homePage'
 import login from '@/components/login'
 import signup from '@/components/signup'
@@ -24,24 +27,30 @@ import opportunities from '@/components/opportunities'
 import partner from '@/components/partner'
 import profile from '@/components/profile'
 import successStories from '@/components/successStories'
+import successEdit from '@/components/successEdit'
+import successAddNew from '@/components/successAddNew'
+import successEditSingle from '@/components/successEditSingle'
 import users from '@/components/users'
 import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
+import homeEdit from '@/components/homeEdit'
 import adminApp from '@/components/adminApp'
 
 Vue.use(Router)
 
 export default new Router({
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return {
+        x: 0,
+        y: 0
+      }
     }
   },
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Root',
       components: {
@@ -49,7 +58,6 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      //beforeEnter: adminCheck
     },
     {
       path: '/login',
@@ -262,6 +270,16 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
+      path: '/admin/home-edit',
+      name: 'homeEdit',
+      components: {
+        default: homeEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
       path: '/admin/application/:id',
       name: 'adminApp',
       components: {
@@ -270,6 +288,66 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck
-    }
+    },
+    {
+      path: '/admin/faqEdit',
+      name: 'faqEdit',
+      components: {
+        default: faqEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/faqEditSingle',
+      name: 'faqEditSingle',
+      components: {
+        default: faqEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/faqAddNew',
+      name: 'faqAddNew',
+      components: {
+        default: faqAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successEdit',
+      name: 'successEdit',
+      components: {
+        default: successEdit,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successAddNew',
+      name: 'successAddNew',
+      components: {
+        default: successAddNew,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
+      path: '/admin/successEditSingle',
+      name: 'successEditSingle',
+      components: {
+        default: successEditSingle,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
   ]
 })

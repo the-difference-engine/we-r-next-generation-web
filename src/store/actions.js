@@ -98,7 +98,7 @@ export const getApplication = ({commit}, {id}) =>
     .then(session => {
       if (session) {
         const config = {headers: {'x-token': session}}
-        axios.get(`/api/v1/applications/app/${id}`, config)
+        axios.get(`/api/v1/admin/applications/app/${id}`, config)
         .then(res => resolve(res.data))
         .catch(err => {
           console.error(err)
@@ -114,7 +114,7 @@ export const getApplications = ({commit}, {type}) =>
     .then(session => {
       if (session) {
         const config = {headers: {'x-token': session}}
-        axios.get(`/api/v1/applications/${type}`, config)
+        axios.get(`/api/v1/admin/applications/${type}`, config)
         .then(res => resolve(res.data))
         .catch(err => {
           console.error(err)
@@ -132,7 +132,7 @@ export const updateApplication = ({commit}, {type, app, statusChange}) =>
         const config = {
           headers: {'x-token': session},
           params: {app, type, statusChange}}
-        axios.put(`/api/v1/applications/status/${app._id.$oid}`, config)
+        axios.put(`/api/v1/admin/applications/status/${app._id.$oid}`, config)
         .then(res => resolve(res.data))
         .catch(err => {
           console.error(err)
@@ -148,7 +148,7 @@ export const deleteApplication = ({commit}, {app}) =>
     .then(session => {
       if (session) {
         const config = {headers: {'x-token': session}}
-        axios.delete(`/api/v1/applications/${app._id.$oid}`, config)
+        axios.delete(`/api/v1/admin/applications/${app._id.$oid}`, config)
         .then(() => resolve())
         .catch(err => {
           reject(err)

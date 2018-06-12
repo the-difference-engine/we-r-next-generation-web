@@ -6,6 +6,7 @@
     <div class="row">
       <div id="category_buttons" class="col-sm-12 col-lg-6 col-lg-offset-3">
         <button type="button" class="btn btn-default" v-for="category in categories" v-on:click="curr_category = category">{{ category }}</button>
+        <button type="button" class="btn btn-default" v-on:click="curr_category = 'all'">View All</button>
       </div>
     </div>
     <div class="question row" v-for="faq in faqs" v-if="curr_category==faq.category || curr_category=='all'">
@@ -47,72 +48,81 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  export default {
-    name: 'faq',
-    data () {
-      return {
-        category_set: new Set(),
-        curr_category: "all",
-        faqs: [],
-        newQuestion: {
-          name: "",
-          email: "",
-          message: "",
-        },
-        questionSubmitted: false
-      }
-    },
-    methods: {
-      submitQuestion: function(evt) {
-        axios.post('/api/v1/faq', this.newQuestion).then(response => {
-          this.questionSubmitted = true
-        }).catch( e=> {
-          this.errors = e
+import axios from 'axios';
+export default {
+  name: 'faq',
+  data() {
+    return {
+      category_set: new Set(),
+      curr_category: 'all',
+      faqs: [],
+      newQuestion: {
+        name: '',
+        email: '',
+        message: ''
+      },
+      questionSubmitted: false,
+      categories: []
+    };
+  },
+  methods: {
+    submitQuestion: function(evt) {
+      axios
+        .post('/api/v1/faq', this.newQuestion)
+        .then(response => {
+          this.questionSubmitted = true;
         })
-      }
-    },
-    created() {
-      axios.get('/api/v1/faq').then(response => {
-        this.faqs = response.data
+        .catch(e => {
+          this.errors = e;
+        });
+    }
+  },
+  created() {
+    axios
+      .get('/api/v1/faq')
+      .then(response => {
+        this.faqs = response.data;
         for (let faq of response.data) {
-          this.category_set.add(faq.category)
+          this.category_set.add(faq.category);
         }
-        this.categories = Array.from(this.category_set)
-      }).catch(e => {
-        this.errors = e
+        this.categories = Array.from(this.category_set);
       })
-    },
+      .catch(e => {
+        this.errors = e;
+      });
   }
+};
 </script>
 
 <style scoped>
-  .row {
-    margin-left:0;
-    margin-right:0;
-  }
-  #category_buttons{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 10px;
-  }
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+#category_buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
 
-  .question{
-    text-align: left;
-    margin: 10px;
-  }
+.question {
+  text-align: left;
+  margin: 10px;
+}
 
-  .question_text{
-    font-weight: bold;
-  }
+.question_text {
+  font-weight: bold;
+}
 
-  input, textarea, label{
-    margin: 10px auto;
-  }
+input,
+textarea,
+label {
+  margin: 10px auto;
+}
 
-  #submit{
-    background-color:#EA8432;
-    width: 50%;
-    padding: 10px;
-  }
+#submit {
+  background-color: #ea8432;
+  width: 50%;
+  padding: 10px;
+}
 </style>

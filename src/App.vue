@@ -99,6 +99,9 @@ export default {
   .mr-2 {
     margin-right: 0.5rem !important;
   }
+  .mt-7{
+    margin-top: 1.8rem;
+  }
   .float-right {
     float: right;
   }
