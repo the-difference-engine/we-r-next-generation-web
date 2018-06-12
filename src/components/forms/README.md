@@ -33,3 +33,33 @@ The following sub-components contain only small pieces of what would usually be 
 | Large Label Table Column | inputLabelTableLarge | &lt;input-label-table-large&gt; | Wraps a large label in a pre-defined and sized &lt;td&gt; to be used in a table |
 | Small Label Table Column | inputLabelTableSmall | &lt;input-label-table-small&gt; | Wraps a small label in a pre-defined and sized &lt;td&gt; to be used in a table |
 
+# Props
+Props are custom attributes that can be used to pass data to a child component in Vue. Props are bound to a component as any other Vue attribute, as the following example demonstrates:
+
+> <input-row :v-model="dataField" :label="fieldLabel" :type="text">
+
+The above listed components are built to handle the following props. 
+
+### General Props
+| Prop Name | Data Type | Description | Notes |
+| --------- | --------- | ----------- | ----- |
+| type | String | HTML input field type | RECOMMENDED. All components should have a type. If this is not included, it will be set to "text" by default. |
+| label | String | Label used to describe the input field, and also in error messages | REQUIRED. All components must have a label. An empty label is fine. |
+| defaultValue | String, Number, Boolean, Array | Default value to assign to an empty input field | |
+| helpText | String | Helpful text to supplement an input field to assist the user | |
+| value | String, Number, Boolean, Array | The parent's data value | This may be set by either using the :value prop, or the :v-model prop |
+| hasErrors | Boolean | Passes a boolean value to the child about whether the input field has errors; e.g., from a custom parent data validator | |
+| errors | Array | Passes a list of error messages to the child; e.g., from a custom parent validator | |
+
+### Validation Props
+| Prop Name | Data Type | Description | Notes |
+| --------- | --------- | ----------- | ----- |
+| required | Boolean | Identifies whether this input field is required | DEFAULT: true - if this prop is not provided, the validator will assume the input field is required |
+| minLength | Number | Minimum length required, e.g., for a text input | |
+| maxLength | Number | Maximum length required, e.g., for a text input | |
+| minNum | Number | Minimum value permitted, e.g., for a number input | minNum is inclusive; the value will be allowed |
+| maxNum | Number | Maximum value allowed, e.g., for a number input | maxNum is inclusive; the value will be allowed |
+| minDate | Date | Minimum date permitted | minDate is inclusive |
+| maxDate | Date | Maximum date permitted | maxDate is inclusive |
+
+
