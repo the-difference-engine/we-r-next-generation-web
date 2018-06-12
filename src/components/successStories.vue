@@ -118,7 +118,6 @@
   font-size: 22px;
   line-height: 36px;
   text-align: left;
-  overflow-y: scroll;
 }
 .lower-row {
   padding-top: 50px;
