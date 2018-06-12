@@ -79,32 +79,23 @@ Components emit data changes and validation results to parent components. To bin
 # Importing Components
 To import a component, include an import statement prior to the Vue export default statement, and add the component name to a list of components inside the export default statement. For example, to import the inputRow component, you may use the following:
 
->  import inputRow from './forms/inputRow.vue';
-
->  export default {
-
->    name: "myComponentName",
-
->    components: {
-
->      inputRow,
-
->    },
-
->    data() {
-
->      return {
-
->          myDataFields: null,
-
->      }
-
->    }
-
->  }
+```
+  import inputRow from './forms/inputRow.vue';
+  export default {
+    name: "myComponentName",
+    components: {
+      inputRow,
+    },
+    data() {
+      return {
+          myDataFields: null,
+      }
+    }
+  }
+```
 
 | Component Name | Import Statement |
 | -------------- | ---------------- |
-| inputRow | >  import inputRow from './forms/inputRow.vue'; |
+| inputRow | ``` import inputRow from './forms/inputRow.vue'; ``` |
 | inputRowNoLabel | >  import inputRowNoLabel from './forms/inputRowNoLabel.vue'; |
    
