@@ -36,7 +36,7 @@ The following sub-components contain only small pieces of what would usually be 
 # Props
 Props are custom attributes that can be used to pass data to a child component in Vue. Props are bound to a component as any other Vue attribute, as the following example demonstrates:
 
-> <input-row :v-model="dataField" :label="fieldLabel" :type="text">
+> &lt;input-row :v-model="dataField" :label="fieldLabel" :type="text"&gt;
 
 The above listed components are built to handle the following props. 
 
@@ -47,9 +47,10 @@ The above listed components are built to handle the following props.
 | label | String | Label used to describe the input field, and also in error messages | REQUIRED. All components must have a label. An empty label is fine. |
 | defaultValue | String, Number, Boolean, Array | Default value to assign to an empty input field | |
 | helpText | String | Helpful text to supplement an input field to assist the user | |
-| value | String, Number, Boolean, Array | The parent's data value | This may be set by either using the :value prop, or the :v-model prop |
+| value | String, Number, Boolean, Array | The parent's data value | This may be set by either using the :value prop, or the v-model prop |
 | hasErrors | Boolean | Passes a boolean value to the child about whether the input field has errors; e.g., from a custom parent data validator | |
 | errors | Array | Passes a list of error messages to the child; e.g., from a custom parent validator | |
+| small | Boolean | Determines whether the label should be small or large | This prop is used exclusively on the inputRow, inputRowNoLabel, and inputTableRow components |
 
 ### Validation Props
 | Prop Name | Data Type | Description | Notes |
@@ -62,4 +63,14 @@ The above listed components are built to handle the following props.
 | minDate | Date | Minimum date permitted | minDate is inclusive |
 | maxDate | Date | Maximum date permitted | maxDate is inclusive |
 
+# Emit
+Components emit data changes and validation results to parent components. To bind to the result of a component emit, use v-on in the custom html tag, as demonstrated in the following example:
 
+> &lt;input-row v-model="dataField" v-on:invalid="functionToRun"&gt;
+
+* Note that v-model is used for two-way binding in this example. It passes data from the prescribed data property to the child component's :value prop, and it also watches for any 'input' emit events and assigns the changed input value to the corresponding parent's data property.
+
+| Emit Event | v-on:Example | Description |
+| input | v-model="dataField" | Emits any changes to the input field value |
+| invalid | v-on:invalid="invalidField = $event" | Emits a Boolean value to indicate whether the input field is invalid -- true indicates an invalid state; false indicates a valid state |
+| errMsgs | v-on:errMsgs="msgsField = $event" | Emits a list of error messages. In most cases this event will not be necessary, as messages are displayed locally within the inputRow, inputRowNoLabel, and inputTableRow components. |
