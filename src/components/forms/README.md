@@ -66,7 +66,7 @@ The above listed components are built to handle the following props.
 # Emit
 Components emit data changes and validation results to parent components. To bind to the result of a component emit, use v-on in the custom html tag, as demonstrated in the following example:
 
-> &lt;input-row v-model="dataField" v-on:invalid="functionToRun"&gt;
+> &lt;input-row v-model="dataField" v-on:invalid="field = $event"&gt;
 
 * Note that v-model is used for two-way binding in this example. It passes data from the prescribed data property to the child component's :value prop, and it also watches for any 'input' emit events and assigns the changed input value to the corresponding parent's data property.
 
@@ -75,3 +75,25 @@ Components emit data changes and validation results to parent components. To bin
 | input | v-model="dataField" | Emits any changes to the input field value |
 | invalid | v-on:invalid="invalidField = $event" | Emits a Boolean value to indicate whether the input field is invalid -- true indicates an invalid state; false indicates a valid state |
 | errMsgs | v-on:errMsgs="msgsField = $event" | Emits a list of error messages. In most cases this event will not be necessary, as messages are displayed locally within the inputRow, inputRowNoLabel, and inputTableRow components. |
+
+# Importing Components
+To import a component, include an import statement prior to the Vue export default statement, and add the component name to a list of components inside the export default statement. For example, to import the inputRow component, you may use the following:
+
+>  import inputRow from './forms/inputRow.vue';
+>  export default {
+>    name: "myComponentName",
+>    components: {
+>      inputRow,
+>    },
+>    data() {
+>      return {
+>          myDataFields: null,
+>      }
+>    }
+>  }
+
+| Component Name | Import Statement |
+| -------------- | ---------------- |
+| inputRow | >  import inputRow from './forms/inputRow.vue'; |
+| inputRowNoLabel | >  import inputRowNoLabel from './forms/inputRowNoLabel.vue'; |
+   
