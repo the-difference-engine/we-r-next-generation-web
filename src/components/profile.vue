@@ -15,18 +15,55 @@
             <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
           </div>
           <div id="editDiv">
-            <button id="editButton" class="btn btn-primary">Edit Profile</button>
+            <button id="editButton" class="btn btn-primary" v-on:click="editInfo()">Edit Profile</button>
           </div>
         </div>
-        <div id="mainMid">
-          <div id="userInfo">
-            <h2 class="bold">{{ sessionInfo.full_name }}</h2>
-            <h3 class="bold">Address: {{ sessionInfo.address }}</h3>
-            <h3 id="email" class="bold">Email: {{ sessionInfo.email }}</h3>
-            <h3 id="phone" class="bold">Phone #: {{ sessionInfo.phone }}</h3>
+          <form v-on:submit.prevent="submit">
+            <div id="mainMid">
+              <div id="userInfo">
+                <h1 class="bold userInfo" id="user-name">{{ sessionInfo.full_name }}</h1>
+                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">New</span>
+                  </div>
+                  <input id="form_name" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <h3 id="email" class="userInfo">Email: <span class="gray light">{{ sessionInfo.email }}</span></h3>
+                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">New</span>
+                  </div>
+                  <input id="form_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" v-show="edit === 'on'">
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">Confirm</span>
+                  </div>
+                  <input id="form_con_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <h3 id="password" class="userInfo input-group mb-3">Password: <span class="gray light">{{ sessionInfo.password }}</span></h3>
+                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">New</span>
+                  </div>
+                  <input id="form_password" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" v-show="edit === 'on'">
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">Confirm</span>
+                  </div>
+                  <input id="form_con_password" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <button v-show="edit === 'on'" id="submit-button" class="btn btn-primary submit-buttons" type="submit">Apply Changes</button>
+            </div>
+            <div id="image-section">
+              <img :src="userImage" alt="image not found">
+              <!-- <img :src="userImage" alt="image not found"> -->
+              <input type="file" name="file" id="form_image" class="inputfile" @change="preview" accept="image/*">
+              <label v-show="edit === 'on'" for="form_image">Choose a file</label>
+            </div>
           </div>
-          <img src="\static\assets\saturn1.jpg" alt="image not found">
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -41,6 +78,8 @@
       return {
         sessionId: "",
         sessionInfo: {},
+        userImage: "static/assets/saturn1.jpg",
+        edit: 'off',
         status: {
           profile: "active",
           camp: "inactive",
@@ -75,6 +114,42 @@
           this.status.volunteer = "inactive";
           this.status.profile = "inactive";
         }
+      },
+      preview: function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            this.userImage = e.target.result;
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      },
+      submit: function(evt) {
+        console.log('TEST', evt.target.form_name.value)
+        localforage.getItem('X_TOKEN')
+          .then(session => {
+            axios.post(`/api/v1/profile/edit/${this.sessionInfo._id.$oid}`, {
+              headers: { 'x-token': session },
+              params: {
+                full_name: evt.target.form_name.value,
+                email: evt.target.form_email.value,
+                password: evt.target.form_password.value,
+              }
+          })
+          .then(res => {
+            console.log('DATA RETURNING', res.data)
+            this.sessionInfo = res.data
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        })
+        .catch(console.error);
+      },
+      editInfo() {
+        console.log('IN EDIT')
+        this.edit = 'on';
       }
     },
     created() {
@@ -82,7 +157,6 @@
         this.sessionId = session
         axios.get('/api/v1/profile/' + session, { 'headers': { 'x-token': this.sessionId } }).then(response => {
           this.sessionInfo = response.data
-          console.log("INFO", this.sessionInfo);
         }).catch(e => {
           this.errors = e
         })
@@ -95,7 +169,7 @@
 
 <style scoped>
   #wrapper {
-    background: radial-gradient(rgb(252, 166, 109), hsla(34, 96%, 68%, 0.78));
+    background: radial-gradient(rgb(255, 147, 39), hsl(30, 100%, 79%));
     justify-content: center;
     padding-bottom: 60px;
   }
@@ -113,6 +187,7 @@
   }
   #main {
     width: 60%;
+    height: 495px;
     justify-content: center;
   }
   #boxHolder {
@@ -123,14 +198,14 @@
   #mainMid {
     display: flex;
     justify-content: space-between;
-    padding-left: 5%;
-    border-bottom: 2px solid rgb(190, 190, 190);
     margin-bottom: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
+    text-align: start;
+    margin-left: 10%;
   }
   #mainHeader {
-    border-bottom: 2px solid rgb(190, 190, 190);
+    /* border-bottom: 2px solid rgb(190, 190, 190); */
     display: flex;
     justify-content: space-between;
   }
@@ -140,18 +215,26 @@
   .bold {
     font-weight: bold;
   }
-  #editButton {
+  button {
     background-color: white;
-    color: rgb(140, 218, 192);
+    color: rgb(113, 214, 180);
     font-weight: bolder;
-    border: 2px solid rgb(140, 218, 192);
+    border: 2px solid rgb(113, 214, 180);
     border-radius: 7px;
   }
+  button:hover {
+    color: rgb(10, 173, 119);
+    border: 2px solid rgb(32, 199, 143);
+    background-color: white;
+  }
+  #image-section {
+    margin-right: 10%;
+    margin-top: 25px;
+  }
   img {
-    width: 35%;
-    height: 35%;
+    height: 300px;
     border-radius: 10px;
-    margin-right: 5%;
+    display: block;
   }
   #userInfo {
     display: inline-block;
@@ -168,10 +251,77 @@
     padding-top: 15px;
     padding-bottom: 15px;
   }
+  .profileNav:hover {
+    cursor: pointer;
+  }
   .active {
     background-color: rgb(140, 218, 192);
   }
   .inactive {
     background-color: white;
+  }
+  #password {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .light {
+    font-weight: lighter;
+  }
+  .inputs {
+    display: flex;
+  }
+  .input-caps {
+    background-color: rgb(140, 218, 192);
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: white;
+  }
+  .confirm-inputs {
+    margin-top: 5px;
+  }
+  #user-name {
+    margin-top: 0px;
+  }
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .inputfile + label {
+    background-color: white;
+    color: rgb(113, 214, 180);
+    font-weight: bolder;
+    border: 2px solid rgb(113, 214, 180);
+    border-radius: 7px;
+    padding: 6px;
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+  }
+  .inputfile + label:hover {
+    color: rgb(10, 173, 119);
+    border: 2px solid rgb(32, 199, 143);
+    cursor: pointer;
+  }
+  #submit-button {
+    margin-top: 5px;
+  }
+  /* span {
+    visibility: hidden;
+  }
+  .show {
+    visibility: visible;
+  } */
+  input[type="text"]:focus,
+  #full_name:focus {
+    border-color: rgb(140, 218, 192);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(140, 218, 192);
+    outline: 0 none;
   }
 </style>
