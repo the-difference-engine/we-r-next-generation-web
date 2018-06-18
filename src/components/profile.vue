@@ -85,7 +85,8 @@
           camp: "inactive",
           volunteer: "inactive",
           partner: "inactive",
-        }
+        },
+        userStatus: ''
       }
     },
     methods: {
@@ -160,7 +161,15 @@
         }).catch(e => {
           this.errors = e
         })
-
+      }).catch(err => console.error(err))
+      localforage.getItem('X_TOKEN').then(session => {
+        this.sessionId = session
+        axios.get('/api/v1/profile/applicationcheck/' + session, { 'headers': { 'x-token': this.sessionId } }).then(response => {
+          console.log('RESPONSE', response.data);
+          this.userStatus = response.data
+        }).catch(e => {
+          this.errors = e
+        })
       }).catch(err => console.error(err))
     }
   }
