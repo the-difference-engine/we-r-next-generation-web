@@ -93,6 +93,7 @@ export default {
         apiKey: '',
         cloudName: 'wernextgeneration'
       },
+      imageFile: [],
       camperFile: [],
       artworkFile: [],
       camperImageData: '',
@@ -128,6 +129,65 @@ export default {
       }
     },
 
+    fromInput(formFile) {
+      console.log('fromInput formFile: ', formFile);
+      const formData = new FormData();
+      formData.append('file', formFile[0]);
+      formData.append('upload_preset', this.cloudinary.uploadPreset);
+      formData.append('tags', 'gs-vue,gs-vue-uploaded');
+      console.log('fromInput formData: ', formData);
+      return formData;
+    },
+
+    toCloudinary(formData) {
+      console.log('toCloudinary formData: ', formData);
+      let urlToSave = '';
+      axios
+        .post(this.clUrl, formData)
+        .then(res => {
+          let url = res.data.secure_url;
+          for (var i = 0; i < url.length; i++) {
+            if (url[i] === '/') {
+              var upload = url.slice(i, i + 8);
+              if (upload === '/upload/') {
+                var front = url.slice(0, i + 8);
+                var back = url.slice(i + 8);
+                urlToSave = `${front}q_auto/${back}`;
+                console.log('toCloudinary urlToSave: ', urlToSave);
+              }
+            }
+          }
+        })
+        .then(this.toDatabase(urlToSave))
+        .catch(console.error);
+    },
+
+    toDatabase(urlToSave) {
+      console.log('in toDatabase func');
+      console.log('toDatabase urlToSave: ', urlToSave);
+      localforage
+        .getItem('X_TOKEN')
+        .then(session => {
+          this.editedStory.image = urlToSave;
+          this.imageData = '';
+          axios
+            .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
+              headers: { 'x-token': session },
+              params: this.editedStory
+            })
+            .then(res => {
+              this.messages = true;
+              setTimeout(() => {
+                this.messages = false;
+                this.scrollToPreview();
+                this.$router.push('/admin/successEdit');
+              }, 5000);
+            })
+            .catch(console.error);
+        })
+        .catch(console.error);
+    },
+
     successEditSingle(evt) {
       event.preventDefault();
       this.errors = [];
@@ -136,81 +196,16 @@ export default {
         return;
       }
 
-      let artworkUrlToSave = '';
-
-      if (this.camperFile || this.artworkFile) {
-        const formData = new FormData();
-        formData.append('file', this.camperFile[0]);
-        formData.append('upload_preset', this.cloudinary.uploadPreset);
-        formData.append('tags', 'gs-vue,gs-vue-uploaded');
-
-        // posting to Cloudinary
-        axios.post(this.clUrl, formData).then(res => {
-          let url = res.data.secure_url;
-          let camperUrlToSave = '';
-          for (var i = 0; i < url.length; i++) {
-            if (url[i] === '/') {
-              var upload = url.slice(i, i + 8);
-              if (upload === '/upload/') {
-                var front = url.slice(0, i + 8);
-                var back = url.slice(i + 8);
-                camperUrlToSave = `${front}q_auto/${back}`;
-              }
-            }
-          }
-
-          const formData = new FormData();
-          formData.append('file', this.artworkFile[0]);
-          formData.append('upload_preset', this.cloudinary.uploadPreset);
-          formData.append('tags', 'gs-vue,gs-vue-uploaded');
-          axios
-            .post(this.clUrl, formData)
-            .then(res => {
-              let url = res.data.secure_url;
-              for (var i = 0; i < url.length; i++) {
-                if (url[i] === '/') {
-                  var upload = url.slice(i, i + 8);
-                  if (upload === '/upload/') {
-                    var front = url.slice(0, i + 8);
-                    var back = url.slice(i + 8);
-                    artworkUrlToSave = `${front}q_auto/${back}`;
-                  }
-                }
-              }
-            })
-            .then(res => {
-              // taking URL from Cloudinary
-              localforage
-                .getItem('X_TOKEN')
-                .then(session => {
-                  this.editedStory.image = camperUrlToSave;
-                  this.camperImageData = '';
-                  this.editedStory.artwork = artworkUrlToSave;
-                  this.artworkImageData = '';
-                  axios
-                    .post(
-                      `/api/v1/admin/successEdit/${this.editedStory._id.$oid}`,
-                      {
-                        headers: { 'x-token': session },
-                        params: this.editedStory
-                      }
-                    )
-                    .then(res => {
-                      this.messages = true;
-                      setTimeout(() => {
-                        this.messages = false;
-                        this.scrollToPreview();
-                        this.$router.push('/admin/successEdit');
-                      }, 5000);
-                    })
-                    .catch(console.error);
-                })
-                .catch(console.error);
-            })
-            .catch(console.error);
-        });
+      if (this.camperFile) {
+        let camperFormData = this.fromInput(this.camperFile);
+        this.toCloudinary(camperFormData);
+      }
+      if (this.artworkFile) {
+        let artworkFormData = this.fromInput(this.artworkFile);
+        this.toCloudinary(artworkFormData);
       }
     },
+
     scrollToPreview() {
       let element = '.scroller-catch';
       let duration = 1000;
