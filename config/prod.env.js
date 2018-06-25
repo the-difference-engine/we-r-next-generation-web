@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_URL: '"https://qa-wernextgeneration.herokuapp.com"'
+  BASE_URL: '"https://wernextgeneration.herokuapp.com"'
 }
