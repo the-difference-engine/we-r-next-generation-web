@@ -11,7 +11,10 @@ import localforage from './sessionUtils'
 
 Vue.use(VueMq, {
   breakpoints: {
+    smartphone: 320,
     mobile: 600,
+    tablet: 768,
+    desktop: 1224,
     other: Infinity
   }
 })

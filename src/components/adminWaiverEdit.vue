@@ -1,13 +1,13 @@
 <template>
-  <div class="container mx-auto my-4">
+  <div class="container-fluid mx-auto my-4">
     <div class="row col-sm-12 my-5">
       <h1>Edit {{type_cap}} Waiver Form</h1>
-      <small class="col-sm-12 text-left">
-        This form will change the subject waiver for all future {{type}} applications. It will not affect waivers previously signed and stored in the database.
-      </small>
-      <small class="col-sm-12 text-left">
-        Preview any changes on the waiver below.
-      </small>
+      <div class="col-sm-12 text-center">
+        <small>This form will change the subject waiver for all future {{type}} applications. It will not affect waivers previously signed and stored in the database.</small>
+      </div>
+      <div class="col-sm-12 text-center">
+        <small>Preview any changes on the waiver below.</small>
+      </div>
     </div>
     <div ref="updateWaiver" class="row col-sm-12">
       <div class="row col-sm-11 text-left my-5">
@@ -23,7 +23,7 @@
                 <input-label-table-large v-bind:class="{ 'has-error': headers_have_errors }"
                   :label="waiver_labels.header">
                 </input-label-table-large>
-                <td colspan="2" class="col-sm-10 text-left align-baseline">
+                <td class="col-sm-10 text-left align-baseline">
                   <input-row-no-label type="text" 
                     :label="waiver_labels.header"
                     v-model="waiver.header[0]" 
@@ -60,13 +60,20 @@
                   </div>
                 </td>
               </tr>
-            <tr>
-              <input-label-table-large 
-                v-bind:class="{ 'has-error': items_have_errors }"
-                :label="waiver_labels.items">
-              </input-label-table-large>
-              <td class="col-sm-8 text-left align-baseline">
-                <div v-for='index in waiver.items.length' :key="index" class="border-top-bottom">
+            </tbody>
+          </table>
+          <table class="table text-left my-3">
+            <tbody>
+              <tr>
+                <td colspan="3" class="text-center">
+                  <input-label-large 
+                    v-bind:class="{ 'has-error': items_have_errors }"
+                    :label="waiver_labels.items">
+                  </input-label-large>
+                </td>
+              </tr>
+              <tr v-for='index in waiver.items.length' :key="index">
+                <td colspan="2" class="text-left align-baseline">
                   <input-row :label="waiver_labels.item_order" type="number" 
                     v-model="waiver.items[index-1]['order']" 
                     :small="true"
@@ -91,47 +98,53 @@
                     :min-num="waiver_validators.item_text_min"
                     v-on:invalid="itemValidator($event, index, 'text')">
                   </input-row>
-                </div>
-              </td>
-              <td class="col-sm-1 text-left align-top">
-                <button class="btn btn-danger" v-on:click="deleteItem(index-1)">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td class="col-sm-2"></td>
-              <td class="col-sm-10 text-right" colspan="2">
-                <button class="btn btn-warning" v-on:click="addItem">Add Legal Item</button>
-              </td>
-            </tr>
+                </td>
+                <td class="col-sm-1 text-left align-top">
+                  <button class="btn btn-danger" v-on:click.stop.prevent="deleteItem(index-1)">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="text-right">
+                  <button class="btn btn-warning" v-on:click.stop.prevent="addItem">Add Legal Item</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table text-left my-3">
+            <tbody>
               <input-table-row :label="waiver_labels.footer" type="textarea" 
                 v-model="waiver.footer" 
                 :min-length="waiver_validators.footer_min"
                 v-on:invalid="invalid.footer = $event">
               </input-table-row>
-            <tr>
-              <td class="col-sm-2"></td>
-              <td class="col-sm-10 text-right" colspan="2">
-                <div class="row col-sm-12 my-2">
-                  <div v-if="invalidForm" class="row mx-0 px-0 text-right text-danger">
-                    <label>
-                      Please correct the errors above before proceeding.
-                    </label>
+              <tr>
+                <td class="text-right" colspan="2">
+                  <div class="row col-sm-12 my-2">
+                    <div v-if="invalidForm" class="row mx-0 px-0 text-right text-danger">
+                      <label>
+                        Please correct the errors above before proceeding.
+                      </label>
+                    </div>
+                    <button type="cancel" v-on:click="cancelSubmission" class="btn btn-warning mx-4 my-5">Cancel</button>
+                    <button type="submit" class="btn btn-primary my-5" v-bind:disabled="invalidForm">Save & Submit</button>
                   </div>
-                  <button type="cancel" v-on:click="cancelSubmission" class="btn btn-warning mx-4 my-5">Cancel</button>
-                  <button type="submit" class="btn btn-primary my-5" v-bind:disabled="invalidForm">Save & Submit</button>
-                </div>
-              </td>
-            </tr>
+                </td>
+              </tr>
             </tbody>
           </table>
         </form>
       </div>
       <div ref="preview_btn" class="col-sm-1 sticky-top">
         <div v-bind:style="preview_btn_styles">
-          <button class="btn btn-primary sticky btn-preview" v-on:click="scrollToPreview">Preview Changes</button>
+          <button class="btn btn-primary sticky btn-preview" 
+            v-bind:style="{ top: sticky_top, 'margin-top': sticky_top }" 
+            v-on:click="scrollToPreview">
+            Preview Changes
+          </button>
         </div>
       </div>
     </div>
+    <h2>Preview Compiled Waiver</h2>
     <waiver-read-only :waiver="waiver" :type="type"></waiver-read-only>
   </div>
 </template>
@@ -143,6 +156,7 @@
   import inputRow from './forms/inputRow.vue';
   import inputRowNoLabel from './forms/inputRowNoLabel.vue';
   import inputLabelTableLarge from './forms/inputLabelTableLarge.vue';
+  import inputLabelLarge from './forms/inputLabelLarge.vue';
   import inputLabelOnly from './forms/inputLabelOnly.vue';
   import waiverReadOnly from './adminWaiverReadOnly.vue';
   import 'vue-scrollto';
@@ -153,6 +167,7 @@
       inputRow,
       inputRowNoLabel,
       inputLabelTableLarge,
+      inputLabelLarge,
       inputLabelOnly,
       waiverReadOnly
     },
@@ -216,6 +231,7 @@
 
         preview_height: '',
         preview_btn_styles: {},
+        sticky_top: '',
 
         headers_have_errors: false,
         items_have_errors: false,
@@ -249,7 +265,17 @@
 
       matchHeight() {
         let preview_height = this.$refs.updateWaiver.scrollHeight - 50;
-        this.preview_btn_styles = {'height': preview_height + 'px'};
+        let screen_width = window.outerWidth;
+        if (screen_width < 849) {
+          preview_height = 150;
+          this.sticky_top = 25 + 'px';
+        }
+        else {
+          this.sticky_top = 150 + 'px';
+        }
+        this.preview_btn_styles = {
+          'height': preview_height + 'px',
+        };
       },
 
       scrollToPreview() {
@@ -259,12 +285,13 @@
         VueScrollTo.scrollTo(element, duration)
       },
 
-      deleteItem(item_idx) {
+      deleteItem(item_idx, event) {
         // remove the item from the list
         this.waiver.items.splice(item_idx, 1);
+        this.matchHeight();
       },
 
-      addItem() {
+      addItem(event) {
         let count = this.waiver.items.length;
         // add a new item object to the list
         this.waiver.items.push(
@@ -275,6 +302,7 @@
             'initials': true
           }
         );
+        this.matchHeight();
       },
 
       cancelSubmission(event) {
@@ -325,7 +353,7 @@
             data: dataObj
           })
           .then(res => {
-            this.$router.push('/admin/applications');
+            this.$router.push('/admin/waiver/' + this.type + '/review');
           })
         })
       },
@@ -360,6 +388,9 @@
       this.getWaiver(to.params.type);
       next();
     },
+    mounted: function() {
+      window.addEventListener('resize', this.matchHeight);
+    }
   }
 </script>
 
@@ -381,7 +412,6 @@
   }
 
   .sticky {
-    top: 150px;
     margin-top: 150px;
     position: sticky;
   }

@@ -1,8 +1,8 @@
 <template>
-	<div v-bind:class="{ 'has-error': invalid }" class="row col-sm-12 my-2">
+	<div v-bind:class="{ 'has-error': invalid }" class="row col-sm-12 my-2 mx-0 px-0">
 		<input-label-div-small v-if="small" :label="label"></input-label-div-small>
 		<input-label-div-large v-if="!small" :label="label"></input-label-div-large>
-		<div class="col-sm-9 align-middle">
+		<div :class="$mq" class="col-md-9 col-sm-12 align-middle">
 			<input-row-no-label 
 				:type=type
 				:label="label"
@@ -171,3 +171,9 @@ export default {
     },
 }
 </script>
+
+<style scoped lang="postcss">
+	.align-middle.tablet, .align-middle.smartphone, .align-middle.mobile {
+		display: block !important;
+	}
+</style>

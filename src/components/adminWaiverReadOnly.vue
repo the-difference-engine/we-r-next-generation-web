@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-auto my-4">
     <div id="waiver_preview" ref="waiver_preview" class="row col-sm-12 my-5">
-      <h2>Preview Compiled Waiver</h2>
       <div class="waiver mx-auto">
         <div class="mx-auto">
           <h3><span v-html="waiver.title"></span></h3>

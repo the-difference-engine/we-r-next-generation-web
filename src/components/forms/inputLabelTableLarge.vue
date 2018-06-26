@@ -1,5 +1,5 @@
 <template>
-    <td class="col-sm-2 pr-2 text-right align-middle">
+    <td class="col-md-2 col-sm-1 pr-2 text-right align-middle">
 		<input-label-large :label="label"></input-label-large>
     </td>
 </template>

@@ -3,8 +3,7 @@
 		<div v-bind:class="[
             { 'col-sm-3 mx-0 px-0 text-center': isNumber() }, 
             { 'col-sm-12 mx-0 px-0 text-left': !isNumber() }
-            ]"
-            class="align-middle">
+            ]">
 			<input-field-only :type=type
 				:label="label"
 				:value="rowInput"

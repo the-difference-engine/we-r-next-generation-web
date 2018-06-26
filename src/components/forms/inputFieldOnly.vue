@@ -272,7 +272,7 @@ export default {
     display: inline-block;
     border: 1px solid #a9a9a9;
     border-radius: .25em;
-    width: 1.4em;
+    width: 1em;
     height: 1.4em;
     float: left;
     margin-right: .5em;

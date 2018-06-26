@@ -2,28 +2,30 @@
 	<tr v-bind:class="{ 'has-error': invalid }">
 		<input-label-table-small v-if="small" :label="label"></input-label-table-small>
 		<input-label-table-large v-if="!small" :label="label"></input-label-table-large>
-		<td class="col-sm-10 text-left align-baseline" colspan="2">
-			<input-field-only :type=type
-				:label="label"
-				v-model="input"
-				:defaultValue="defaultValue"
-				:help-text="helpText"
-				:required="required"
-				:minLength="minLength"
-				:max-length="maxLength"
-				:min-num="minNum"
-				:max-num="maxNum"
-				:min-date="minDate"
-				:max-date="maxDate"
-				v-on:input="input = $event"
-				v-on:invalid="invalid = $event"
-				v-on:errMsgs="errMsgs = $event">
-			</input-field-only>
-			<div v-if="helpText" class="col-sm-12 px-0">
-				<small>{{helpText}}</small>
-			</div>
-			<div v-if="invalid" class="col-sm-12 has-error px-0">
-				<label v-for="e in errMsgs" class="row col-sm-12 control-label">{{e}}</label>
+		<td class="col-sm-10 text-left align-baseline">
+			<div class="row col-sm-12 mx-0 px-0">
+				<input-field-only :type=type
+					:label="label"
+					v-model="input"
+					:defaultValue="defaultValue"
+					:help-text="helpText"
+					:required="required"
+					:minLength="minLength"
+					:max-length="maxLength"
+					:min-num="minNum"
+					:max-num="maxNum"
+					:min-date="minDate"
+					:max-date="maxDate"
+					v-on:input="input = $event"
+					v-on:invalid="invalid = $event"
+					v-on:errMsgs="errMsgs = $event">
+				</input-field-only>
+				<div v-if="helpText" class="col-sm-12 px-0">
+					<small>{{helpText}}</small>
+				</div>
+				<div v-if="invalid" class="col-sm-12 has-error px-0">
+					<label v-for="e in errMsgs" class="row col-sm-12 control-label">{{e}}</label>
+				</div>
 			</div>
 		</td>
 	</tr>
