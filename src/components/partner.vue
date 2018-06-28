@@ -78,14 +78,6 @@
               localforage.getItem('X_TOKEN')
               .then(session => {
                 console.log('URL TO BE SENT', urlToSave)
-                console.log('asdf', {
-                    companyName: evt.target.companyName.value,
-                    companyLogo: urlToSave,
-                    companyUrl: evt.target.companyUrl.value,
-                    type: 'partner',
-                    status: 'submitted',
-                    bio: evt.target.bio.value
-                    })
                 axios.post('/api/v1/applications', {
                   headers: { 'x-token': session },
                   params: {
