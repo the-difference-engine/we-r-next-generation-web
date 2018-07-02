@@ -130,17 +130,18 @@ export default {
     },
 
     fromInput(formFile) {
-      console.log('fromInput formFile: ', formFile);
+      if (this.camperFile.length != 0) {
+      }
+      if (this.artworkFile.length != 0) {
+      }
       const formData = new FormData();
       formData.append('file', formFile[0]);
       formData.append('upload_preset', this.cloudinary.uploadPreset);
       formData.append('tags', 'gs-vue,gs-vue-uploaded');
-      console.log('fromInput formData: ', formData);
       return formData;
     },
 
-    toCloudinary(formData) {
-      console.log('toCloudinary formData: ', formData);
+    toCloudinary(formData, typeOfImage) {
       let urlToSave = '';
       axios
         .post(this.clUrl, formData)
@@ -153,23 +154,27 @@ export default {
                 var front = url.slice(0, i + 8);
                 var back = url.slice(i + 8);
                 urlToSave = `${front}q_auto/${back}`;
-                console.log('toCloudinary urlToSave: ', urlToSave);
               }
             }
           }
+          return { urlToSave, typeOfImage };
         })
-        .then(this.toDatabase(urlToSave))
+        .then(res => {
+          this.toDatabase(res.urlToSave, res.typeOfImage);
+        })
         .catch(console.error);
     },
 
-    toDatabase(urlToSave) {
-      console.log('in toDatabase func');
-      console.log('toDatabase urlToSave: ', urlToSave);
+    toDatabase(urlToSave, typeOfImage) {
       localforage
         .getItem('X_TOKEN')
         .then(session => {
-          this.editedStory.image = urlToSave;
-          this.imageData = '';
+          if (typeOfImage === 'artworkImage') {
+            this.editedStory.artwork = urlToSave;
+          }
+          if (typeOfImage === 'camperImage') {
+            this.editedStory.image = urlToSave;
+          }
           axios
             .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
               headers: { 'x-token': session },
@@ -196,13 +201,13 @@ export default {
         return;
       }
 
-      if (this.camperFile) {
+      if (this.camperFile.length != 0) {
         let camperFormData = this.fromInput(this.camperFile);
-        this.toCloudinary(camperFormData);
+        this.toCloudinary(camperFormData, 'camperImage');
       }
-      if (this.artworkFile) {
+      if (this.artworkFile.length != 0) {
         let artworkFormData = this.fromInput(this.artworkFile);
-        this.toCloudinary(artworkFormData);
+        this.toCloudinary(artworkFormData, 'artworkImage');
       }
     },
 
