@@ -81,6 +81,7 @@
                         var front = url.slice(0, i+8)
                         var back = url.slice(i+8)
                         urlToSave = `${front}q_auto/${back}`
+                        break;
                     }
                 }
             }
