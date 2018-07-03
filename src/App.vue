@@ -135,9 +135,15 @@ export default {
     padding-bottom: 0;
   }
   .align-middle {
+    display: inline-block;
     vertical-align: middle;
+    float: none;
   }
   .align-top {
     vertical-align: top;
+  }
+  .border-top-bottom {
+    border-bottom: 0.75px solid lightgrey;
+    display: inline-block;
   }
 </style>
