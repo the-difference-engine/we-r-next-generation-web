@@ -11,24 +11,21 @@
       <div class="form-group col-sm-6">
         <label for="companyUrl">Company URL</label>
         <input name="companyUrl" type="text" class="form-control" id="companyUrl" placeholder="www.yoursite.com">
-      </div>
-      <div class="form-group">
-        <label for="companyLogo">Company Logo URL</label>
-        <input name="companyLogo" type="file" v-on:change="upload($event.target.files)" accept="image/*" class="form-control" id="companyLogo" placeholder="optional">
-    </div>
+    	</div>
     </div>
     <div class="row">
       <div class="col-sm-3"></div>
       <div class="form-group col-sm-6">
         <label for="inputImage">Upload Logo/Partner Picture (for Home Page)</label>
-        <input type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="upload">
+        <input required type="file" class="form-control" id="inputImage" rows="3" name="image" accept="image/*" v-on:change="storeFile">
       </div>
     </div>
     <div class="form-group">
       <label for="inputBio">Optional Note</label>
-      <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="optional" name="bio"></textarea>
+      <textarea v-model="bio" class="form-control" id="inputBio" rows="3" placeholder="If you want to add any information" name="bio"></textarea>
     </div>
     <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+    <h4 class="text-success" v-if="success">Successfully Submitted</h4>
 </form>
 </div>
 </template>
@@ -40,6 +37,7 @@
     name: 'partner',
     data () {
       return {
+          file: [],
           profileData: {},
           bio: '',
           cloudinary: {
@@ -47,13 +45,16 @@
               apiKey: '234871425639756',
               cloudName: 'wernextgeneration'
           },
-          thumbs: []
+          success: false
       }
     },
     methods: {
-        upload: function(file) {
-            const formData = new FormData()
-            formData.append('file', file[0]);
+        storeFile: function(event) {
+          this.file = event.target.files
+        },
+        submit: function(evt){
+          const formData = new FormData()
+            formData.append('file', this.file[0]);
             formData.append('upload_preset', this.cloudinary.uploadPreset);
             formData.append('tags', 'gs-vue,gs-vue-uploaded');
             // For debug purpose only
@@ -61,46 +62,39 @@
             for(var pair of formData.entries()) {
                 console.log(pair[0]+', '+pair[1]);
             }
-            delete axios.defaults.headers.common['x-token']
             axios.post(this.clUrl, formData).then(res => {
-                console.log('URL SENT BACK', res.data.secure_url);
-                this.thumbs.unshift({
-                url: res.data.secure_url
-                })
-            })
-
-
-        },
-        submit: function(evt){
-            var url = this.thumbs[0]['url'];
-            var urlToSave = ''
-            for (var i = 0; i < url.length; i++) {
-                if (url[i] === '/') {
+              let url = res.data.secure_url
+              let urlToSave = ''
+                for (var i = 0; i < url.length; i++) {
+                  if (url[i] === '/') {
                     var upload = url.slice(i, i+8);
                     if (upload === '/upload/') {
-                        var front = url.slice(0, i+8)
-                        var back = url.slice(i+8)
-                        urlToSave = `${front}q_auto/${back}`
-                        break;
+                      var front = url.slice(0, i+8)
+                      var back = url.slice(i+8)
+                      urlToSave = `${front}q_auto/${back}`
                     }
+                  }
                 }
-            }
-            localforage.getItem('X_TOKEN')
-            .then(session => {
-                console.log('SENDING TO DB')
+              localforage.getItem('X_TOKEN')
+              .then(session => {
                 console.log('URL TO BE SENT', urlToSave)
                 axios.post('/api/v1/applications', {
-                    headers: { 'x-token': session },
-                    params: {
-                        companyName: evt.target.companyName.value,
-                        companyLogo: urlToSave,
-                        companyUrl: evt.target.companyUrl.value,
-                        type: 'partner',
-                        status: 'submitted',
-                        bio: evt.target.bio.value
-                        }
+                  headers: { 'x-token': session },
+                  params: {
+                    companyName: evt.target.companyName.value,
+                    companyLogo: urlToSave,
+                    companyUrl: evt.target.companyUrl.value,
+                    type: 'partner',
+                    status: 'submitted',
+                    bio: evt.target.bio.value
+                    }
                 })
-                .catch(console.error)})
+                .then(()=> {
+                  this.success = true
+                })
+              .catch(console.error)})
+            .catch(console.error)
+            })
             .catch(console.error)
         }
     },
@@ -163,6 +157,6 @@
       }
   }
   #submit {
-      margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 </style>
