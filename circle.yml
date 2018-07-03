@@ -2,14 +2,13 @@ machine:
   node:
     version: 8.9.4
 
-
 test:
   override:
     - "true"
 
 deployment:
   development:
-    branch: qa
+    branch: master
     commands:
       - npm run build --config build/webpack.prod.conf.js
       - aws s3 sync dist s3://wrngtest --delete
