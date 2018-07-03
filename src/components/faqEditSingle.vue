@@ -74,7 +74,7 @@ export default {
       }
       localforage.getItem('X_TOKEN').then(session => {
         axios
-          .post(`/api/v1/faqEdit/${this.qaObject._id.$oid}`, {
+          .post(`/api/v1/admin/faqEdit/${this.qaObject._id.$oid}`, {
             headers: { 'x-token': session },
             params: this.qaObject
           })
@@ -109,7 +109,7 @@ export default {
       if (session) {
         const config = { headers: { 'x-token': session } };
         axios
-          .get(`/api/v1/faqEdit/${this.$route.params.id}`, config)
+          .get(`/api/v1/admin/faqEdit/${this.$route.params.id}`, config)
           .then(res => {
             this.qaObject = res.data;
           })
