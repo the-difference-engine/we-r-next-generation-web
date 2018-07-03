@@ -1,26 +1,19 @@
-# we-r-next-generation-web
+# We-R-Next Generation Web
 
-> web app ui for we r next generation app
+## What this is
+This is part of the We-R-Next-Generation web application. It is written in JavaScript using the Vue framework and deployed to Amazon Web Service's S3 service as a static site. This single-page application utilizes the backend API written in Ruby with the Sinatra library.
 
-## Build Setup
+## Standing up a local version of the application for development
+- Install [docker][1] and start it locally.
+- Clone this repository and the [we-r-next-generation repo][2].
+- Navigate to the we-r-next-generation directory at the command line and run `docker-compose up`. This will pull images for MongoDB, Ruby, and Node, build the backend and frontend apps, and stand up three containers.
+- Once you have this running, the frontend will be accessible on localhost:8080 and the backend will be accessible on localhost:4567.
+- Both of those containers will be linked to their respective source directories and will be running with hot reloading.
 
-``` bash
-# install dependencies
-npm install
+[1]: https://www.docker.com/community-edition
+[2]: https://github.com/the-difference-engine/we-r-next-generation
 
-# serve with hot reload at localhost:8080
-npm run dev
+## Deploying the application
+- This application is deployed to [AWS' S3 service][3] as a static site. The deployment process is automated using CircleCI. 
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-# build for a production
-npm run build --config build/webpack.prod.conf.js
-  to test/check your build - navigate to the /dist folder and run the following command:
-   python -m SimpleHTTPServer
-
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+[3]: https://aws.amazon.com/s3/
