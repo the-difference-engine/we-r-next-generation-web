@@ -175,20 +175,10 @@ export default {
           if (typeOfImage === 'camperImage') {
             this.editedStory.image = urlToSave;
           }
-          axios
-            .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
-              headers: { 'x-token': session },
-              params: this.editedStory
-            })
-            .then(res => {
-              this.messages = true;
-              setTimeout(() => {
-                this.messages = false;
-                this.scrollToPreview();
-                this.$router.push('/admin/successEdit');
-              }, 5000);
-            })
-            .catch(console.error);
+          axios.post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
+            headers: { 'x-token': session },
+            params: this.editedStory
+          });
         })
         .catch(console.error);
     },
@@ -200,7 +190,14 @@ export default {
       if (this.errors.length) {
         return;
       }
-
+      localforage.getItem('X_TOKEN').then(session_token => {
+        axios
+          .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
+            headers: { 'x-token': session_token },
+            params: this.editedStory
+          })
+          .catch(console.log);
+      });
       if (this.camperFile.length != 0) {
         let camperFormData = this.fromInput(this.camperFile);
         this.toCloudinary(camperFormData, 'camperImage');
@@ -209,6 +206,12 @@ export default {
         let artworkFormData = this.fromInput(this.artworkFile);
         this.toCloudinary(artworkFormData, 'artworkImage');
       }
+      this.messages = true;
+      setTimeout(() => {
+        this.messages = false;
+        this.scrollToPreview();
+        this.$router.push('/admin/successEdit');
+      }, 5000);
     },
 
     scrollToPreview() {
