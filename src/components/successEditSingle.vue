@@ -175,11 +175,10 @@ export default {
           if (typeOfImage === 'camperImage') {
             this.editedStory.image = urlToSave;
           }
-          axios
-            .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
-              headers: { 'x-token': session },
-              params: this.editedStory
-            })
+          axios.post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
+            headers: { 'x-token': session },
+            params: this.editedStory
+          });
         })
         .catch(console.error);
     },
@@ -191,15 +190,14 @@ export default {
       if (this.errors.length) {
         return;
       }
-      localforage
-        .getItem('X_TOKEN')
-        .then(session => {
-          axios.post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
-            headers: { 'x-token': session },
+      localforage.getItem('X_TOKEN').then(session_token => {
+        axios
+          .post(`/api/v1/admin/successEdit/${this.editedStory._id.$oid}`, {
+            headers: { 'x-token': session_token },
             params: this.editedStory
           })
-        .catch(console.log)
-      })
+          .catch(console.log);
+      });
       if (this.camperFile.length != 0) {
         let camperFormData = this.fromInput(this.camperFile);
         this.toCloudinary(camperFormData, 'camperImage');
