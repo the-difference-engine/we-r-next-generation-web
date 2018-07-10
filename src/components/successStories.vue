@@ -13,7 +13,7 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="about col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <p class="text-overflow">{{story.about}}</p>
+                  <p class="text-overflow"><span v-html="story.about"></span></p>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="story-pic-border">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="learned col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <h2>What did I learn?</h2>
-                  <p class="text-overflow">{{story.learned}}</p>
+                  <p class="text-overflow"><span v-html="story.learned"></span></p>
                 </div>
               </div>
             </div>
@@ -47,25 +47,26 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import { Carousel, Slide } from 'vue-carousel';
-  export default {
-    name: 'successStories',
-    data () {
-      return {
-        stories: []
-      }
-    },
-    components: {
-      Carousel,
-      Slide
-    },
-    created() {
-      axios.get('/api/v1/successStories')
-      .then(res => this.stories = res.data)
-      .catch(err => console.error(err))
-    }
+import axios from 'axios';
+import { Carousel, Slide } from 'vue-carousel';
+export default {
+  name: 'successStories',
+  data() {
+    return {
+      stories: []
+    };
+  },
+  components: {
+    Carousel,
+    Slide
+  },
+  created() {
+    axios
+      .get('/api/v1/successStories')
+      .then(res => (this.stories = res.data))
+      .catch(err => console.error(err));
   }
+};
 </script>
 
 <style scoped>
@@ -132,7 +133,6 @@
 .story-pic-border {
   background-color: #7ddbd4;
   padding-top: 20px;
-
 }
 .story-pic {
   max-width: 325px;
@@ -143,32 +143,36 @@
   max-height: 300px;
 }
 @media screen and (max-width: 825px) and (min-width: 769px) {
-  .story-pic, .artwork {
+  .story-pic,
+  .artwork {
     max-width: 275px;
   }
 }
 @media screen and (max-width: 768px) and (min-width: 426px) {
-  .story-pic, .artwork {
+  .story-pic,
+  .artwork {
     max-width: 225px;
   }
-  .text-overflow{
+  .text-overflow {
     font-size: 20px;
   }
 }
 @media screen and (max-width: 425px) and (min-width: 386px) {
-  .story-pic, .artwork {
+  .story-pic,
+  .artwork {
     max-width: 225px;
   }
-  .text-overflow{
+  .text-overflow {
     font-size: 18px;
     line-height: 36px;
   }
 }
-@media (max-width:385px) {
-  .story-pic, .artwork {
-    max-width:150px;
+@media (max-width: 385px) {
+  .story-pic,
+  .artwork {
+    max-width: 150px;
   }
-  .text-overflow{
+  .text-overflow {
     font-size: 18px;
     line-height: 34px;
   }
