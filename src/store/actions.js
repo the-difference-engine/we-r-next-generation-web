@@ -9,9 +9,9 @@ export const login = ({commit}, {email, password, router, that}) =>
     commit(types.LOGSTATUS, true)
     localforage.setItem('X_TOKEN', res.data.X_TOKEN)
     .then(() => {
-      if (res.data.profileData.role === 'admin') {
-        router.push('/admin/applications')
+      if (res.data.profileData.role === 'admin' || res.data.profileData.role === 'superadmin' ) {
         commit(types.ISADMIN, true)
+        router.push('/admin/applications')
       }
       else router.push('/')
     })
