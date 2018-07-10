@@ -9,6 +9,12 @@
     <div class="row mx-0 my-3">
       <form v-on:submit.prevent="addSuccess">
         <div class="form-group row">
+          <label class="col-md-2 col-form-label text-right">Camper Name</label>
+          <div class="col-md-10">
+            <input type="text" class="form-control" v-model="newStory.name">
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">About Camper</label>
           <div class="col-md-10">
             <vue-editor id="newStoryAbout" v-model="newStory.about" :editorToolbar="customToolbar"></vue-editor>
@@ -21,15 +27,27 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-md-2 col-form-label text-right">Image</label>
-          <input name="image" type="file" v-on:change="previewImage" accept="image/*">
-          <div class="form-group row text-left">
-            <p><i>* The width to height ratio of uploaded Succes Story Images should be 1.33 : 1</i></p>
+          <hr>
+          <div class="form-group row">
+            <p><i>* The width and height ratio of uploaded Succes Story Images should be 1:1</i></p>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-2 col-form-label text-right">Preview Section</label>
-          <img :src="imageData"/>
+          <div class="form-group row; text-left">
+            <label class="col-md-2 col-form-label text-right">Camper Image</label>
+            <input name="camperImage" type="file" v-on:change="camperPreviewImage" accept="camperImage/*">
+          </div>
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Preview Section</label>
+            <img style="max-height: 300px; max-height: 300px" :src="camperImageData"/>
+          </div>
+          <hr>
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Artwork Image</label>
+            <input name="artworkImage" type="file" v-on:change="artworkPreviewImage" accept="image/*">
+          </div>
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right">Preview Section</label>
+            <img style="max-height: 300px; max-height: 300px" :src="artworkImageData"/>
+         </div>
         </div>
         <div class="form-group row">
           <div class="col-md-12 text-right">
@@ -69,19 +87,34 @@ export default {
         apiKey: '',
         cloudName: 'wernextgeneration'
       },
-      file: [],
-      imageData: ''
+      camperFile: [],
+      artworkFile: [],
+      camperImageData: '',
+      artworkImageData: ''
     };
   },
   methods: {
-    previewImage(event) {
-      this.file = event.target.files;
+    camperPreviewImage(event) {
+      this.camperFile = event.target.files;
       let input = event.target;
       if (input.files && input.files[0]) {
         let reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
         reader.onload = e => {
-          this.imageData = e.target.result;
+          this.camperImageData = e.target.result;
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    artworkPreviewImage(event) {
+      this.artworkFile = event.target.files;
+      let input = event.target;
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = e => {
+          this.artworkImageData = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
@@ -96,47 +129,69 @@ export default {
       }
 
       const formData = new FormData();
-      formData.append('file', this.file[0]);
+      formData.append('file', this.camperFile[0]);
       formData.append('upload_preset', this.cloudinary.uploadPreset);
       formData.append('tags', 'gs-vue,gs-vue-uploaded');
 
       // posting to Cloudinary
       axios.post(this.clUrl, formData).then(res => {
         let url = res.data.secure_url;
-        let urlToSave = '';
+        let camperUrlToSave = '';
         for (var i = 0; i < url.length; i++) {
           if (url[i] === '/') {
             var upload = url.slice(i, i + 8);
             if (upload === '/upload/') {
               var front = url.slice(0, i + 8);
               var back = url.slice(i + 8);
-              urlToSave = `${front}q_auto/${back}`;
+              camperUrlToSave = `${front}q_auto/${back}`;
             }
           }
         }
 
-        // taking URL from Cloudinary
-        localforage
-          .getItem('X_TOKEN')
-          .then(session => {
-            this.newStory.image = urlToSave;
-            this.imageData = '';
-            axios
-              .post(`/api/v1/successAdd`, {
-                headers: { 'x-token': session },
-                params: this.newStory
-              })
-              .then(res => {
-                this.messages = true;
-                setTimeout(() => {
-                  this.messages = false;
-                  this.scrollToPreview();
-                  this.$router.push('/admin/successEdit');
-                }, 5000);
-              })
-              .catch(console.error);
-          })
-          .catch(console.error);
+        const formData = new FormData();
+        formData.append('file', this.artworkFile[0]);
+        formData.append('upload_preset', this.cloudinary.uploadPreset);
+        formData.append('tags', 'gs-vue,gs-vue-uploaded');
+
+        axios.post(this.clUrl, formData).then(res => {
+          let url = res.data.secure_url;
+          let artworkUrlToSave = '';
+          for (var i = 0; i < url.length; i++) {
+            if (url[i] === '/') {
+              var upload = url.slice(i, i + 8);
+              if (upload === '/upload/') {
+                var front = url.slice(0, i + 8);
+                var back = url.slice(i + 8);
+                artworkUrlToSave = `${front}q_auto/${back}`;
+              }
+            }
+          }
+
+          // taking URL from Cloudinary
+          localforage
+            .getItem('X_TOKEN')
+            .then(session => {
+              this.newStory.image = camperUrlToSave;
+              this.camperImageData = '';
+              this.newStory.artwork = artworkUrlToSave;
+              this.artworkImageData = '';
+              axios
+                .post(`/api/v1/admin/successAdd`, {
+                  headers: { 'x-token': session },
+                  params: this.newStory
+                })
+                .then(res => {
+                  this.messages = true;
+                  setTimeout(() => {
+                    this.messages = false;
+                    this.scrollToPreview();
+                    this.$router.push('/admin/successEdit');
+                  }, 5000);
+                })
+                .catch(console.error);
+            })
+            .catch(console.error);
+        });
       });
     },
 
@@ -147,9 +202,18 @@ export default {
       VueScrollTo.scrollTo(element, duration);
     },
     checkError() {
-      if (this.newStory.about && this.newStory.learned && this.imageData) {
+      if (
+        this.newStory.name &&
+        this.newStory.about &&
+        this.newStory.learned &&
+        this.camperImageData &&
+        this.artworkImagedata
+      ) {
         this.errors = [];
         return true;
+      }
+      if (!this.newStory.name) {
+        this.errors.push('Camper Name Required');
       }
       if (!this.newStory.about) {
         this.errors.push('About Camper Section Required');
@@ -157,8 +221,11 @@ export default {
       if (!this.newStory.learned) {
         this.errors.push('What They Learned Section Required');
       }
-      if (!this.imageData) {
-        this.errors.push('Image Required');
+      if (!this.camperImageData) {
+        this.errors.push('Camper Image Required');
+      }
+      if (!this.artworkImageData) {
+        this.errors.push('Artwork Image Required');
       }
     }
   },
@@ -171,16 +238,17 @@ export default {
   },
 
   created() {
-     localforage.getItem('X_TOKEN').then(session => {
+    localforage.getItem('X_TOKEN').then(session => {
       if (session) {
         const config = { headers: { 'x-token': session } };
-        axios.get("/api/v1/resources/cloudinaryapi")
+        axios
+          .get('/api/v1/resources/cloudinaryapi')
           .then(res => {
             this.cloudinary.apiKey = res.data.cloudinaryApi;
           })
           .catch(err => console.error(err));
       }
-    })
+    });
   }
 };
 </script>

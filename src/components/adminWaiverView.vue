@@ -28,7 +28,7 @@
   import localforage from '../sessionUtils'
   import axios from "axios";
   export default {
-    name: "admin_waiver_view",
+    name: "adminWaiverView",
     data() {
       return {
         waiver: '',

@@ -47,6 +47,10 @@
               <td>Company Logo</td>
               <td><img class="logo" :src="application.companyLogo"/></td>
             </tr>
+            <tr>
+              <td>Company Logo URL</td>
+              <td>{{application.companyLogo}}</td>
+            </tr>
           </tbody>
         </table>
         <table class="table table-striped app-table">
