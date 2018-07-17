@@ -75,7 +75,7 @@ export default {
       }
       localforage.getItem('X_TOKEN').then(session => {
         axios
-          .post(`/api/v1/faqAdd`, {
+          .post(`/api/v1/admin/faqAdd`, {
             headers: { 'x-token': session },
             params: this.newFaq
           })

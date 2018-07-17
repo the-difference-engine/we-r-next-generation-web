@@ -17,6 +17,12 @@
     <div class="row mx-0 my-3" v-for="(successStory, index) in successStories" :key="index">
       <form>
         <div class="form-group row">
+          <label class="col-md-2 col-form-label text-right">Name</label>
+          <div class="col-md-10">
+            <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="successStory.name" v-bind:placeholder="successStory.name"></div>
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-md-2 col-form-label text-right">About Camper</label>
           <div class="col-md-10">
             <div readonly class="form-control" style="height: auto; max-height: 70px; overflow: auto; line-height: inherit;" v-html="successStory.about" v-bind:placeholder="successStory.about"></div>
@@ -32,6 +38,12 @@
           <label class="col-md-2 col-form-label text-right">Image On File</label>
           <div class="col-md-10">
             <img style="height: auto; max-height: 100px;" v-bind:src="successStory.image" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-2 col-form-label text-right">Artwork On File</label>
+          <div class="col-md-10">
+            <img style="height: auto; max-height: 100px;" v-bind:src="successStory.artwork" />
           </div>
         </div>
         <div class="form-group row">
@@ -71,7 +83,7 @@ export default {
     successDelete: function(value) {
       localforage.getItem('X_TOKEN').then(session => {
         axios
-          .delete(`/api/v1/successEdit/${value._id.$oid}`, {
+          .delete(`/api/v1/admin/successEdit/${value._id.$oid}`, {
             headers: { 'x-token': session },
             params: value
           })
