@@ -1,18 +1,53 @@
 <template>
     <div>
         <div v-if="type=='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
-            <textarea class="form-control" rows=4 v-model="inValEscaped" @change="validateInput"></textarea>
+            <textarea class="form-control" rows=4 
+				v-model="inValEscaped" 
+				@change="validateInput"
+				@blur="lostFocus"
+				:placeholder="placeholder"
+				:readonly="readonly"
+				:autocomplete="autocomplete"
+			></textarea>
         </div>
-        <div v-if="type!='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
+		<div v-else-if="type=='select'" class="row col-sm-12 my-2 mx-0 px-0">
+			<select class="col-sm-12 form-control"
+				:readonly="readonly"
+				:autocomplete="autocomplete"
+				v-model="inValEscaped" 
+				@change="validateInput"
+				@blur="lostFocus">
+				<option disabled value="">Please select one...</option>
+				<option v-for="choice in choices" v-bind:value="choice.value">{{choice.text}}</option>
+			</select>
+		</div>
+		<div v-else-if="type=='radio'" class="row col-sm-12 my-2 mx-0 px-1">
+			<div v-for="choice in choices">
+				<input type="radio" 
+					class="form-control radio align-middle" 
+					v-model="inValEscaped" 
+					@change="validateInput"
+					@blur="lostFocus"
+					v-bind:value="choice.value">
+				<label :for="choice.value" class="control-label align-middle my-0">{{choice.text}}</label>
+			</div>
+		</div>
+        <div v-else class="row col-sm-12 my-2 mx-0 px-0">
             <input :type="type" 
 				v-bind:class="[{ 'checkbox' : isCheckbox() }]"
 				class="form-control" 
-				v-model="inValEscaped" @change="validateInput">
+				:placeholder="placeholder"
+				:readonly="readonly"
+				:autocomplete="autocomplete"
+				v-model="inValEscaped" 
+				@change="validateInput"
+				@blur="lostFocus">
         </div>
     </div>
 </template>
 
 <script>
+import _ from 'lodash';
 export default {
 	name: "inputFieldOnly",
 	props: {
@@ -44,6 +79,7 @@ export default {
 					'number',
 					'range',
 					'search',
+					'select',
 					'tel',
 					'time',
 					'url',
@@ -57,14 +93,40 @@ export default {
 			type: [String, Number, Boolean, Array],
 			default: ''
 		},
+		choices: {
+			// input choices for radio, checkbox, or select
+			type: Array,
+			default: function() { return [] }
+		},
 		helpText: {
 			// input help text
 			type: String
+		},
+		placeholder: {
+			// placeholder for input field
+			type: String,
+			default: ''
+		},
+		autocomplete: {
+			// autocomplete provided by HTML standard to help users
+			// use previously entered data to autofill standard forms
+			type: String,
+			default: ''
+		},
+		toUpper: {
+			// boolean flag used to set the input to upper case characters
+			type: Boolean,
+			default: false
 		},
 		required: {
 			// input value is required?
 			type: Boolean,
 			default: true
+		},
+		readonly: {
+			// boolean to indicate a read only input field
+			type: Boolean,
+			default: false
 		},
 		minLength: {
 			// minimum string length used for input validation
@@ -104,13 +166,21 @@ export default {
 		errors: {
 			// list of error messages
 			type: Array
-		}
+		},
+		pristine: {
+			// boolean flag indicates whether the field is clean (unused)
+			// set to true when form created (or cleared, e.g., on cancel)
+			// set to false when field loses focus
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
 			input: '',
 			invalid: false,
-			errMsgs: []
+			errMsgs: [],
+			isPristine: true,
 		}
 	},
 	watch: {
@@ -118,11 +188,9 @@ export default {
 		input(val) {
 			this.$emit('input', val);
 		},
-
 		invalid(val) {
 			this.$emit('invalid', val);
 		},
-
 		errMsgs(val) {
 			this.$emit('errMsgs', val);
 		},
@@ -130,14 +198,22 @@ export default {
 		// listen to changes from parent to child
 		value(val) {
 			this.input = val;
+			// run validators if the input field is not empty on setup
+			if (val == null || val == '') { } else {
+				this.validateInput();
+			}
 		},
-
 		hasErrors(val) {
 			this.invalid = val;
 		},
-
 		errors(val) {
 			this.errMsgs = val;
+		},
+		pristine(val) {
+			if (val == true) {
+				this.clearValidators();
+			}
+			this.isPristine = val;
 		}
 	},
 	methods: {
@@ -220,33 +296,41 @@ export default {
 			validators.forEach(v => {
 				if (v()) { invalid = true; }
 			});
-			return invalid;
+			this.invalid = invalid;
 		},
-
+		lostFocus: function() {
+			// run validators immediately on losing focus
+			this.isPristine = false;
+			this.runValidators();
+		},
 		validateInput: function() {
-			if (this.runValidators()) {
-					this.invalid = true;
-				}
-			else {
-				this.invalid = false;
-				console.log("Validate", this.invalid);
+			if (this.isPristine == false) {
+				this.debouncedValidator();
 			}
 		},
-
+		clearValidators: function() {
+			// reset invalid property to false
+			// and clear error messages
+			// fired when the pristine flag is true
+			// e.g., on cancel event
+			this.invalid = false;
+			this.errMsgs = [];
+		},
 		escapeChars (str) {
 			str = str.replace(/</g, '&lt;');
 			return str.replace(/>/g, '&gt;');
 		},
-
+		setUpper: function(str) {
+			return str.toUpperCase();
+		},
         isCheckbox: function() {
-            if (this.type == 'checkbox') {
+            if (this.type == 'checkbox' || this.type == 'radio') {
                 return true;
             }
             else {
                 return false;
             }
-        },
-
+		},
 	},
 	computed: {
 		inValEscaped: {
@@ -256,6 +340,9 @@ export default {
 			set (value) {
 				if (typeof(value) == "string") {
 					this.input = this.escapeChars(value);
+					if (this.toUpper) {
+						this.input = this.setUpper(this.input);
+					}
 				}
 				else {
 					this.input = value;
@@ -263,18 +350,36 @@ export default {
 			}
 		},
 	},
+	mounted() {
+		// _.debounce is a function provided by lodash to limit how
+		// often a particularly expensive operation can be run.
+		// In this case, we want to limit how we set the invalid property,
+		// waiting until the user has completely finished typing
+		// https://lodash.com/docs/4.17.5#debounce
+		this.debouncedValidator = _.debounce(this.runValidators, 2000);
+		this.validateInput();
+	},
 }
 </script>
 
 <style scoped>
-  .checkbox {
-    position: relative;
-    display: inline-block;
-    border: 1px solid #a9a9a9;
-    border-radius: .25em;
-    width: 1em;
-    height: 1.4em;
-    float: left;
-    margin-right: .5em;
-  }
+	.checkbox {
+		position: relative;
+		display: inline-block;
+		border: 1px solid #a9a9a9;
+		border-radius: .25em;
+		width: 1em;
+		height: 1.4em;
+		float: left;
+		margin-right: .5em;
+	}
+	.radio {
+		position: relative;
+		display: inline-block;
+		border: 1px solid #a9a9a9;
+		border-radius: .25em;
+		width: 1em;
+		height: 1.4em;
+		margin-right: .5em;
+	}
 </style>

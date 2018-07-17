@@ -10,7 +10,7 @@
           <p>{{ pageContent.camper.caption }}</p>
           <p>{{ pageContent.camper.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="/camper">Sign up a Camper</router-link>
+            <router-link class="btn btn-primary appButtons" to="/application/camper/1">Sign up a Camper</router-link>
           </div>
         </div>
       </div>
@@ -23,7 +23,7 @@
           <p>{{ pageContent.volunteer.caption }}</p>
           <p>{{ pageContent.volunteer.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link id="volunteer" class="btn btn-primary appButtons" to="/volunteer">Volunteer</router-link>
+            <router-link id="volunteer" class="btn btn-primary appButtons" to="application/volunteer/1">Volunteer</router-link>
           </div>
         </div>
       </div>

@@ -8,6 +8,11 @@
 				:label="label"
 				:value="rowInput"
 				:defaultValue="defaultValue"
+				:placeholder="placeholder"
+				:readonly="readonly"
+				:autocomplete="autocomplete"
+				:to-upper="toUpper"
+				:choices="choices"
 				:help-text="helpText"
 				:required="required"
 				:minLength="minLength"
@@ -16,12 +21,14 @@
 				:max-num="maxNum"
 				:min-date="minDate"
 				:max-date="maxDate"
+				:pristine="pristine"
 				v-on:input="rowInput = $event"
 				v-on:invalid="invalid = $event"
 				v-on:errMsgs="errMsgs = $event">
 			</input-field-only>
 		</div>
-        <div v-bind:class="[
+        <div v-if="helpText || invalid"
+			v-bind:class="[
             { 'col-sm-8 text-left': isNumber() }, 
             { 'col-sm-12 mx-0 px-0 text-left': !isNumber() }
             ]"
@@ -72,6 +79,7 @@ export default {
 					'number',
 					'range',
 					'search',
+					'select',
 					'tel',
 					'time',
 					'url',
@@ -85,6 +93,26 @@ export default {
 			type: [String, Number, Boolean, Array],
 			default: ''
 		},
+		placeholder: {
+			// placeholder for input field
+			type: String,
+			default: ''
+		},
+		autocomplete: {
+			// autocomplete provided by HTML standard to help users
+			// use previously entered data to autofill standard forms
+			type: String,
+		},
+		toUpper: {
+			// boolean flag used to set the input to upper case characters
+			type: Boolean,
+			default: false
+		},
+		choices: {
+			// input choices for radio, checkbox, or select
+			type: Array,
+			default: function() { return [] }
+		},
 		helpText: {
 			// input help text
             type: String,
@@ -94,6 +122,11 @@ export default {
 			// input value is required?
 			type: Boolean,
 			default: true
+		},
+		readonly: {
+			// boolean to indicate a read only input field
+			type: Boolean,
+			default: false
 		},
 		minLength: {
 			// minimum string length used for input validation
@@ -133,6 +166,13 @@ export default {
 		errors: {
 			// list of error messages
 			type: Array
+		},
+		pristine: {
+			// boolean flag indicates whether the field is clean (unused)
+			// set to true when form created (or cleared, e.g., on cancel)
+			// set to false when field loses focus
+			type: Boolean,
+			default: true
 		},
 	},
 	data() {

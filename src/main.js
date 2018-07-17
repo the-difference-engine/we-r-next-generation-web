@@ -7,6 +7,8 @@ import store from './store'
 import {sync} from 'vuex-router-sync'
 import axios from 'axios'
 import VueMq from 'vue-mq'
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
 import localforage from './sessionUtils'
 
 Vue.use(VueMq, {
@@ -17,7 +19,9 @@ Vue.use(VueMq, {
     desktop: 1224,
     other: Infinity
   }
-})
+});
+
+Vue.use(Tooltip);
 
 axios.defaults.baseURL = process.env.BASE_URL
 

@@ -17,7 +17,7 @@
 import localforage from '../sessionUtils'
 import axios from "axios";
 export default {
-	name: "application_submitted",
+	name: "applicationSubmitted",
 	data() {
 		return {
 			waiver: ''
