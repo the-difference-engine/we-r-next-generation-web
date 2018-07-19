@@ -7,9 +7,14 @@ import adminNavbar from '@/components/adminNavbar'
 import adminWaiverView from '@/components/adminWaiverView'
 import adminWaiverReview from '@/components/adminWaiverReview'
 import adminWaiverEdit from '@/components/adminWaiverEdit'
-import campInfo from '@/components/campInfo'
-import camper from '@/components/camper'
-import application_submitted from '@/components/application_submitted'
+import appFrame from '@/components/applicationFrame';
+import appType from '@/components/applicationType';
+import appPage1 from '@/components/appPage1';
+import appPage2 from '@/components/appPage2';
+import appPage3 from '@/components/appPage3';
+import appConfirm from '@/components/appConfirm';
+import campInfo from '@/components/campInfo';
+import applicationSubmitted from '@/components/applicationSubmitted'
 import confirmation from '@/components/confirmation'
 import donate from '@/components/donate'
 import faq from '@/components/faq'
@@ -32,7 +37,6 @@ import successEdit from '@/components/successEdit'
 import successAddNew from '@/components/successAddNew'
 import successEditSingle from '@/components/successEditSingle'
 import users from '@/components/users'
-import volunteer from '@/components/volunteer'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
 import homeEdit from '@/components/homeEdit'
@@ -80,14 +84,53 @@ export default new Router({
       },
     },
     {
-      path: '/camper',
-      name: 'camper',
+      path: '/application',
+      name: 'application',
       components: {
-        default: camper,
+        default: appFrame,
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      beforeEnter: sessionCheck
+      beforeEnter: sessionCheck,
+      children: [
+        {
+          path: ':appType',
+          name: 'appType',
+          components: {
+            default: appType
+          },
+          children: [
+            {
+              path: '1',
+              name: 'page-1',
+              components: {
+                default: appPage1
+              }
+            },
+            {
+              path: '2',
+              name: 'page-2',
+              components: {
+                default: appPage2
+              }
+            },
+            {
+              path: '3',
+              name: 'page-3',
+              components: {
+                default: appPage3
+              }
+            },
+            {
+              path: 'confirm',
+              name: 'appConfirm',
+              components: {
+                default: appConfirm
+              }
+            }
+          ]
+        },
+      ],
     },
     {
       path: '/forgotPassword',
@@ -127,16 +170,6 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
-      path: '/volunteer',
-      name: 'volunteer',
-      components: {
-        default: volunteer,
-        header: wernxgHeader,
-        footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
-    },
-    {
       path: '/partner',
       name: 'partner',
       components: {
@@ -157,9 +190,9 @@ export default new Router({
     },
     {
       path: '/applications/:id/submitted',
-      name: 'application_submitted',
+      name: 'applicationSubmitted',
       components: {
-        default: application_submitted,
+        default: applicationSubmitted,
         header: wernxgHeader,
         footer: wernxgFooter
       },
