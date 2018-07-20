@@ -86,7 +86,8 @@
                     companyUrl: evt.target.companyUrl.value,
                     type: 'partner',
                     status: 'submitted',
-                    bio: evt.target.bio.value
+                    bio: evt.target.bio.value,
+                    applicant: this.profileData._id.$oid
                     }
                 })
                 .then(()=> {
