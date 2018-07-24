@@ -33,22 +33,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in filteredUsers" v-bind:key="index">
+            <tr v-for="(user, index) in filteredUsers" :key="index">
               <td v-if="user">{{ user.full_name }}</td>
               <td v-if="user">{{ user.email }}</td>
-              <td v-if="user">{{ user._id.$oid }}</td>
+              <td v-if="user">{{ user.registration_date }}</td>
               <td v-if="appState.userInfo.role === 'superadmin'">
-                <form v-on:submit.prevent="updateUserRole">
+                <form>
                   <div class="form-group">
-                    <select class="form-control" id="exampleFormControlSelect1" v-model="user.role">
-                      <option>{{ user.role }}</option>
-                      <option>Admin</option>
-                      <option>User</option>
+                    <select class="form-control" id="exampleFormControlSelect1" @change="updateUserRole($event, user)" v-model="user.role" v-bind:placeholder="user.role">
+                      <option>admin</option>
+                      <option>user</option>
                     </select>
                   </div>
                 </form>
               </td>
-              <td v-else-if="appState.userInfo.role === 'admin'">{{ user.role }}</td>
+              <td v-else-if="appState.userInfo.role === 'admin'">
+                <span v-if="user">{{ user.role }}</span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -84,22 +85,18 @@ export default {
   },
   computed: {
     filterUsers: function() {
-      this.filteredUsers = this.users.map(u => {
-        let date = new Date(parseInt(u._id.$oid.substring(0, 8), 16) * 1000);
+      // let filty = JSON.parse(JSON.stringify(this.users));
+      this.filteredUsers = this.users.filter(user => {
+        let date = new Date(parseInt(user._id.$oid.substring(0, 8), 16) * 1000);
         let shortDate = '' + date;
-        u._id.$oid = shortDate.slice(4, 15);
-        if (
-          u.full_name.toLowerCase().includes(this.filterString.toLowerCase()) ||
-          u.email.toLowerCase().includes(this.filterString.toLowerCase())
-        ) {
-          return u;
-        }
+        user.registration_date = shortDate.slice(4, 15);
+        return (
+          user.full_name
+            .toLowerCase()
+            .includes(this.filterString.toLowerCase()) ||
+          user.email.toLowerCase().includes(this.filterString.toLowerCase())
+        );
       });
-    },
-    testing: function() {
-      return (dateFromObjectId = new Date(
-        parseInt(oid.substring(0, 8), 16) * 1000
-      ));
     },
     appState: function() {
       return this.$store.state;
@@ -144,11 +141,11 @@ export default {
       let sortedDates = dates.sort();
       return sortedDates.pop();
     },
-    updateUserRole: function() {
+    updateUserRole: function(event, user) {
       localforage.getItem('X_TOKEN').then(session => {
-        axios.post(`/api/v1/admin/users/${this.user._id.$oid}`, {
+        axios.put(`/api/v1/profiles/${user._id.$oid}`, {
           headers: { 'x-token': session },
-          params: this.user
+          role: user.role
         });
       });
     }
@@ -160,8 +157,8 @@ export default {
         axios
           .get('/api/v1/profiles', { headers: { 'x-token': session } })
           .then(response => {
-            this.users = response.data.reverse();
-            this.filteredUsers = response.data.reverse();
+            this.users = response.data;
+            this.filteredUsers = response.data;
           })
           .catch(console.error);
       })
