@@ -1,5 +1,5 @@
 <template>
-    <label class="control-label">{{label}}</label>
+    <label class="control-label my-0">{{label}}</label>
 </template>
 
 <script>

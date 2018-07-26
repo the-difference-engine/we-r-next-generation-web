@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-2 col-sm-12 align-middle text-right">
+    <div :class="$mq" class="col-md-2 col-sm-12 align-middle text-right">
 		<input-label-large :label="label"></input-label-large>
     </div>
 </template>
@@ -21,3 +21,9 @@ export default {
 	},
 }
 </script>
+
+<style scoped lang="postcss">
+	.text-right.smartphone, .text-right.mobile {
+		text-align: center !important;
+	}
+</style>

@@ -1,5 +1,5 @@
 <template>
-    <h4><input-label-only :label="label"></input-label-only></h4>
+    <h4 class="my-0"><input-label-only :label="label"></input-label-only></h4>
 </template>
 
 <script>

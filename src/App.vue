@@ -12,7 +12,23 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+  :root{
+    --gray-darker:  lighten(#000, 13.5%); 
+    --gray-dark:    lighten(#000, 20%);
+    --gray:         lighten(#000, 33.5%);
+    --gray-light:   lighten(#000, 46.7%);
+    --gray-lighter: lighten(#000, 93.5%);
+    
+    --brand-primary: #428bca;
+    --brand-success: #5cb85c;
+    --brand-info:    #5bc0de;
+    --brand-warning: #f0ad4e;
+    --light-light-orange: #fae6c9;
+    --brand-danger:  #d9534f;
+  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -26,7 +42,10 @@ export default {
     margin: 30px;
   }
   .mx-auto {
-    margin: auto auto;
+    margin: auto auto !important;
+    display: block !important;
+    position: relative;
+    float: none;
   }
   .mx-0 {
     margin-left: 0;
@@ -48,30 +67,26 @@ export default {
     margin-left: 1rem !important;
     margin-right: 1rem !important;
   }
-  .px-0 {
-    padding-right: 0;
+  .mpl-0 {
     padding-left: 0;
+    margin-left: 0;
   }
-  .pr-0 {
+  .mpr-0 {
     padding-right: 0;
+    margin-right: 0;
   }
-  .pr-1 {
-    padding-right: 1.0em !important;
+  .ml-4 {
+    margin-left: 1rem !important;
   }
-  .pr-2 {
-    padding-right: 1.5rem !important;
+  .mr-1 {
+    margin-right: 0.25rem !important;
   }
-  .pr-3 {
-    padding-right: 2.0rem !important;
+  .mr-2 {
+    margin-right: 0.5rem !important;
   }
-  pl-1 {
-    padding-left: 1.0rem !important;
-  }
-  pl-2 {
-    padding-left: 1.5rem !important;
-  }
-  pl-3 {
-    padding-left: 2.0rem !important;
+  .my-0 {
+    margin-top: 0;
+    margin-bottom: 0;
   }
   .my-1 {
     margin-top: 0.25rem !important;
@@ -93,14 +108,77 @@ export default {
     margin-top: 1.25rem !important;
     margin-bottom: 1.25rem !important;
   }
-  .mr-1 {
-    margin-right: 0.25rem !important;
+  .my-6 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
   }
-  .mr-2 {
-    margin-right: 0.5rem !important;
+  .my-7 {
+    margin-top: 1.75rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+  .my-8 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+  .my-10 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+  }
+  .mb-5 {
+    margin-bottom: 1.25rem !important;
   }
   .mt-7{
     margin-top: 1.8rem;
+  }
+  .px-0 {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .px-1 {
+    padding-right: 1.0em !important;
+    padding-left: 1.0em !important;
+  }
+  .px-2 {
+    padding-right: 1.5em !important;
+    padding-left: 1.5em !important;
+  }
+  .px-3 {
+    padding-right: 2.0em !important;
+    padding-left: 2.0em !important;
+  }
+  .py-0 {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .pr-0 {
+    padding-right: 0;
+  }
+  .pr-1 {
+    padding-right: 1.0em !important;
+  }
+  .pr-2 {
+    padding-right: 1.5rem !important;
+  }
+  .pr-3 {
+    padding-right: 2.0rem !important;
+  }
+  .pl-1 {
+    padding-left: 1.0rem !important;
+  }
+  .pl-2 {
+    padding-left: 1.5rem !important;
+  }
+  .pl-3 {
+    padding-left: 2.0rem !important;
+  }
+  .p-1 {
+    padding: 1.0rem !important;
+  }
+  .p-2 {
+    padding: 1.5rem !important;
+  }
+  .p-3 {
+    padding: 2.0rem !important;
   }
   .float-right {
     float: right;
@@ -119,18 +197,27 @@ export default {
   .font-weight-bold {
     font-weight: bold;
   }
+  .font-size-tiny {
+    font-size: 0.75em;
+  }
   .font-size-1 {
     font-size: 1em;
   }
   .font-size-2 {
     font-size: 1.25em;
   }
+	.font-large {
+		font-size: 2em;
+	}
 
   .align-baseline {
+    display: inline-block;
     vertical-align: baseline;
   }
   .align-bottom {
+    display: inline-block;
     vertical-align: bottom;
+    float: none;
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -142,8 +229,80 @@ export default {
   .align-top {
     vertical-align: top;
   }
+
+  hr {
+		display: block;
+		position: relative;
+		padding: 0;
+		margin: 8px auto;
+		height: 0;
+		width: 70%;
+		max-height: 0;
+		font-size: 1px;
+		line-height: 0;
+		clear: both;
+		border: none;
+		border-top: 1px solid #aaaaaa;
+		border-bottom: 1px solid #ffffff;
+	}
+
   .border-top-bottom {
-    border-bottom: 0.75px solid lightgrey;
+    border-bottom: 0.75px solid gray;
     display: inline-block;
   }
+  .border-all {
+    border: 0.75px solid gray;
+    display: block;
+  }
+  .border-danger {
+    border-color: var(--brand-danger);
+    border-width: 1.5px;
+  }
+
+  .bg-primary {
+    background-color: var(--brand-primary) !important;
+  }
+  .bg-success {
+    background-color: var(--brand-success);
+  }
+  .bg-danger {
+    background-color: var(--brand-danger);
+  }
+  .bg-info {
+    background-color: var(--brand-info);
+  }
+  .bg-warning {
+    background-color: var(--brand-warning);
+  }
+
+  /* Scrollbar styles */
+  .scroll {
+    overflow-y: scroll;
+  }
+  /* Scrollbar width */
+  ::-webkit-scrollbar {
+      width: 8px;
+  }
+  /* Scrollbar Track */
+  ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px gray; 
+      border-radius: 10px;
+  }
+  /* Scrollbar Handle */
+  ::-webkit-scrollbar-thumb {
+      background: var(--brand-warning); 
+      border-radius: 10px;
+  }
+  /* Scrollbar Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+      background: var(--brand-primary); 
+  }
+
+  /* Responsive Media Styles / $mq */
+  .small-screen-left.smartphone,
+  .small-screen-left.mobile {
+      text-align: left;
+  }
+
+
 </style>
