@@ -1,6 +1,7 @@
 import * as types from './types'
 import axios from 'axios'
 import localforage from '../sessionUtils'
+import swal from 'sweetalert2';
 
 export const login = ({commit}, {email, password, router, that}) =>
   axios.post(`/api/v1/sessions`, {email, password})
@@ -158,73 +159,90 @@ export const deleteApplication = ({commit}, {app}) =>
     })
   })
 
-export const campSessionCreate = ({ commit }, { new_camp, router }) =>
-  localforage.getItem('X_TOKEN')
-  .then(session => {
-    axios.post(`/api/v1/camp/session/create`, {
-      headers: { 'x-token': session },
-      params: new_camp
-    })
-      .then(res => {
-        router.push('/camp/' + res.data.$oid)
-      })
-      .catch(() => {
-        setTimeout(() => {  }, 3000);
-      })
-  });
-
-export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) =>
-  localforage.getItem('X_TOKEN')
+export const campSessionCreate = ({ commit }, { newCamp, router }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
     .then(session => {
-      axios.put(`/api/v1/camp/session/${camp_id}/update`, {
+      axios.post(`/api/v1/admin/camp/session/create`, {
+        headers: { 'x-token': session },
+        params: newCamp
+      })
+      .then(res => {
+        swal(
+          'Saved!',
+          'The camp was created successfully.',
+          'success'
+        );
+        router.push(
+          {
+            name: 'campEdit', params: {
+              id: res.data
+            }
+          }
+        );
+        resolve(true);
+      })
+      .catch(err => {
+        swal(
+          'Oops ...',
+          'Something went wrong on the server, please try again.',
+          'error'
+        );
+        setTimeout(() => { }, 3000);
+        reject(false);
+      })
+    });
+  })
+}
+export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      axios.put(`/api/v1/admin/camp/session/${camp_id}/update`, {
         headers: { 'x-token': session },
         params: updated_camp
       })
-        .then(res => {
-          console.log('camp id: ', camp_id)
-          console.log('res is: ', res.data._id.$oid);
-          router.push('/camp/' + res.data._id.$oid)
-        })
-        .catch(err => {
-          setTimeout(() => { }, 3000);
-          console.error(err);
-        })
+      .then(res => { resolve(true) })
+      .catch(err => {
+        setTimeout(() => { }, 3000);
+        reject(false);
+      })
     });
+  })
+}
 
 
-// Get one Camp Experience Session by ID Number
+// Get one Camp Session by ID Number
 export const getCamp = ({ commit }, { router }) =>
   localforage.getItem('X_TOKEN')
   .then(session => {
     axios.get(`/api/v1/camp/session/get`, {
       headers: { 'x-token': session }
     })
-      .then(res => {
-        console.log('res is: ', res, res.data);
-        resolve(res.data);
-      })
-      .catch(err => {
-        setTimeout(() => {  }, 3000);
-        console.error(err);
-      })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      setTimeout(() => {  }, 3000);
+      reject(err);
+    })
   });
 
 export const campSessionGet = ({ commit }, { camp_id }) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
-      .then(session => {
-        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
-        axios.get('/api/v1/camp/session/' + camp_id)
-          .then(response => {
-            console.log("Response Received from campSessionGet", response.data);
-            resolve(response.data);
-          })
-          .catch(e => {
-            setTimeout(() => { }, 3000);
-            console.log("Error Received from campSessionGet");
-            reject(e)
-          })
+    .then(session => {
+      axios.get('/api/v1/camp/session/' + camp_id, {
+        headers: { 'x-token': session },
       })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(e => {
+        setTimeout(() => { }, 5000);
+        reject(e)
+      })
+    })
   })
 }
 
@@ -232,41 +250,39 @@ export const campSessionGet = ({ commit }, { camp_id }) => {
 export const campSessionGetApplicants = ({ commit }, { camp_id }) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
-      .then(session => {
-        console.log('submit session: ', { headers: { 'x-token': session } }, 'camp_id:', camp_id);
-        axios.get('/api/v1/camp/session/' + camp_id + '/applicants')
-          .then(response => {
-            console.log("Response Received from campSessionGetApplicants", response.data);
-            resolve(response.data);
-          })
-          .catch(e => {
-            setTimeout(() => { }, 3000);
-            console.log("Error Received from campSessionGetApplicants");
-            reject(e)
-          })
+    .then(session => {
+      axios.get('/api/v1/admin/camp/session/' + camp_id + '/applicants', {
+        headers: { 'x-token': session },
       })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(e => {
+        setTimeout(() => { }, 5000);
+        reject(e)
+      })
+    })
   })
 }
 
-// Get all Camp Experience Sessions, sorted by field
+// Get all Camp Sessions, sorted by field
 //  Default field = Start Date (descending)
 export const campSessionsGetAll = ({commit}, {field_name, order}) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
-      .then(session => {
-        console.log('submit session: ', { headers: { 'x-token': session } }, 'field_name:', field_name);
-        // axios.get('/api/v1/camp/sessions?sort=' + field_name + '&order=' + order)
-        axios.get('/api/v1/camp/sessions')
-          .then(response => {
-            console.log("Response Received from campSessionsGetAll", response.data);
-            resolve(response.data);
-          })
-          .catch(e => {
-            setTimeout(() => { }, 3000);
-            console.log("Error Received from campSessionsGetAll", e);
-            reject(e)
-          })
+    .then(session => {
+      // axios.get('/api/v1/camp/sessions?sort=' + field_name + '&order=' + order)
+      axios.get('/api/v1/camp/sessions', {
+        headers: { 'x-token': session },
       })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(e => {
+        setTimeout(() => { }, 5000);
+        reject(e)
+      })
+    })
   })
 }
 

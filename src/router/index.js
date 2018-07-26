@@ -25,8 +25,11 @@ import homePage from '@/components/homePage'
 import login from '@/components/login'
 import signup from '@/components/signup'
 import forgotPassword from '@/components/forgotPassword'
-import campex_create from '@/components/campex_create'
-import campex_single from '@/components/campex_single'
+import adminCampFrame from '@/components/adminCampFrame';
+import adminCampNew from '@/components/adminCampNew';
+import adminCampEdit from '@/components/adminCampEdit';
+import adminCampCreate from '@/components/adminCampCreate'
+import adminCampSingle from '@/components/adminCampSingle'
 import newPassword from '@/components/newPassword'
 import nullComp from '@/components/nullComp'
 import opportunities from '@/components/opportunities'
@@ -294,10 +297,37 @@ export default new Router({
       beforeEnter: sessionCheck
     },
     {
+      path: '/admin/camps',
+      name: 'campsFrame',
+      components: {
+        default: adminCampFrame,
+        header: adminNavbar,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck,
+      children: [
+        {
+          path: 'create',
+          name: 'campCreate',
+          components: {
+            default: adminCampNew
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'campEdit',
+          components: {
+            default: adminCampEdit
+          }
+        },
+
+      ]
+    },
+    {
       path: '/admin/camp/create',
       name: 'CreateCamp',
       components: {
-        default: campex_create,
+        default: adminCampCreate,
         header: adminNavbar,
         footer: wernxgFooter
       },
@@ -307,7 +337,7 @@ export default new Router({
       path: '/admin/camp/:id',
       name: 'ViewCamp',
       components: {
-        default: campex_single,
+        default: adminCampSingle,
         header: adminNavbar,
         footer: wernxgFooter
       },

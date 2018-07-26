@@ -1,8 +1,8 @@
 <template>
 	<div v-bind:class="{ 'has-error': invalid }" class="row col-sm-12 my-2 mx-0 px-0">
 		<div v-bind:class="[
-            { 'col-sm-3 mx-0 px-0 text-center': isNumber() }, 
-            { 'col-sm-12 mx-0 px-0 text-left': !isNumber() }
+            { 'col-sm-4 mpl-0 text-center': isNumber() }, 
+            { 'col-sm-12 mpl-0 text-left': !isNumber() }
             ]">
 			<input-field-only :type=type
 				:label="label"
@@ -197,8 +197,8 @@ export default {
 		},
 
 		// listen to changes from parent to child
-		value: function() {
-			this.rowInput = this.value;
+		value: function(val) {
+			this.rowInput = val;
 		},
 
 		hasErrors(val) {

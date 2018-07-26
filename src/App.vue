@@ -27,6 +27,19 @@ export default {
     --brand-warning: #f0ad4e;
     --light-light-orange: #fae6c9;
     --brand-danger:  #d9534f;
+    --brand-bblue: #5FAAF6;
+    --brand-bblue-fade-5: rgba(95, 170, 246, 0.5);
+    --brand-bblue-fade-7: rgba(95, 170, 246, 0.7);
+    --brand-bblue-fade-8: rgba(95, 170, 246, 0.8);
+
+    .btn-bblue {
+      background-color: var(--brand-bblue);
+      color: white;
+      border-color: var(--brand-primary);
+    }
+    .bg-bblue {
+      background-color: var(--brand-bblue);
+    }
   }
 
   #app {
@@ -147,8 +160,8 @@ export default {
     padding-left: 2.0em !important;
   }
   .py-0 {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
   .pr-0 {
     padding-right: 0;
@@ -303,6 +316,4 @@ export default {
   .small-screen-left.mobile {
       text-align: left;
   }
-
-
 </style>

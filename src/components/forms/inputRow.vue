@@ -1,8 +1,8 @@
 <template>
 	<div v-bind:class="{ 'has-error': invalid }" class="row col-xs-12 my-2 mx-0 px-0">
-		<input-label-div-small v-if="small" :label="label"></input-label-div-small>
-		<input-label-div-large v-if="!small" :label="label"></input-label-div-large>
-		<div :class="$mq" class="col-md-9 col-xs-12 align-middle">
+		<input-label-div-small v-if="small" :label="label"></input-label-div-small><!-- Comment to remove row white space!
+		--><input-label-div-large v-if="!small" :label="label"></input-label-div-large><!-- Comment to remove row white space!
+		--><div :class="$mq" class="col-md-10 col-xs-12 mx-0 px-0 align-middle">
 			<input-row-no-label 
 				:type=type
 				:label="label"
@@ -193,8 +193,8 @@ export default {
 		},
 
 		// listen to changes from parent to child
-		value: function() {
-			this.rowInput = this.value;
+		value: function(val) {
+			this.rowInput = val;
 		},
 
 		hasErrors(val) {
