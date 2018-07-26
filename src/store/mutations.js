@@ -12,5 +12,11 @@ export default {
   },
   [types.ISADMIN](state, data) {
     state.isAdmin = data
+  },
+  [types.APPLICATION](state, data) {
+    state.applicationData = data;
+  },
+  [types.APPCONTEXT](state, data) {
+    state.applicationContext = data;
   }
 }
