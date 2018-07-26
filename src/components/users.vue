@@ -33,11 +33,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in filteredUsers" v-bind:key="index">
+            <tr v-for="(user, index) in filteredUsers" :key="index">
               <td v-if="user">{{ user.full_name }}</td>
               <td v-if="user">{{ user.email }}</td>
-              <td v-if="user">{{ user._id.$oid }}</td>
-              <td v-if="user">{{ user.role }}</td>
+              <td v-if="user">{{ user.registration_date }}</td>
+              <td v-if="appState.userInfo.role === 'superadmin'">
+                <form>
+                  <div class="form-group">
+                    <select class="form-control" id="exampleFormControlSelect1" @change="updateUserRole($event, user)" v-model="user.role" v-bind:placeholder="user.role">
+                      <option>admin</option>
+                      <option>user</option>
+                    </select>
+                  </div>
+                </form>
+              </td>
+              <td v-else-if="appState.userInfo.role === 'admin'">
+                <span v-if="user">{{ user.role }}</span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -47,167 +59,180 @@
 </template>
 
 <script>
-  import localforage from '../sessionUtils'
-  import axios from 'axios';
-  import sortableTh from '@/components/sortableTh';
-  import _ from 'lodash';
+import localforage from '../sessionUtils';
+import axios from 'axios';
+import sortableTh from '@/components/sortableTh';
+import _ from 'lodash';
 
-  const defaultSortAscending = true;
-  const sortColumns = ['id', 'name', 'email', 'roles', 'date']
-  const roles = ['admin', 'parent', 'sponsor', 'volunteer'];
+const defaultSortAscending = true;
+const sortColumns = ['id', 'name', 'email', 'roles', 'date'];
+const roles = ['admin', 'parent', 'sponsor', 'volunteer'];
 
-  export default {
-    data(){
-      return {
-        filterString: '',
-        filteredUsers: [],
-        users: [],
-        columns: ['name', 'email', 'registered', 'role'],
-        status: {
-          Name: 'fa fa-angle-right',
-          Email: 'fa fa-angle-right',
-          Registered: 'fa fa-angle-down',
-          Role: 'fa fa-angle-right'
-        }
+export default {
+  data() {
+    return {
+      filterString: '',
+      filteredUsers: [],
+      users: [],
+      columns: ['name', 'email', 'registered', 'role'],
+      status: {
+        Name: 'fa fa-angle-right',
+        Email: 'fa fa-angle-right',
+        Registered: 'fa fa-angle-down',
+        Role: 'fa fa-angle-right'
       }
+    };
+  },
+  computed: {
+    filterUsers: function() {
+      // let filty = JSON.parse(JSON.stringify(this.users));
+      this.filteredUsers = this.users.filter(user => {
+        let date = new Date(parseInt(user._id.$oid.substring(0, 8), 16) * 1000);
+        let shortDate = '' + date;
+        user.registration_date = shortDate.slice(4, 15);
+        return (
+          user.full_name
+            .toLowerCase()
+            .includes(this.filterString.toLowerCase()) ||
+          user.email.toLowerCase().includes(this.filterString.toLowerCase())
+        );
+      });
     },
-    computed: {
-      filterUsers: function() {
-        this.filteredUsers = this.users.map(u => {
-          let date =  new Date(parseInt(u._id.$oid.substring(0, 8), 16) * 1000);
-          let shortDate = '' + date
-          u._id.$oid = shortDate.slice(4,15)
-          if (u.full_name.toLowerCase().includes(this.filterString.toLowerCase()) || u.email.toLowerCase().includes(this.filterString.toLowerCase())) {
-            return u;
-          }
-        });
-      },
-      testing: function() {
-        return dateFromObjectId =  new Date(parseInt(oid.substring(0, 8), 16) * 1000);
-      }
-    },
-    methods: {
-      sortUsers: function(column) {
-        if (column === 'Name') {
-          this.status.Name = 'fa fa-angle-down';
-          this.status.Email = 'fa fa-angle-right';
-          this.status.Registered = 'fa fa-angle-right';
-          this.status.Role = 'fa fa-angle-right';
-          this.filteredUsers = _.orderBy(this.filteredUsers, 'full_name');
-        }
-        if (column === 'Email') {
-          this.status.Name = 'fa fa-angle-right';
-          this.status.Email = 'fa fa-angle-down';
-          this.status.Registered = 'fa fa-angle-right';
-          this.status.Role = 'fa fa-angle-right';
-          this.filteredUsers = _.orderBy(this.filteredUsers, 'email');
-        }
-        if (column === 'Registered') {
-          this.status.Name = 'fa fa-angle-right';
-          this.status.Email = 'fa fa-angle-right';
-          this.status.Registered = 'fa fa-angle-down';
-          this.status.Role = 'fa fa-angle-right';
-          this.filteredUsers = this.users;
-        }
-        if (column === 'Role') {
-          this.status.Name = 'fa fa-angle-right';
-          this.status.Email = 'fa fa-angle-right';
-          this.status.Registered = 'fa fa-angle-right';
-          this.status.Role = 'fa fa-angle-down';
-          this.filteredUsers = _.orderBy(this.filteredUsers, 'role');
-        }
-      },
-      getMostRecentApplicationDate: function(user) {
-        let dates = [];
-        user.applications.forEach(application => {
-          dates.push(application.date)
-        });
-        let sortedDates = dates.sort();
-        return sortedDates.pop();
-      },
-    },
-    created() {
-      localforage.getItem('X_TOKEN')
-      .then(session => {
-        axios.get('/api/v1/profiles', { 'headers': { 'x-token': session } })
-        .then(response => {
-          this.users = response.data.reverse()
-          this.filteredUsers = response.data.reverse()
-        })
-        .catch(console.error)
-      })
-      .catch(console.error)
+    appState: function() {
+      return this.$store.state;
     }
+  },
+  methods: {
+    sortUsers: function(column) {
+      if (column === 'Name') {
+        this.status.Name = 'fa fa-angle-down';
+        this.status.Email = 'fa fa-angle-right';
+        this.status.Registered = 'fa fa-angle-right';
+        this.status.Role = 'fa fa-angle-right';
+        this.filteredUsers = _.orderBy(this.filteredUsers, 'full_name');
+      }
+      if (column === 'Email') {
+        this.status.Name = 'fa fa-angle-right';
+        this.status.Email = 'fa fa-angle-down';
+        this.status.Registered = 'fa fa-angle-right';
+        this.status.Role = 'fa fa-angle-right';
+        this.filteredUsers = _.orderBy(this.filteredUsers, 'email');
+      }
+      if (column === 'Registered') {
+        this.status.Name = 'fa fa-angle-right';
+        this.status.Email = 'fa fa-angle-right';
+        this.status.Registered = 'fa fa-angle-down';
+        this.status.Role = 'fa fa-angle-right';
+        this.filteredUsers = this.users;
+      }
+      if (column === 'Role') {
+        this.status.Name = 'fa fa-angle-right';
+        this.status.Email = 'fa fa-angle-right';
+        this.status.Registered = 'fa fa-angle-right';
+        this.status.Role = 'fa fa-angle-down';
+        this.filteredUsers = _.orderBy(this.filteredUsers, 'role');
+      }
+    },
+    getMostRecentApplicationDate: function(user) {
+      let dates = [];
+      user.applications.forEach(application => {
+        dates.push(application.date);
+      });
+      let sortedDates = dates.sort();
+      return sortedDates.pop();
+    },
+    updateUserRole: function(event, user) {
+      localforage.getItem('X_TOKEN').then(session => {
+        axios.put(`/api/v1/profiles/${user._id.$oid}`, {
+          headers: { 'x-token': session },
+          role: user.role
+        });
+      });
+    }
+  },
+  created() {
+    localforage
+      .getItem('X_TOKEN')
+      .then(session => {
+        axios
+          .get('/api/v1/profiles', { headers: { 'x-token': session } })
+          .then(response => {
+            this.users = response.data;
+            this.filteredUsers = response.data;
+          })
+          .catch(console.error);
+      })
+      .catch(console.error);
   }
+};
 </script>
 
 <style scoped>
-  .sortable-th {
-    cursor: pointer;
-  }
-  #title {
-    margin: auto;
-    max-width: 300px;
-    display: inline-block;
-    vertical-align: bottom;
-  }
-  #userIcon {
-    font-size: 35px;
-    margin-top: 20px;
-    color: #337ab7;
-  }
-  i {
-    color: #337ab7;
-    font-weight: bold;
-  }
-  #blackLine {
-    border-top: 1px solid black;
-  }
-  #viewOptions {
-    margin-top: 10px;
-  }
-  body {
+.sortable-th {
+  cursor: pointer;
+}
+#title {
+  margin: auto;
+  max-width: 300px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+#userIcon {
+  font-size: 35px;
+  margin-top: 20px;
+  color: #337ab7;
+}
+i {
+  color: #337ab7;
+  font-weight: bold;
+}
+#blackLine {
+  border-top: 1px solid black;
+}
+#viewOptions {
+  margin-top: 10px;
+}
+body {
   margin: 2em 0;
-  }
+}
 
-  a {
-    font-weight: bold;
-    color: #337ab7;
-  }
+a {
+  font-weight: bold;
+  color: #337ab7;
+}
 
-  a.active {
-    font-weight: bold;
-    color: black;
-  }
+a.active {
+  font-weight: bold;
+  color: black;
+}
 
-  #searchbar {
-    margin-top: 5px;
-    width: 25%;
-    display: inline-block;
-  }
+#searchbar {
+  margin-top: 5px;
+  width: 25%;
+  display: inline-block;
+}
 
-  #searchIcon {
-    font-size: 25px;
-    margin-right: 8px;
-  }
+#searchIcon {
+  font-size: 25px;
+  margin-right: 8px;
+}
 
-  #testContainer{
-    justify-content: center;
-  }
+#testContainer {
+  justify-content: center;
+}
 
-  th {
-    text-align-last: center;
-  }
+th {
+  text-align-last: center;
+}
 
-  #wrapper {
-    display: flex;
-    justify-content: center;
-  }
+#wrapper {
+  display: flex;
+  justify-content: center;
+}
 
-  .arrows {
-    position: absolute;
-    padding-left: 5px;
-    padding-top: 2px;
-  }
-
+.arrows {
+  position: absolute;
+  padding-left: 5px;
+  padding-top: 2px;
+}
 </style>

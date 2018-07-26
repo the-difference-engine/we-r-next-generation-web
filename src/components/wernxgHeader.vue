@@ -61,7 +61,7 @@
           axios.get('/api/v1/sessions/' + session, { 'headers': { 'x-token': session } })
           .then((response, err) => {
           this.loggedIn = true
-          if (response.data.profileData.role === 'admin') this.$store.commit('ISADMIN', true)
+          if (response.data.profileData.role === 'admin' || response.data.profileData.role === 'superadmin' ) this.$store.commit('ISADMIN', true)
           else this.$store.commit('ISADMIN', false)
         })
         .catch(err => {
