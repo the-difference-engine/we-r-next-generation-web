@@ -4,8 +4,8 @@
     <hr>
     <div class="row mx-0 px-0">
         <admin-camp-form
-            :campRoute="campRoute"
-            :routeChanging="routeChanged"
+            :camp-route="campRoute"
+            :route-changing="routeChanged"
         ></admin-camp-form>
     </div>
 </div>

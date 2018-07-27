@@ -12,16 +12,16 @@
                     top : navBarHeight+'px',
                 }"
                 v-bind:class="{ 
-                    'camper-sidenav-open-small' : !hideCampers && (
+                    'camper-sidenav-open-small' : !hideCamperBar && (
                         $mq == 'smartphone' || $mq == 'mobile'),
-                    'camper-sidenav-open-tablet' : !hideCampers && $mq == 'tablet',
-                    'camper-sidenav-open' : !hideCampers && (
+                    'camper-sidenav-open-tablet' : !hideCamperBar && $mq == 'tablet',
+                    'camper-sidenav-open' : !hideCamperBar && (
                         $mq == 'desktop' || $mq == 'other'),
-                    'camper-sidenav-close' : hideCampers,
+                    'camper-sidenav-close' : hideCamperBar,
                 }">
                 <div ref="camperSidebar" class="camper-sidenav-content mx-auto px-0">
                     <admin-campers-of-camp 
-                        :routeChanging="routeChanged"
+                        :route-changing="routeChanged"
                     ></admin-campers-of-camp>
                 </div>
             </div><!-- Comment to remove white space in row! 
@@ -31,17 +31,17 @@
                     minHeight : campContentMinHeight
                 }"
                 v-bind:class="{ 
-                    'camp-content-open-small' : !hideCampers && (
+                    'camp-content-open-small' : !hideCamperBar && (
                         $mq == 'smartphone' || $mq == 'mobile'),
-                    'camp-content-open-tablet' : !hideCampers && $mq == 'tablet',
-                    'camp-content-open' : !hideCampers && (
+                    'camp-content-open-tablet' : !hideCamperBar && $mq == 'tablet',
+                    'camp-content-open' : !hideCamperBar && (
                         $mq == 'desktop' ||  $mq == 'other'),
                 }">
                 <h1 class="big">View and Edit Camp</h1>
                 <hr>
                 <admin-camp-form
-                    :campRoute="campRoute"
-                    :routeChanging="routeChanged"
+                    :camp-route="campRoute"
+                    :route-changing="routeChanged"
                 ></admin-camp-form>
             </div>
         </div>
@@ -71,6 +71,7 @@ export default {
     },
     data () {
         return {
+            hideCamperBar: false,
             campRoute: 'edit',
             navBarHeight: 0,
             routeChanged: false,
@@ -84,6 +85,9 @@ export default {
         }
     },
     watch: {
+        hideCampers: function(val) {
+            this.hideCamperBar = val;
+        },
         routeChanging: function(val) {
             this.routeChanged = val;
         },
@@ -104,7 +108,7 @@ export default {
         getSidebarHeight: function() {
             this.sidebarHeight = this.$refs.camperSidebar.clientHeight + 100;
             this.campContentMaxHeight = this.sidebarHeight + 'px';
-            if (!this.hideCampers) {
+            if (!this.hideCamperBar) {
                 this.sidebarMinHeight = this.sidebarHeight + 'px';
                 this.campContentMinHeight = this.sidebarHeight + 'px';
             }
@@ -116,7 +120,7 @@ export default {
         evalFrameHeights: function() {
             // if campers are hidden, then clear the max-height limits
             this.clearHLimits();
-            if (!this.hideCampers) {
+            if (!this.hideCamperBar) {
                 // if campers are shown, set main content or sidebar height
                 this.setFrameHeight();
             }
@@ -143,7 +147,7 @@ export default {
     created: function() {
         if (this.$mq == 'smartphone' || this.$mq == 'mobile') {
             // if small screen -- do not show camps on page load
-            this.hideCampers = true;
+            this.hideCamperBar = true;
         }
         this.$emit('campRoute', this.campRoute);
     },

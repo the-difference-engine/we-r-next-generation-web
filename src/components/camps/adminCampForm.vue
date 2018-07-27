@@ -2,8 +2,15 @@
     <div class="container-fluid mx-0 px-0">
         <div v-if="campRoute === 'edit'" 
             class="row mx-0 px-0 my-3">
+            <button class="float-left btn btn-warning px-3"
+                v-on:click="clickCampDelete">
+                <span class="glyphicon glyphicon-remove pr-3"></span>
+                Delete Camp
+            </button>
             <button class="float-right btn btn-warning px-3" 
                 v-on:click="editCamp">
+                <span v-if="editBtn == editBtnOptions.edit" class="glyphicon glyphicon-pencil pr-3"></span>
+                <span v-if="editBtn == editBtnOptions.disable" class="glyphicon glyphicon-ban-circle pr-3"></span>
                 {{editBtn}}
             </button>
         </div>
@@ -190,6 +197,21 @@ export default {
                 this.campCreate();
             }
         },
+        clickCampDelete: function() {
+            swal({
+                title: 'Are you sure?',
+                text: "This will delete the camp session! You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, continue!'
+            }).then((result) => {
+                if (result.value) {
+                    this.campDelete();
+                } 
+            })
+        },
         campCreate: function() {
             this.$store.dispatch('campSessionCreate', {
             newCamp: this.campData,
@@ -220,6 +242,12 @@ export default {
                     );
                 }
             })
+        },
+        campDelete: function() {
+            this.$store.dispatch('campSessionDelete', {
+                campId: this.campData._id.$oid,
+                router: this.$router,
+            });
         },
         dateToString: function(dt) {
             return dt.toISOString().slice(0,10);

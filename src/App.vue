@@ -22,6 +22,9 @@ export default {
     --gray-lighter: lighten(#000, 93.5%);
     
     --brand-primary: #428bca;
+    --brand-primary-fade-5: rgba(66, 139, 202, 0.5);
+    --brand-primary-fade-7: rgba(66, 139, 202, 0.7);
+    --brand-primary-fade-8: rgba(66, 139, 202, 0.8);
     --brand-success: #5cb85c;
     --brand-info:    #5bc0de;
     --brand-warning: #f0ad4e;
@@ -192,6 +195,9 @@ export default {
   }
   .p-3 {
     padding: 2.0rem !important;
+  }
+  .float-left {
+    float: left;
   }
   .float-right {
     float: right;

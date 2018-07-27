@@ -194,6 +194,7 @@ export const campSessionCreate = ({ commit }, { newCamp, router }) => {
     });
   })
 }
+
 export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router }) => {
   return new Promise((resolve, reject) => {
     localforage.getItem('X_TOKEN')
@@ -211,6 +212,37 @@ export const campSessionUpdate = ({ commit }, { updated_camp, camp_id, router })
   })
 }
 
+export const campSessionDelete = ({ commit }, { campId, router }) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem('X_TOKEN')
+    .then(session => {
+      axios.delete('/api/v1/admin/camp/session/' + campId + '/delete', {
+        headers: { 'x-token': session },
+        params: { id: campId }
+      })
+      .then(res => {
+        if (res.data == true) {
+          swal(
+            'Deleted!',
+            'The camp was deleted successfully.',
+            'success'
+          );
+          router.push({ name: 'campCreate' });
+          resolve(true);
+        }
+      })
+      .catch(err => {
+        swal(
+          'Oops ...',
+          'Something went wrong on the server, please try again.',
+          'error'
+        );
+        setTimeout(() => { }, 3000);
+        resolve(false);
+      })
+    })
+  });
+}
 
 // Get one Camp Session by ID Number
 export const getCamp = ({ commit }, { router }) =>

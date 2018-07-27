@@ -4,44 +4,18 @@
             <a class="closebtn" v-on:click.prevent="toggleCamps">&times;
             </a>
         </div>
-        <div class="row mx-0 my-2">
-            <button class="btn badge col-md-8 col-xs-10 mx-auto" 
-                v-bind:class="{ 
-                    'btn-warning': viewPastCamps, 
-                    'btn-bblue': !viewPastCamps }"
-                aria-expanded="false" 
-                aria-controls="pastCamps"
-                v-on:click.stop.prevent="togglePastCamps">
-                <span v-if="!viewPastCamps" class="mx-4 glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                <span v-if="viewPastCamps" class="mx-4 glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                {{viewPastBtn}}
-            </button>
+        <div v-on:click.stop.prevent="toggleFutureCamps" class="hover-blue row my-4 mx-0 px-0 bg-primary">
+            <h4 class="font-weight-bold px-1">
+                <span v-if="viewFutureCamps" class="glyphicon glyphicon-triangle-bottom float-left"></span>
+                <span v-if="!viewFutureCamps" class="glyphicon glyphicon-triangle-top float-left"></span>
+                <u>Upcoming Camps</u>
+                <span class="mx-2 glyphicon glyphicon-sort-by-alphabet"></span>
+                <span class="badge bg-bblue px-1 float-right">{{numFutureCamps}}</span>
+            </h4>
         </div>
-        <div class="row mx-0 my-2">
-            <button class="btn badge col-md-8 col-xs-10 mx-auto" 
-                v-bind:class="{ 
-                    'btn-warning': viewFutureCamps, 
-                    'btn-bblue': !viewFutureCamps }"
-                aria-expanded="false" 
-                aria-controls="futureCamps"
-                v-on:click.stop.prevent="toggleFutureCamps">
-                <span v-if="!viewFutureCamps" class="mx-4 glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                <span v-if="viewFutureCamps" class="mx-4 glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                {{viewFutureBtn}}
-            </button>
-        </div>
-        <hr class="my-8">
         <div v-if="viewFutureCamps">
             <table class="table table-bordered table-hover table-condensed">
                 <thead class="thead-light">
-                    <tr>
-                        <th class="text-center" colspan="3">
-                            <h4 class="font-weight-bold ">
-                                Upcoming Camps
-                                <span class="mx-2 glyphicon glyphicon-sort-by-alphabet"></span>    
-                            </h4>
-                        </th>
-                    </tr>
                     <tr>
                         <th class="text-center">Name</th>
                         <th class="text-center">Start</th>
@@ -64,17 +38,19 @@
                 </tbody>
             </table>
         </div>
+        <hr v-if="viewPastCamps && viewFutureCamps" class="my-8">
+        <div v-on:click.stop.prevent="togglePastCamps" class="hover-blue row my-4 mx-0 px-0 bg-primary">
+            <h4 class="font-weight-bold px-1">
+                <span v-if="viewPastCamps" class="glyphicon glyphicon-triangle-bottom float-left"></span>
+                <span v-if="!viewPastCamps" class="glyphicon glyphicon-triangle-top float-left"></span>
+                Past Camps
+                <span class="mx-2 glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                <span class="badge bg-bblue px-1 float-right">{{numPastCamps}}</span>
+            </h4>
+        </div>
         <div v-if="viewPastCamps">
             <table class="table table-bordered table-hover table-condensed">
                 <thead class="thead-light">
-                    <tr>
-                        <th class="text-center" colspan="3">
-                            <h4 class="font-weight-bold ">
-                                Past Camps
-                                <span class="mx-2 glyphicon glyphicon-sort-by-alphabet-alt"></span>    
-                            </h4>
-                        </th>
-                    </tr>
                     <tr>
                         <th class="text-center">Name</th>
                         <th class="text-center">Start</th>
@@ -103,12 +79,25 @@
 import _ from 'lodash';
 export default {
     name: 'adminCampSidebar',
+    props: {
+        routeChanged: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data () {
         return {
             allCamps: [],
             viewPastCamps: false,
             viewFutureCamps: true,
         }
+    },
+    watch: {
+        routeChanged: function(value) {
+            if (value === true) {
+                this.getCamps();
+            }
+        },
     },
     methods: {
         sortedAscCamps: function(camps) {
@@ -137,32 +126,48 @@ export default {
         toggleCamps: function() {
             this.$emit('toggleCamps');
         },
-    },
-    computed: {
-        futureCamps: function() {
+        getFutureCamps: function() {
             let today = new Date();
             return _.filter(this.allCamps, function(camp) {
                 let dt = new Date(camp.date_start);
                 if (dt > today) { return true } else { return false }
             });
         },
-        pastCamps: function() {
+        getPastCamps: function() {
             let today = new Date();
             let camps = _.filter(this.allCamps, function(camp) {
                 let dt = new Date(camp.date_start);
                 if (dt <= today) { return true } else { return false }
             });
             return this.reverseCamps(camps);
+        }
+    },
+    computed: {
+        futureCamps: function() {
+            return this.getFutureCamps();
+        },
+        pastCamps: function() {
+            return this.getPastCamps();
         },
         viewPastBtn: function() {
             if (this.viewPastCamps == false) { 
-                return "View Past Camp Sessions";
+                return "View Past Camps";
             } else { return "Hide Past Camps" }
         },
         viewFutureBtn: function() {
             if (this.viewFutureCamps == false) { 
-                return "View Future Camp Sessions";
-            } else { return "Hide Future Camps" }
+                return "View Upcoming Camps";
+            } else { return "Hide Upcoming Camps" }
+        },
+        numFutureCamps: function() {
+            return _.size(
+                this.getFutureCamps()
+            );
+        },
+        numPastCamps: function() {
+            return _.size(
+                this.getPastCamps()
+            );
         },
     },
     created: function() {
@@ -185,6 +190,9 @@ export default {
 
     .closebtn {
         font-size: 38px !important;
+    }
+    .hover-blue:hover {
+        background-color: var(--brand-primary-fade-8) !important;
     }
 </style>
 

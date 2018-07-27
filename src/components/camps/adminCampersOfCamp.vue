@@ -9,13 +9,16 @@
         <div class="row mx-0 my-3" v-if="applicants.length">
             <div v-if="approvedCampers.length > 0 || notApprCampers.length > 0"
                 class="col-md-12 mx-0 px-0">
-                <div class="row my-4 mx-0 px-0 bg-primary">
+                <div class="hover-blue row my-4 mx-0 px-0 bg-primary"
+                    v-on:click="toggleCampers">
                     <h4 class="mx-auto my-2">
+                        <span v-if="!hideCampers" class="glyphicon glyphicon-triangle-bottom float-left pl-2"></span>
+                        <span v-if="hideCampers" class="glyphicon glyphicon-triangle-top float-left pl-2"></span>
                         <strong><u>Campers</u></strong>
                         <span class="badge bg-bblue mx-3 px-1 float-right">{{numberCampers}}</span>
                     </h4>
                 </div>
-                <div class="table-responsive">
+                <div v-if="!hideCampers" class="table-responsive">
                     <table class="table table-bordered mx-0 px-0">
                         <thead class="thead-light">
                             <th class="text-center">Name</th>
@@ -73,13 +76,15 @@
             ">
             <div v-if="approvedVolunteers.length > 0 || notApprVolunteers.length > 0"
                 class="col-md-12 mx-0 px-0">
-                <div class="row my-4 mx-0 px-0 bg-primary">
+                <div v-on:click="toggleVols" class="hover-blue row my-4 mx-0 px-0 bg-primary">
                     <h4 class="mx-auto my-2">
+                        <span v-if="!hideVols" class="glyphicon glyphicon-triangle-bottom float-left pl-2"></span>
+                        <span v-if="hideVols" class="glyphicon glyphicon-triangle-top float-left pl-2"></span>
                         <strong><u>Volunteers</u></strong>
-                        <span class="badge bg-bblue mx-3 px-1">{{numberVolunteers}}</span>
+                        <span class="badge bg-bblue mx-3 px-1 float-right">{{numberVolunteers}}</span>
                     </h4>
                 </div>
-                <div class="table-responsive">
+                <div v-if="!hideVols" class="table-responsive">
                     <table class="table table-bordered col-xs-12 mx-0 px-0">
                         <thead class="thead-light">
                             <th class="text-center">Name</th>
@@ -201,7 +206,8 @@ export default {
                     key: 'phone_number'
                 },
             ],
-
+            hideCampers: false,
+            hideVols: false,
         }
     },
     filters: {
@@ -240,6 +246,12 @@ export default {
         },
     },
     methods: {
+        toggleCampers: function() {
+            this.hideCampers = !this.hideCampers;
+        },
+        toggleVols: function() {
+            this.hideVols = !this.hideVols;
+        },
         getApplicants: function() {
             this.$store.dispatch('campSessionGetApplicants', {
                 camp_id: this.$route.params.id,
@@ -366,3 +378,8 @@ export default {
 }
 </script>
 
+<style scoped>
+    .hover-blue:hover {
+        background-color: var(--brand-primary-fade-8) !important;
+    }
+</style>

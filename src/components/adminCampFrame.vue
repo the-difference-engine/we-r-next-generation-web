@@ -7,8 +7,7 @@
             }"
             v-bind:class="{ 
                 'main-content-open-small' : !hideCamps && (
-                    $mq == 'smartphone' || $mq == 'mobile'),
-                'main-content-open-tablet' : !hideCamps && $mq == 'tablet',
+                    $mq == 'smartphone' || $mq == 'mobile' || $mq == 'tablet'),
                 'main-content-open' : !hideCamps && (
                     $mq == 'desktop' ||  $mq == 'other'),
             }">
@@ -28,8 +27,9 @@
                             v-on:click.stop.prevent="toggleCampers"
                             v-bind:class="{ 
                                 'btn-warning': hideCampers, 
-                                'btn-primary': !hideCampers }"
-                            >{{viewCampersBtn}}
+                                'btn-primary': !hideCampers }">
+                                {{viewCampersBtn}}
+                                <span class="glyphicon glyphicon-user pl-3"></span>
                         </button>
                     </div>
                     <div class="mx-0 px-0"
@@ -46,25 +46,19 @@
                             v-on:click.stop.prevent="toggleCamps"
                             v-bind:class="{ 
                                 'btn-warning': hideCamps, 
-                                'btn-primary': !hideCamps }"
-                            >{{viewCampsBtn}}
+                                'btn-primary': !hideCamps }">
+                                <span class="glyphicon glyphicon-tent pr-3"></span>
+                                {{viewCampsBtn}}
                         </button>
                     </div>
                 </div>
             </div>
             <div class="row mx-0 px-0">
-<!-- Router-View v-on attributes:
-                :routeUpdate="routeUpdate"
-                v-on:appType="setTitle"
-                v-on:updateData="updateData"
-                v-on:submitClick="submitClick" -->
-
                 <router-view
                     v-bind="routerProps"
                     v-on:campRoute="campRoute = $event"
                 ></router-view>
             </div>
-
         </div>
         <div class="sidenav mx-0 px-0"
             v-bind:style="{ 
@@ -73,8 +67,7 @@
             }"
             v-bind:class="{ 
                 'sidenav-open-small' : !hideCamps && (
-                    $mq == 'smartphone' || $mq == 'mobile'),
-                'sidenav-open-tablet' : !hideCamps && $mq == 'tablet',
+                    $mq == 'smartphone' || $mq == 'mobile' || $mq == 'tablet'),
                 'sidenav-open' : !hideCamps && (
                     $mq == 'desktop' || $mq == 'other'),
                 'sidenav-close' : hideCamps,
@@ -82,6 +75,7 @@
         >
             <div ref="sidebar" class="col-xs-11 sidenav-content mx-auto px-0">
                 <admin-camp-sidebar 
+                    :route-changed="routeChanging"
                     v-on:toggleCamps="toggleCamps"
                     v-on:campFrameResize="evalFrameHeights"
                 ></admin-camp-sidebar>
@@ -112,12 +106,38 @@ export default {
             mainContentMinHeight: 'none',
         }
     },
+    watch: {
+        campRoute(val) {
+            // when campRoute changes, revaluate if camps should
+            // hide on a desktop view
+            this.hideCampsOnDesktop();
+        }
+    },
     methods: {
         toggleCamps: function() {
             this.hideCamps = !this.hideCamps;
+            if (this.$mq == 'desktop' && this.campRoute == 'edit') {
+                this.hideCampers = !this.hideCampers;
+            }
             this.evalFrameHeights();
         },
+        hideCampsOnDesktop: function(toRoute=null) {
+            // hide camps sidebar if the initial screen is
+            // a desktop size and the page is edit
+            // (camps sidebar and campers sidebar
+            // cannot both fit on a desktop screen size)
+            if (this.$mq == 'desktop' && this.campRoute == 'edit') {
+                this.hideCamps = true;
+            }
+            else {
+                this.hideCamps = false;
+            }
+        },
         toggleCampers: function() {
+            if (this.$mq == 'desktop' && this.hideCampers == true) {
+                // campers are about to be shown on a desktop screen
+                this.hideCamps = true;
+            }
             this.hideCampers = !this.hideCampers;
             this.evalFrameHeights();
         },
@@ -149,7 +169,7 @@ export default {
             }
         },
         setFrameHeight: function() {
-            if (this.$mq == 'mobile' || this.$mq == 'smartphone') {
+            if (this.$mq == 'mobile' || this.$mq == 'smartphone' || this.$mq == 'tablet') {
                 // if camps are currently shown and the screen size is small,
                 // then limit the main content height to the height of the sidebar
                 setTimeout(() => {
@@ -157,7 +177,7 @@ export default {
                 }, 1100)
             } else {
                 // if camps are currently shown with main content visible
-                // (screen size is tablet, desktop, or other), then limit
+                // (screen size is desktop or other), then limit
                 // the sidebar height to the main content height
                 setTimeout(() => {
                     this.getMainContentHeight();
@@ -219,7 +239,7 @@ export default {
             this.routeChanging = false;
         }, 500);
         next();
-    }
+    },
 }
 </script>
 

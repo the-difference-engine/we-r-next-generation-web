@@ -28,8 +28,6 @@ import forgotPassword from '@/components/forgotPassword'
 import adminCampFrame from '@/components/adminCampFrame';
 import adminCampNew from '@/components/adminCampNew';
 import adminCampEdit from '@/components/adminCampEdit';
-import adminCampCreate from '@/components/adminCampCreate'
-import adminCampSingle from '@/components/adminCampSingle'
 import newPassword from '@/components/newPassword'
 import nullComp from '@/components/nullComp'
 import opportunities from '@/components/opportunities'
@@ -322,26 +320,6 @@ export default new Router({
         },
 
       ]
-    },
-    {
-      path: '/admin/camp/create',
-      name: 'CreateCamp',
-      components: {
-        default: adminCampCreate,
-        header: adminNavbar,
-        footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
-    },
-    {
-      path: '/admin/camp/:id',
-      name: 'ViewCamp',
-      components: {
-        default: adminCampSingle,
-        header: adminNavbar,
-        footer: wernxgFooter
-      },
-      beforeEnter: sessionCheck
     },
     {
       path: '/admin/home-edit',
