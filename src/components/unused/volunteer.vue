@@ -145,6 +145,7 @@ export default {
     name: 'volunteer',
     data () {
         return {
+            sessionId: '',
             profileData: {},
             bio: '',
             camps: [],
@@ -256,8 +257,8 @@ export default {
         },
 
         submit: function(evt){
-            this.errors = [];       // clear all previous errors before validating the form again
-
+            this.errors = [];  
+            // clear all previous errors before validating the form again
             // validate the waiver was signed before submitting
             if (this.confirm_waiver_signed(evt)) {
               this.disable_edits = true;              // make inputs read-only
