@@ -17,7 +17,7 @@
         <router-link to="/home"><button class="btn btn-warning">User Site</button></router-link>
         <router-link to="/admin/applications">Manage Applications</router-link>
         <router-link to="/admin/users">Manage Members</router-link>
-        <router-link to="/admin/camp/create">Manage Camps</router-link>
+        <router-link :to="{ name: 'campCreate' }">Manage Camps</router-link>
         <button @click="toggleEdit" class="edit-button">Edit Pages
           <ul v-if="show" class="edit-list">
             <li class="edit-options"><router-link to="/admin/faqEdit">FAQs</router-link></li>
