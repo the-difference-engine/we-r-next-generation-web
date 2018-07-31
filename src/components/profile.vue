@@ -1,4 +1,3 @@
-<!--An empty component to replace the header and/or footer on pages where it is not required-->
 
 <template>
   <div id="wrapper">
@@ -9,59 +8,79 @@
         <h3 class="profileNav" v-on:click="changeStatus('volunteer')" v-bind:class="status.volunteer" id="volunteer">Volunteer Application</h3>
         <h3 class="profileNav" v-on:click="changeStatus('partner')" v-bind:class="status.partner" id="partner">Partner Application</h3>
       </div>
-      <div class="boxes col" id="main">
+      <div class="boxes col" id="main" v-show="this.status.profile === 'active'">
         <div id="mainHeader">
           <div id="titleDiv">
             <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
           </div>
           <div id="editDiv">
-            <button id="editButton" class="btn btn-primary" v-on:click="editInfo()">Edit Profile</button>
+            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">Edit Profile</button>
           </div>
         </div>
-          <form v-on:submit.prevent="submit">
+        <div v-show="edit === false" class="row">
+          <div>
+            <h1 class="bold userInfo" id="user-name">{{ sessionInfo.full_name }}</h1>
+            <h3 id="email" class="userInfo">Email: <span class="gray light">{{ sessionInfo.email }}</span></h3>
+          </div>
+        </div>
+
+          <form v-on:submit.prevent="submit" v-show="edit == true" >
             <div id="mainMid">
-              <div id="userInfo">
-                <h1 class="bold userInfo" id="user-name">{{ sessionInfo.full_name }}</h1>
-                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+              <div id="userInfo" class="col col-12">
+                <h3>Name:<span class="gray light">{{ sessionInfo.full_name }}</span></h3>
+                <div class="input-group input-group-sm mb-3 inputs" >
                   <div class="input-group-prepend input-caps">
                     <span class="input-group-text">New</span>
                   </div>
+                  <input id="form_con_name" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+
+                <div class="input-group input-group-sm mb-3 inputs" >
+                  <div class="input-group-prepend input-caps">
+                    <span class="input-group-text">Confirm</span>
+                  </div>
                   <input id="form_name" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
-                <h3 id="email" class="userInfo">Email: <span class="gray light">{{ sessionInfo.email }}</span></h3>
-                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+
+                <h3>Email:<span class="gray light">{{ sessionInfo.email }}</span></h3>
+                <div class="input-group input-group-sm mb-3 inputs" >
                   <div class="input-group-prepend input-caps">
                     <span class="input-group-text">New</span>
                   </div>
                   <input id="form_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
-                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" v-show="edit === 'on'">
+
+                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" >
                   <div class="input-group-prepend input-caps">
                     <span class="input-group-text">Confirm</span>
                   </div>
                   <input id="form_con_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
-                <h3 id="password" class="userInfo input-group mb-3">Password: <span class="gray light">{{ sessionInfo.password }}</span></h3>
-                <div class="input-group input-group-sm mb-3 inputs" v-show="edit === 'on'">
+
+                <h3 id="password" class="userInfo input-group mb-3">Password:</h3>
+                <div class="input-group input-group-sm mb-3 inputs" >
                   <div class="input-group-prepend input-caps">
                     <span class="input-group-text">New</span>
                   </div>
-                  <input id="form_password" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                  <input id="form_password" type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
-                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" v-show="edit === 'on'">
+
+                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" >
                   <div class="input-group-prepend input-caps">
                     <span class="input-group-text">Confirm</span>
                   </div>
-                  <input id="form_con_password" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                  <input id="form_con_password" type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                 </div>
-                <button v-show="edit === 'on'" id="submit-button" class="btn btn-primary submit-buttons" type="submit">Apply Changes</button>
+
+                <button  id="submit-button" class="btn btn-primary submit-buttons" type="submit">Apply Changes</button>
             </div>
-            <div id="image-section">
+
+            <div id="image-section" class="col">
               <img :src="userImage" alt="image not found">
-              <!-- <img :src="userImage" alt="image not found"> -->
               <input type="file" name="file" id="form_image" class="inputfile" @change="preview" accept="image/*">
-              <label v-show="edit === 'on'" for="form_image">Choose a file</label>
+              <label for="form_image">Choose a file</label>
             </div>
+
           </div>
         </form>
       </div>
@@ -79,7 +98,8 @@
         sessionId: "",
         sessionInfo: {},
         userImage: "static/assets/saturn1.jpg",
-        edit: 'off',
+        edit: false,
+        errors: [],
         status: {
           profile: "active",
           camp: "inactive",
@@ -127,30 +147,38 @@
         }
       },
       submit: function(evt) {
-        console.log('TEST', evt.target.form_name.value)
-        localforage.getItem('X_TOKEN')
-          .then(session => {
-            axios.post(`/api/v1/profile/edit/${this.sessionInfo._id.$oid}`, {
-              headers: { 'x-token': session },
-              params: {
-                full_name: evt.target.form_name.value,
-                email: evt.target.form_email.value,
-                password: evt.target.form_password.value,
-              }
+        this.errors =[];
+        if(evt.target.form_name.value !== evt.target.form_con_name.value) {
+          this.errors.push('Name does not match');
+        }
+        if(evt.target.form_email.value !== evt.target.form_con_email.value) {
+          this.errors.push('Email does not match');
+        }
+        if(evt.target.form_password.value !== evt.target.form_con_password.value) {
+          this.errors.push('Password does not match');
+        }
+        if (this.errors.length === 0) {
+          localforage.getItem('X_TOKEN')
+            .then(session => {
+              axios.post(`/api/v1/profile/edit/${this.sessionInfo._id.$oid}`, {
+                headers: { 'x-token': session },
+                params: {
+                  full_name: evt.target.form_name.value.length !== 0 ? evt.target.form_name.value : this.sessionInfo.full_name,
+                  email: evt.target.form_email.value.length !== 0 ? evt.target.form_email.value : this.sessionInfo.email ,
+                }
+            })
+            .then(res => {
+              this.sessionInfo = res.data
+            })
+            .catch(err => {
+              console.log(err);
+            });
           })
-          .then(res => {
-            console.log('DATA RETURNING', res.data)
-            this.sessionInfo = res.data
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        })
-        .catch(console.error);
+          .catch(console.error);
+        }
       },
       editInfo() {
-        console.log('IN EDIT')
-        this.edit = 'on';
+        this.edit = !this.edit;
       }
     },
     created() {
@@ -162,18 +190,8 @@
           this.errors = e
         })
       }).catch(err => console.error(err))
-      localforage.getItem('X_TOKEN').then(session => {
-        this.sessionId = session
-        axios.get('/api/v1/profile/applicationcheck/' + session, { 'headers': { 'x-token': this.sessionId } }).then(response => {
-          console.log('RESPONSE', response.data);
-          this.userStatus = response.data
-        }).catch(e => {
-          this.errors = e
-        })
-      }).catch(err => console.error(err))
     }
   }
-
 </script>
 
 <style scoped>
