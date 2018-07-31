@@ -67,6 +67,10 @@
               <td>Gender</td>
               <td>{{application.gender}}</td>
             </tr>
+            <tr v-if="application.type === 'camper'">
+              <td>Age</td>
+              <td>{{application.age}}</td>
+            </tr>
             <tr>
               <td>Type</td>
               <td>{{application.type}}</td>
@@ -115,8 +119,25 @@
             </tr>
           </tbody>
         </table>
+        <hr>
         <table v-if="application.type === 'camper' || application.type === 'volunteer'" class="table table-striped app-table">
           <tbody>
+            <tr>
+              <td>Application Short Bio</td>
+              <td>{{application.bio}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <table v-if="application.type === 'camper' || application.type === 'volunteer'" class="table table-striped app-table">
+          <tbody>
+            <tr>
+              <td>Camp Selected</td>
+              <td><router-link :to="{ name: 'campEdit', params: { id: application.camp } }">
+                {{application.camp_data.name}}
+                </router-link>               
+              </td>
+            </tr>
             <tr>
               <td>Camp Start</td>
               <td>{{application.camp_data.date_start}}</td>
@@ -130,7 +151,7 @@
               <td>{{application.camp_data.description}}</td>
             </tr>
             <tr>
-              <td>Limit</td>
+              <td>Camp Limit</td>
               <td>{{application.camp_data.limit}}</td>
             </tr>
           </tbody>

@@ -15,10 +15,10 @@
           </div>
       <div id="header-right" class="menu-items col-xs-9 col-sm-9" v-bind:class="{ showMenu: menuClicked }">
         <router-link to="/home"><button class="btn btn-warning">User Site</button></router-link>
-        <router-link to="/admin/applications">Applications</router-link>
-        <router-link to="/admin/users">Members</router-link>
-        <router-link to="/admin/camp/create">New CampEx</router-link>
-        <button @click="toggleEdit" class="edit-button">Edit
+        <router-link to="/admin/applications">Manage Applications</router-link>
+        <router-link to="/admin/users">Manage Members</router-link>
+        <router-link :to="{ name: 'campCreate' }">Manage Camps</router-link>
+        <button @click="toggleEdit" class="edit-button">Edit Pages
           <ul v-if="show" class="edit-list">
             <li class="edit-options"><router-link to="/admin/faqEdit">FAQs</router-link></li>
             <li class="edit-options"><router-link to="/admin/home-edit">Home</router-link></li>
