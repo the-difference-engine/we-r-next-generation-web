@@ -14,17 +14,17 @@
             <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
           </div>
           <div id="editDiv">
-            <button id="editButton" class="btn btn-primary" v-on:click="editInfo()">Edit Profile</button>
+            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">Edit Profile</button>
           </div>
         </div>
-
         <div v-show="edit === false" class="row">
           <div>
             <h1 class="bold userInfo" id="user-name">{{ sessionInfo.full_name }}</h1>
             <h3 id="email" class="userInfo">Email: <span class="gray light">{{ sessionInfo.email }}</span></h3>
           </div>
+        </div>
 
-          <form v-on:submit.prevent="submit" v-show="edit === true && this.status.profile === 'active'" >
+          <form v-on:submit.prevent="submit" v-show="edit == true" >
             <div id="mainMid">
               <div id="userInfo" class="col col-12">
                 <h3>Name:<span class="gray light">{{ sessionInfo.full_name }}</span></h3>
@@ -83,11 +83,7 @@
 
           </div>
         </form>
-        </div>
       </div>
-
-
-
     </div>
   </div>
 </template>
@@ -172,7 +168,6 @@
                 }
             })
             .then(res => {
-              console.log('DATA RETURNING', res.data)
               this.sessionInfo = res.data
             })
             .catch(err => {
