@@ -265,6 +265,7 @@
 			},
 			constCamperApp: function() {
 				return {
+					profileId: this.profile._id.$oid,
 					full_name: this.profile.full_name,
 					email: this.profile.email,
 					address_line_1: this.appState.address1,
@@ -286,6 +287,7 @@
 			},
 			constVolunteerApp: function() {
 				return {
+					profileId: this.profile._id.$oid,
 					full_name: this.profile.full_name,
 					email: this.profile.email,
 					address_line_1: this.appState.address1,
