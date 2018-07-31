@@ -18,7 +18,12 @@
 				@change="validateInput"
 				@blur="lostFocus">
 				<option disabled value="">Please select one...</option>
-				<option v-for="choice in choices" v-bind:value="choice.value">{{choice.text}}</option>
+				<option v-for="choice in choices" 
+					v-bind:key="choice.value"
+					v-bind:value="choice.value"
+					:selected="choice.value == defaultValue ? true : false"
+					>{{choice.text}}
+				</option>
 			</select>
 		</div>
 		<div v-else-if="type=='radio'" class="row col-sm-12 my-2 mx-0 px-1">
@@ -264,8 +269,10 @@ export default {
 		},
 		dateMinInvalid: function() {
 			if (this.minDate) {
-				if (this.input < this.minDate) {
-					this.errMsgs.push(this.label + " must be greater than " + this.minDate.toString());
+				let dateInput = new Date(this.input);
+				let dateBound = new Date(this.minDate);
+				if (dateInput < dateBound) {
+					this.errMsgs.push(this.label + " must be greater than " + this.minDate.toISOString().slice(0,10));
 					return true;
 				}
 			}
@@ -273,8 +280,10 @@ export default {
 		},
 		dateMaxInvalid: function() {
 			if (this.maxDate) {
-				if (this.input > this.maxDate) {
-					this.errMsgs.push(this.label + " must be less than " + this.maxDate.toString());
+				let dateInput = new Date(this.input);
+				let dateBound = new Date(this.maxDate);
+				if (dateInput > dateBound) {
+					this.errMsgs.push(this.label + " must be less than " + this.maxDate.toISOString().slice(0,10));
 					return true;
 				}
 			}

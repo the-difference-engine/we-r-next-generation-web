@@ -265,7 +265,7 @@
 
       matchHeight() {
         let preview_height = this.$refs.updateWaiver.scrollHeight - 50;
-        let screen_width = window.outerWidth;
+        let screen_width = window.innerWidth;
         if (screen_width < 849) {
           preview_height = 150;
           this.sticky_top = 25 + 'px';

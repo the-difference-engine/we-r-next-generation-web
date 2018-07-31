@@ -1,5 +1,5 @@
 <template>
-    <div :class="$mq" class="col-md-2 col-sm-12 align-middle text-right">
+    <div :class="$mq" class="col-md-2 col-sm-12 mpl-0 align-middle text-right">
 		<input-label-only :label="label"></input-label-only>
     </div>
 </template>

@@ -122,7 +122,7 @@
     oneweek.setDate(oneweek.getDate() + defaultLength);
 
     export default {
-        name: 'campex_single',
+        name: 'adminCampSingle',
         methods: {
             campUpdate: function(evt) {
                 console.log("Camp Update Method");
