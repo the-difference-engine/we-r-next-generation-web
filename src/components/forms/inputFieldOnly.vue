@@ -335,10 +335,12 @@ export default {
 		lostFocus: function() {
 			// run validators immediately on losing focus
 			this.isPristine = false;
-			this.runValidators();
+			if (this.readonly == false) {
+				this.runValidators();
+			}
 		},
 		validateInput: function() {
-			if (this.isPristine == false) {
+			if (this.isPristine === false && this.readonly === false) {
 				this.debouncedValidator();
 			}
 		},

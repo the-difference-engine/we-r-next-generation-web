@@ -32,89 +32,148 @@
           <div v-show="edit === false" class="row">
             <div>
               <h2 class="font-weight-bold">{{ sessionInfo.full_name }}</h2>
-              <h3 id="email">Email: <span class="gray font-weight-light">{{ sessionInfo.email }}</span></h3>
+              <h3 id="email">Email:
+                <span class="gray font-weight-light">{{ sessionInfo.email }}</span>
+              </h3>
             </div>
           </div>
           <div class="row mx-0 px-0">
             <form class="my-10 text-left" v-on:submit.prevent="submit" v-show="edit === true" >
                 <div class="col-xs-12 col-sm-8 mx-0 px-0 align-top">
-                  <h3 class="my-0 py-0">Name:<span class="gray font-weight-light">{{ sessionInfo.full_name }}</span></h3>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Name" type="text"
-                        :small="true"
-                        pre-add-on-text="New"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="profile.name"
-                        placeholder="Your Name"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
+                  <div class="col-xs-12 mx-0 px-0 my-6">
+                    <div class="col-xs-12 mpl-0">
+                      <div class="align-middle">
+                        <h4 class="my-0 py-0">Name:
+                          <span class="gray font-weight-light">
+                            {{ sessionInfo.full_name }}
+                            <span class="mx-4">|</span>
+                          </span>
+                        </h4>
+                      </div>
+                      <div class="align-middle">
+                        <small class="font-weight-bold align-middle">Edit</small>
+                        <input type="checkbox" class="mx-3 align-middle" 
+                          v-model="editFields.name">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Name" type="text"
+                          :small="true"
+                          pre-add-on-text="New"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="profile.name"
+                          :readonly="!editFields.name"
+                          placeholder="Your Name"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.name = $event"
+                      ></input-row-no-label>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Name" type="text"
+                          :small="true"
+                          pre-add-on-text="Confirm"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="confirm.name"
+                          :readonly="!editFields.name"
+                          placeholder="Confirm Your Name"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.nameConfirm = $event"
+                      ></input-row-no-label>
+                    </div>
                   </div>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Name" type="text"
-                        :small="true"
-                        pre-add-on-text="Confirm"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="confirm.name"
-                        placeholder="Confirm Your Name"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
+                  <div class="col-xs-12 mx-0 px-0 my-6">
+                    <div class="col-xs-12 mpl-0">
+                      <div class="align-middle">
+                        <h4 class="my-0 py-0">Email:
+                          <span class="gray font-weight-light">
+                            {{ sessionInfo.email }}
+                            <span class="mx-4">|</span>
+                          </span>
+                        </h4>
+                      </div>
+                      <div class="align-middle">
+                        <small class="font-weight-bold align-middle">Edit</small>
+                        <input type="checkbox" class="mx-3 align-middle" 
+                          v-model="editFields.email">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Email" type="email"
+                          :small="true"
+                          pre-add-on-text="New"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="profile.email"
+                          :readonly="!editFields.email"
+                          placeholder="Your Email"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.email = $event"
+                      ></input-row-no-label>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Email" type="email"
+                          :small="true"
+                          pre-add-on-text="Confirm"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="confirm.email"
+                          :readonly="!editFields.email"
+                          placeholder="Confirm Your Email"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.emailConfirm = $event"
+                      ></input-row-no-label>
+                    </div>
                   </div>
-                  <h3>Email:<span class="gray font-weight-light">{{ sessionInfo.email }}</span></h3>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Email" type="text"
-                        :small="true"
-                        pre-add-on-text="New"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="profile.email"
-                        placeholder="Your Email"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
+                  <div class="col-xs-12 mx-0 px-0 my-6">
+                    <div class="col-xs-12 mpl-0">
+                      <div class="align-middle">
+                        <h4 class="my-0 py-0">Password
+                          <span class="gray font-weight-light">
+                            <span class="mx-4">|</span>
+                          </span>
+                        </h4>
+                      </div>
+                      <div class="align-middle">
+                        <small class="font-weight-bold align-middle">Edit</small>
+                        <input type="checkbox" class="mx-3 align-middle" 
+                          v-model="editFields.password">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Password" type="password"
+                          :small="true"
+                          pre-add-on-text="New"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="profile.password"
+                          :readonly="!editFields.password"
+                          placeholder="Your Password"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.password = $event"
+                      ></input-row-no-label>
+                    </div>
+                    <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
+                      <input-row-no-label label="Password" type="password"
+                          :small="true"
+                          pre-add-on-text="Confirm"
+                          add-on-color="var(--brand-sea-green-7)"
+                          v-model="confirm.password"
+                          :readonly="!editFields.password"
+                          placeholder="Confirm Your Password"
+                          :min-length="2"
+                          :max-length="100"
+                          v-on:invalid="invalidFields.passwordConfirm = $event"
+                      ></input-row-no-label>
+                    </div>
                   </div>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Email" type="text"
-                        :small="true"
-                        pre-add-on-text="Confirm"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="confirm.email"
-                        placeholder="Confirm Your Email"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
+                  <div class="col-xs-12 text-right my-5">
+                    <button class="btn" type="submit">Apply Changes</button>
+                    <div class="row mx-0 px-0 my-3">
+                      <small>*Only edited fields will submit. Empty fields will not update.</small>
+                    </div>
                   </div>
-
-                  <h3 id="password" class="userInfo input-group mb-3">Password:</h3>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Password" type="text"
-                        :small="true"
-                        pre-add-on-text="New"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="profile.password"
-                        placeholder="Your Password"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
-                  </div>
-                  <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
-                    <input-row-no-label label="Password" type="text"
-                        :small="true"
-                        pre-add-on-text="Confirm"
-                        add-on-color="var(--brand-sea-green-7)"
-                        v-model="confirm.password"
-                        placeholder="Confirm Your Password"
-                        :min-length="2"
-                        :max-length="100"
-                        v-on:invalid="invalidFields.name = $event"
-                    ></input-row-no-label>
-                  </div>
-                  <button  id="submit-button" class="btn submit-buttons" type="submit">Apply Changes</button>
               </div>
 
               <div class="col-xs-12 col-sm-4 mr-0 pr-0 align-top">
@@ -133,11 +192,15 @@
 <script>
 import localforage from "../sessionUtils";
 import axios from "axios";
+import inputFieldOnly from './forms/inputFieldOnly.vue';
+import inputRow from './forms/inputRow.vue';
 import inputRowNoLabel from './forms/inputRowNoLabel.vue';
 import swal from 'sweetalert2';
 export default {
   name: "profile",
   components: {
+    inputFieldOnly,
+    inputRow,
     inputRowNoLabel
   },
   data() {
@@ -147,6 +210,11 @@ export default {
       userImage: "static/assets/crayons-min.jpg",
       edit: false,
       errors: [],
+      editFields: {
+        name: false,
+        email: false,
+        password: false,
+      },
       profile: {
         name: '',
         email: '',
@@ -156,6 +224,14 @@ export default {
         name: '',
         email: '',
         password: ''
+      },
+      invalidFields: {
+        name: false,
+        nameConfirm: false,
+        email: false,
+        emailConfirm: false,
+        password: false,
+        passwordConfirm: false,
       },
       status: {
         profile: "active",
@@ -259,6 +335,9 @@ export default {
           })
           .then(response => {
             this.sessionInfo = response.data;
+            this.profile.name = response.data.full_name;
+            this.profile.email = response.data.email;
+
           })
           .catch(e => {
             this.errors = e;
@@ -351,15 +430,6 @@ button:hover {
   border: 2px solid rgb(32, 199, 143);
   cursor: pointer;
 }
-#submit-button {
-  margin-top: 5px;
-}
-/* span {
-    visibility: hidden;
-  }
-  .show {
-    visibility: visible;
-  } */
 input[type="text"]:focus,
 #full_name:focus {
   border-color: rgb(140, 218, 192);
