@@ -6,6 +6,8 @@
             ]">
 			<input-field-only :type=type
 				:label="label"
+				:pre-add-on-text="preAddOnText"
+				:add-on-color="addOnColor"
 				:value="rowInput"
 				:defaultValue="defaultValue"
 				:placeholder="placeholder"
@@ -56,6 +58,18 @@ export default {
 			// input label
 			type: String,
 			required: true
+		},
+		preAddOnText: {
+			// include a Bootstrap add on prefix
+			// the prop value should be the string
+			// to include in the input prefix
+			type: String,
+			default: ''
+		},
+		addOnColor: {
+			// adapt the default color for add ons
+			type: String,
+			default: ''
 		},
 		type: {
 			// input type

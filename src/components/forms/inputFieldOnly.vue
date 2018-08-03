@@ -1,6 +1,7 @@
 <template>
-    <div>
+    <div class="row col-xs-12 px-0 mx-0">
         <div v-if="type=='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
+			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
             <textarea class="form-control" rows=4 
 				v-model="inValEscaped" 
 				@change="validateInput"
@@ -11,6 +12,7 @@
 			></textarea>
         </div>
 		<div v-else-if="type=='select'" class="row col-sm-12 my-2 mx-0 px-0">
+			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
 			<select class="col-sm-12 form-control"
 				:readonly="readonly"
 				:autocomplete="autocomplete"
@@ -38,6 +40,16 @@
 			</div>
 		</div>
         <div v-else class="row col-sm-12 my-2 mx-0 px-0">
+			<div class="input-group">
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}"
+				>{{preAddOnText}}
+			</span>
             <input :type="type" 
 				v-bind:class="[{ 'checkbox' : isCheckbox() }]"
 				class="form-control" 
@@ -47,6 +59,7 @@
 				v-model="inValEscaped" 
 				@change="validateInput"
 				@blur="lostFocus">
+			</div>
         </div>
     </div>
 </template>
@@ -61,6 +74,18 @@ export default {
 			// input label
 			type: String,
 			required: true
+		},
+		preAddOnText: {
+			// include a Bootstrap add on prefix
+			// the prop value should be the string
+			// to include in the input prefix
+			type: String,
+			default: ''
+		},
+		addOnColor: {
+			// adapt the default color for add ons
+			type: String,
+			default: ''
 		},
 		type: {
 			// input type
@@ -358,6 +383,20 @@ export default {
 				}
 			}
 		},
+		bgColor: function() {
+			if (this.addOnColor != '') {
+				return this.addOnColor;
+			} else {
+				return "#eee";
+			}
+		},
+		foreColor: function() {
+			if (this.addOnColor != '') {
+				return "#fff"
+			} else {
+				return "#000"
+			}
+		}
 	},
 	mounted() {
 		// _.debounce is a function provided by lodash to limit how

@@ -34,6 +34,10 @@ export default {
     --brand-bblue-fade-5: rgba(95, 170, 246, 0.5);
     --brand-bblue-fade-7: rgba(95, 170, 246, 0.7);
     --brand-bblue-fade-8: rgba(95, 170, 246, 0.8);
+    --brand-sea-green: #71D6B4;
+    --brand-sea-green-7: #9CE2CA;
+    --brand-sea-green-13: #39C595;
+    --brand-sea-green-16: #288A69;
 
     .btn-bblue {
       background-color: var(--brand-bblue);
@@ -213,6 +217,9 @@ export default {
     justify-content: center;
   }
 
+  .font-weight-light {
+    font-weight: lighter;
+  }
   .font-weight-bold {
     font-weight: bold;
   }
