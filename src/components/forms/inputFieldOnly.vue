@@ -40,7 +40,7 @@
 			</div>
 		</div>
         <div v-else class="row col-sm-12 my-2 mx-0 px-0">
-			<div class="input-group">
+			<div class="input-group col-xs-12 mx-0 px-0">
 			<span v-if="preAddOnText != ''"
 				class="input-group-addon"
 				v-bind:style="{
