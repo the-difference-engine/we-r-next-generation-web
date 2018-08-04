@@ -334,6 +334,10 @@ export default {
 		},
 		lostFocus: function() {
 			// run validators immediately on losing focus
+			if (typeof this.input === 'string') {
+				// trim string input values
+				this.input = this.input.trim();
+			}
 			this.isPristine = false;
 			if (this.readonly == false) {
 				this.runValidators();
