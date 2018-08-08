@@ -1,6 +1,6 @@
 <template>
     <div class="row col-xs-12 px-0 mx-0">
-        <div v-if="type=='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
+        <div v-if="type==='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
 			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
             <textarea class="form-control" rows=4 
 				v-model="inValEscaped" 
@@ -11,7 +11,7 @@
 				:autocomplete="autocomplete"
 			></textarea>
         </div>
-		<div v-else-if="type=='select'" class="row col-sm-12 my-2 mx-0 px-0">
+		<div v-else-if="type==='select'" class="row col-sm-12 my-2 mx-0 px-0">
 			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
 			<select class="col-sm-12 form-control"
 				:readonly="readonly"
@@ -23,12 +23,12 @@
 				<option v-for="choice in choices" 
 					v-bind:key="choice.value"
 					v-bind:value="choice.value"
-					:selected="choice.value == defaultValue ? true : false"
+					:selected="choice.value === defaultValue ? true : false"
 					>{{choice.text}}
 				</option>
 			</select>
 		</div>
-		<div v-else-if="type=='radio'" class="row col-sm-12 my-2 mx-0 px-1">
+		<div v-else-if="type==='radio'" class="row col-sm-12 my-2 mx-0 px-1">
 			<div v-for="choice in choices">
 				<input type="radio" 
 					class="form-control radio align-middle" 
@@ -229,7 +229,7 @@ export default {
 		value(val) {
 			this.input = val;
 			// run validators if the input field is not empty on setup
-			if (val == null || val == '') { } else {
+			if (val === null || val === '') { } else {
 				this.validateInput();
 			}
 		},
@@ -240,7 +240,7 @@ export default {
 			this.errMsgs = val;
 		},
 		pristine(val) {
-			if (val == true) {
+			if (val === true) {
 				this.clearValidators();
 			}
 			this.isPristine = val;
@@ -249,7 +249,7 @@ export default {
 	methods: {
 		requiredInvalid: function() {
 			if (this.required) {
-				if (this.input == null || this.input == '') {
+				if (this.input === null || this.input === '') {
 					this.errMsgs.push(this.label + " is required");
 					return true;
 				}
@@ -339,7 +339,7 @@ export default {
 				this.input = this.input.trim();
 			}
 			this.isPristine = false;
-			if (this.readonly == false) {
+			if (this.readonly === false) {
 				this.runValidators();
 			}
 		},
@@ -364,7 +364,7 @@ export default {
 			return str.toUpperCase();
 		},
         isCheckbox: function() {
-            if (this.type == 'checkbox' || this.type == 'radio') {
+            if (this.type === 'checkbox' || this.type === 'radio') {
                 return true;
             }
             else {
@@ -378,7 +378,7 @@ export default {
 				return this.input;
 			},
 			set (value) {
-				if (typeof(value) == "string") {
+				if (typeof(value) === "string") {
 					this.input = this.escapeChars(value);
 					if (this.toUpper) {
 						this.input = this.setUpper(this.input);

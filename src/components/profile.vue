@@ -4,8 +4,8 @@
       <div class="row mx-0 px-0">
         <div class="col-xs-11 col-sm-4 px-0 mb-5"
           v-bind:class="{
-            'mx-0' : $mq == 'desktop' || $mq == 'other',
-            'mx-auto' : $mq == 'smartphone' || $mq == 'mobile' || $mq == 'tablet'
+            'mx-0' : $mq === 'desktop' || $mq === 'other',
+            'mx-auto' : $mq === 'smartphone' || $mq === 'mobile' || $mq === 'tablet'
           }">
           <div class="boxes col-sm-10 col-md-9 mx-auto px-0">
             <h3 class="profileNav" v-on:click="changeStatus('profile')" v-bind:class="status.profile" id="profile">Profile</h3>
@@ -17,8 +17,8 @@
         <div class="boxes col-xs-11 col-sm-8 p-3" 
           v-show="this.status.profile === 'active'"
           v-bind:class="{
-            'mx-0' : $mq == 'desktop' || $mq == 'other',
-            'mx-auto' : $mq == 'smartphone' || $mq == 'mobile' || $mq == 'tablet'
+            'mx-0' : $mq === 'desktop' || $mq === 'other',
+            'mx-auto' : $mq === 'smartphone' || $mq === 'mobile' || $mq === 'tablet'
           }">
           <div class="row mx-0 px-0">
             <div class="col-xs-7 mx-0 px-0 align-middle">

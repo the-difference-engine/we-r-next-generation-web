@@ -228,7 +228,7 @@ export default {
     },
     methods: {
         isNumber: function() {
-            if (this.type == 'number' || this.type == 'checkbox') {
+            if (this.type === 'number' || this.type === 'checkbox') {
                 return true;
             }
             else {
