@@ -49,6 +49,13 @@ export default {
     .bg-bblue {
       background-color: var(--brand-bblue);
     }
+    .gray, .grey {
+      color: gray;
+    }
+    .light-gray, .light-grey {
+      color: lightgray;
+    }
+
   }
 
   #app {
@@ -285,6 +292,9 @@ export default {
   .border-danger {
     border-color: var(--brand-danger);
     border-width: 1.5px;
+  }
+  .border-bottom {
+    border-bottom: 0.75px solid gray;
   }
 
   .bg-primary {

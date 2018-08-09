@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="row mx-0 px-0">
-            <form class="my-10 text-left" v-on:submit.prevent="submit" v-show="edit === true" >
+            <form class="my-10 text-left" v-on:submit.prevent="submit" v-show="edit === true">
               <div class="col-xs-12 col-sm-8 mx-0 px-0 align-top">
                 <div class="col-xs-12 mx-0 px-0 my-6">
                   <div class="col-xs-12 mpl-0">
@@ -63,6 +63,7 @@
                         v-model="profile.name"
                         :readonly="!editFields.name"
                         placeholder="Your Name"
+                        autocomplete="name family-name"
                         :min-length="2"
                         :max-length="100"
                         v-on:invalid="invalidFields.name = $event"
@@ -111,6 +112,7 @@
                         v-model="profile.email"
                         :readonly="!editFields.email"
                         placeholder="Your Email"
+                        autocomplete="email"
                         :min-length="2"
                         :max-length="100"
                         v-on:invalid="invalidFields.email = $event"
@@ -195,7 +197,11 @@
                 </div>
               </div>
             </form>
+            <div v-show="edit === true">
+              <hr class="col-xs-12 mx-auto px-0 my-5">
+              <app-children></app-children>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -209,13 +215,15 @@ import _ from 'lodash';
 import inputFieldOnly from "./forms/inputFieldOnly.vue";
 import inputRow from "./forms/inputRow.vue";
 import inputRowNoLabel from "./forms/inputRowNoLabel.vue";
+import appChildren from "./applications/children.vue";
 import swal from "sweetalert2";
 export default {
   name: "profile",
   components: {
     inputFieldOnly,
     inputRow,
-    inputRowNoLabel
+    inputRowNoLabel,
+    appChildren,
   },
   data() {
     return {
@@ -474,9 +482,6 @@ export default {
   background-color: white;
   border: 5px solid var(--brand-sea-green-7);
   border-radius: 12px;
-}
-.gray {
-  color: gray;
 }
 button,
 .inputfile + label {
