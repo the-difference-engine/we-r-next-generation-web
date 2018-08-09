@@ -156,8 +156,11 @@ export default {
   .mb-5 {
     margin-bottom: 1.25rem !important;
   }
-  .mt-7{
+  .mt-7 {
     margin-top: 1.8rem;
+  }
+  .mt-10 {
+    margin-top: 3rem !important;
   }
   .px-0 {
     padding-right: 0;
