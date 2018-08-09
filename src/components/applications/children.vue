@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mx-0">
+    <div v-if="campApps.length > 0" class="container-fluid mx-0">
         <h4 class="text-left gray font-weight-bold">Children who may attend camp</h4>
         <table class="table">
             <thead>
@@ -45,6 +45,7 @@ export default {
         return {
             sessionId: '',
             applications: [],
+            campApps: [],
             children: [],
         }
     },
@@ -57,8 +58,12 @@ export default {
             })
             .then(response => {
                 this.applications = response.data;  // store all applications
+                // divide camper and volunteer applications
+                this.campApps = _.filter(this.applications, function(app) {
+                    return app.type === 'camper';
+                });
                 // group applications by child name - sort by name and app date
-                let children = _.groupBy(response.data, function(app) {
+                let children = _.groupBy(this.campApps, function(app) {
                     return app.childName[0].toLowerCase();  // all lower case because sort is case sensitive
                 });
                 let sortedChildren = _.sortBy(_.keys(children));
