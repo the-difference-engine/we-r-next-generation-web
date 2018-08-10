@@ -299,6 +299,10 @@ export default {
   .border-bottom {
     border-bottom: 0.75px solid gray;
   }
+  .border-left {
+    border-left: 0.75px solid gray;
+  }
+
 
   .bg-primary {
     background-color: var(--brand-primary) !important;

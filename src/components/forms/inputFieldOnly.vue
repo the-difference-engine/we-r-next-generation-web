@@ -1,7 +1,15 @@
 <template>
     <div class="row col-xs-12 px-0 mx-0">
         <div v-if="type==='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
-			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}">
+				{{preAddOnText}}
+			</span>
             <textarea class="form-control" rows=4 
 				v-model="inValEscaped" 
 				@change="validateInput"
@@ -12,7 +20,15 @@
 			></textarea>
         </div>
 		<div v-else-if="type==='select'" class="row col-sm-12 my-2 mx-0 px-0">
-			<span v-if="preAddOnText != ''">{{preAddOnText}}</span>
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}">
+				{{preAddOnText}}
+			</span>
 			<select class="col-sm-12 form-control"
 				:readonly="readonly"
 				:autocomplete="autocomplete"
@@ -314,7 +330,17 @@ export default {
 			}
 			return false;
 		},
-
+		emailInvalid: function() {
+			if (this.type === 'email') {
+				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      			if (re.test(this.input) === false) {
+					  this.errMsgs.push(this.label + " is not a valid email address");
+					  return true;
+				  }
+			}
+			this.input = this.input.toLowerCase();
+			return false;
+		},
 		runValidators: function() {
 			this.errMsgs = [];
 			let validators = [
@@ -324,7 +350,8 @@ export default {
 				this.numMinInvalid,
 				this.numMaxInvalid,
 				this.dateMinInvalid,
-				this.dateMaxInvalid
+				this.dateMaxInvalid,
+				this.emailInvalid
 			]
 			let invalid = false;
 			validators.forEach(v => {

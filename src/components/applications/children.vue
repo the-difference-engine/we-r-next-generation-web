@@ -1,5 +1,6 @@
 <template>
     <div v-if="campApps.length > 0" class="container-fluid mx-0">
+        <hr class="col-xs-12 mx-auto px-0 my-5 gray">
         <h4 class="text-left gray font-weight-bold">Children who may attend camp</h4>
         <table class="table">
             <thead>
@@ -43,7 +44,6 @@ export default {
     name: "appChildren",
     data() {
         return {
-            sessionId: '',
             applications: [],
             campApps: [],
             children: [],
@@ -52,8 +52,7 @@ export default {
     created: function() {
         localforage.getItem("X_TOKEN")
         .then(session => {
-            this.sessionId = session;
-            axios.get("/api/v1/profile/" + session + "/applications", {
+            axios.get("/api/v1/profile/applications", {
                 headers: { "x-token": session }
             })
             .then(response => {
