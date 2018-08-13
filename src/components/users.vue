@@ -157,10 +157,18 @@ export default {
     },
     userDelete: function(user) {
       localforage.getItem('X_TOKEN').then(session => {
-        axios.delete(`/api/v1/admin/userDelete/${user._id.$oid}`, {
-          headers: { 'x-token': session },
-          params: user._id
-        });
+        console.log('USER ID: ', user._id.$oid);
+        axios
+          .delete(`/api/v1/profiles/${user._id.$oid}`, {
+            headers: { 'x-token': session },
+            params: user._id
+          })
+          .then(res => {
+            setTimeout(() => {
+              this.$router.go(this.$router.currentRoute);
+            }, 1000);
+          })
+          .catch(console.error);
       });
     }
   },
