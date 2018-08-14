@@ -38,14 +38,14 @@ jobs:
       
       # Install project dependencies
       - run:
-        name: Install local dependencies
-        command: npm install
+          name: Install local dependencies
+          command: npm install
 
       # Save dependency cache
       - save_cache:
-        key: v1-dep-{{ .Branch }}-{{ epoch }}
-        paths:
-        - node_modules
+          key: v1-dep-{{ .Branch }}-{{ epoch }}
+          paths:
+          - node_modules
 
       # # Lint the source code
       # - run:
@@ -59,14 +59,14 @@ jobs:
 
       # Build project
       - run:
-        name: Building
-        command: npm run build --config build/webpack.prod.conf.js
+          name: Building
+          command: npm run build --config build/webpack.prod.conf.js
 
       # Cache the dist folder for the deploy job
       - save_cache:
-        key: v1-dist-{{ .Branch }}-{{ epoch }}
-        paths:
-            - dist
+          key: v1-dist-{{ .Branch }}-{{ epoch }}
+          paths:
+              - dist
 
   deploy:
     working_directory: ~/the-difference-engine/we-r-next-generation-web
