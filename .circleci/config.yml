@@ -20,18 +20,18 @@ jobs:
       - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
       # This is based on your 1.0 configuration file or project settings
       - run:
-        working_directory: ~/the-difference-engine/we-r-next-generation-web
-        command: nvm install 8.9.4 && nvm alias default 8.9.4
+          working_directory: ~/the-difference-engine/we-r-next-generation-web
+          command: nvm install 8.9.4 && nvm alias default 8.9.4
 
       # Restore the dependency cache
       - restore_cache:
-        keys:
-        # This branch if available
-        - v1-dep-{{ .Branch }}-
-        # Default branch if not
-        - v1-dep-master-
-        # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
-        - v1-dep-
+          keys:
+          # This branch if available
+          - v1-dep-{{ .Branch }}-
+          # Default branch if not
+          - v1-dep-master-
+          # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
+          - v1-dep-
 
       - run: if [ -z "${NODE_ENV:-}" ]; then export NODE_ENV=test; fi
       - run: export PATH="~/the-difference-engine/we-r-next-generation-web/node_modules/.bin:$PATH"
