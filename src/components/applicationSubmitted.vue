@@ -7,6 +7,98 @@
         <p>Please print and save a copy of the signed waiver for your records.</p>
       </div>
       <div class="col-sm-12 my-4 waiver">
+        <h3>
+            {{typeCap}} Application for 
+            <span v-if="typeCap == 'Camper'">{{childNameCap}}</span>
+            <span v-if="typeCap == 'Volunteer'">{{fullNameCap}}</span>
+        </h3>
+        <div class="row mx-0 px-0 mt-10">
+            <div class="col-md-6 col-xs-12">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="font-weight-bold text-right">Current Status</td>
+                            <td :class="application.status" class="status text-center">{{statusCap}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table v-if="typeCap == 'Camper'" class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="warning">
+                            <th class="text-center" colspan="2">Child Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-weight-bold text-right">Age</td>
+                            <td>{{application.age}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">Gender</td>
+                            <td>{{application.gender}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="warning">
+                            <th v-if="typeCap == 'Camper'" class="text-center" colspan="2">
+                                How would this child benefit from the camp?
+                            </th>
+                            <th v-if="typeCap == 'Volunteer'" class="text-center" colspan="2">
+                                Volunteer Short Biography
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" class="text-left px-2">{{application.bio}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">Selected Camp</td>
+                            <td>{{campName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="warning">
+                            <th class="text-center" colspan="2">Contact Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-weight-bold text-right">Email</td>
+                            <td class="text-left">{{emailLower}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">Phone Number</td>
+                            <td class="text-left">{{application.phone_number}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">Street Address</td>
+                            <td class="text-left">{{application.address_line_1}}</td>
+                        </tr>
+                        <tr v-if="application.address_line_2 != ''">
+                            <td class="font-weight-bold text-right">Address Line 2</td>
+                            <td class="text-left">{{application.address_line_2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">City</td>
+                            <td class="text-left">{{application.city}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right">State/Country</td>
+                            <td class="text-left">{{application.state_province}}, {{countryName}} ({{application.zip_code}})</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+      <div class="col-sm-12 my-4 waiver">
         <span v-html="waiver"></span>
       </div>
     </div>
@@ -16,14 +108,64 @@
 <script>
 import localforage from '../sessionUtils'
 import axios from "axios";
+import json from '../json/countries.json';
 export default {
 	name: "applicationSubmitted",
 	data() {
 		return {
-			waiver: ''
+            waiver: '',
+            appId: '',
+            application: {},
+            camp: {},
+            countriesJson: json,
+            countriesDict: {},
 		};
-	},
-    created() {
+    },
+    methods: {
+        capAppKey: function(key_name) {
+            if (key_name in this.application) {
+                return this.capWord(this.application[key_name])
+            } else { return '' }
+        },
+        capWord: function(word) {
+            return word[0].toUpperCase() + word.slice(1);
+        },
+        countriesJsonToDict: function() {
+            for (let country in this.countriesJson) {
+                this.countriesDict[this.countriesJson[country]["value"]] = this.countriesJson[country]["text"];
+            }
+        },
+    },
+    computed: {
+        typeCap: function() {
+            return this.capAppKey('type');
+        },
+        childNameCap: function() {
+            return this.capAppKey('childName');
+        },
+        fullNameCap: function() {
+            if ('full_name' in this.application) {
+                let names = this.application.full_name.split(" ");
+                for (name in names) {
+                    names[name] = this.capWord(names[name]);
+                }
+                return names.join(" ");
+            } else { return '' }
+        },
+        statusCap: function() {
+            return this.capAppKey('status');
+        },
+        campName: function() {
+            return this.camp.name + " (" + this.camp.date_start + " to " + this.camp.date_end + ")";
+        },
+        emailLower: function() {
+            return this.application.email.toLowerCase();
+        },
+        countryName: function() {
+            return this.countriesDict[this.application.country];
+        }
+    },
+    created: function() {
 		let application_id = this.$route.params.id;
         localforage.getItem('X_TOKEN')
         .then(session => {
@@ -31,7 +173,21 @@ export default {
                     'headers': { 'x-token': session }
                 })
                 .then(response => {
-                    this.waiver = response.data.waiver_form
+                    this.waiver = response.data.waiver_form;
+                    this.appId = response.data.application;
+                    axios.get('/api/v1/applications/' + this.appId, {
+                        'headers': { 'x-token': session }
+                    })
+                    .then(application => {
+                        this.application = application.data;
+                        this.$store.dispatch('campSessionGet', {
+                            camp_id: this.application.camp,
+                        })
+                        .then(campRes => {
+                            this.camp = campRes;
+                        })
+                    })
+                    this.countriesJsonToDict();
                 })
                 .catch()
         })
@@ -56,4 +212,26 @@ export default {
 		padding: 25px;
 		border: 2px solid gray;
 	}
+    .status {
+        font-weight: bolder;
+        border-width: 1px !important;
+    }
+    .submitted {
+        background-color: var(--brand-sea-green-7);
+        border-color: var(--brand-sea-green-16);
+    }
+    .pending {
+        background-color: var(--brand-warning);
+        border-color: darkslategrey;
+    }
+    .approved {
+        background-color: var(--brand-success);
+        border-color: var(--brand-sea-green-16);
+        color: white;
+    }
+    .not_approved {
+        background-color: var(--brand-danger);
+        border-color: darkslategrey;
+        color: white;
+    }
 </style>
