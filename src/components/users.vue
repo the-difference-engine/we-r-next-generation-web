@@ -91,7 +91,6 @@ export default {
   },
   computed: {
     filterUsers: function() {
-      // let filty = JSON.parse(JSON.stringify(this.users));
       this.filteredUsers = this.users.filter(user => {
         let date = new Date(parseInt(user._id.$oid.substring(0, 8), 16) * 1000);
         let shortDate = '' + date;
@@ -157,7 +156,6 @@ export default {
     },
     userDelete: function(user) {
       localforage.getItem('X_TOKEN').then(session => {
-        console.log('USER ID: ', user._id.$oid);
         axios
           .delete(`/api/v1/profiles/${user._id.$oid}`, {
             headers: { 'x-token': session },
