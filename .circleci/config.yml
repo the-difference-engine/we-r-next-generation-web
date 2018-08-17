@@ -27,7 +27,7 @@ jobs:
       - restore_cache:
           keys:
           # This branch if available
-          - v1-dep-{{ .Environment.CIRCLE_BRANCH }}-
+          - v1-dep-{{ .Environment.CIRCLE_BRANCH}}-
           # Default branch if not
           - v1-dep-master-
           # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
@@ -43,7 +43,7 @@ jobs:
 
       # Save dependency cache
       - save_cache:
-          key: v1-dep-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
+          key: v1-dep-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
           paths:
               - node_modules
 
@@ -64,7 +64,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
+          key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
           paths:
               - dist
 
@@ -76,11 +76,11 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
+            key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
 
         - run:
             name: Deploy to S3
-            command: aws s3 sync v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 } s3://wrng --delete
+            command: aws s3 sync v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1} s3://wrng --delete
 
 workflows:
   version: 2
