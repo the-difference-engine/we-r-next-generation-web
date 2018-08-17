@@ -80,7 +80,7 @@ jobs:
 
         - run:
             name: Deploy to S3
-            command: aws s3 sync v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1} s3://wrng --delete
+            command: aws s3 sync dist s3://wrng --delete
 
 workflows:
   version: 2
