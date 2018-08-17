@@ -80,7 +80,7 @@ jobs:
 
         - run:
             name: Deploy to S3
-            command: aws s3 sync dist s3://wrng --delete
+            command: aws --region us-east-2 s3 sync dist s3://wrng --delete
 
 workflows:
   version: 2
