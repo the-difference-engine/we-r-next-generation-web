@@ -76,11 +76,11 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+            key: v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
 
         - run:
             name: Deploy to S3
-            command: aws s3 sync v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} s3://wrng --delete
+            command: aws s3 sync v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 } s3://wrng --delete
 
 workflows:
   version: 2
