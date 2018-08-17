@@ -43,7 +43,7 @@ jobs:
 
       # Save dependency cache
       - save_cache:
-          key: v1-dep-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-dep-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
           paths:
               - node_modules
 
@@ -64,7 +64,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-dist-${ CIRCLE_BRANCH }-${ CIRCLE_SHA1 }
           paths:
               - dist
 
