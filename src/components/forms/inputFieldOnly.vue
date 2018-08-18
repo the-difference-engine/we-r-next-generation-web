@@ -203,6 +203,19 @@ export default {
 			type: [String, Number, Boolean, Array],
 			default: ''
 		},
+		mustMatchString: {
+			// boolean to indicate if an input must match a string value
+			// e.g., in situation that input is a confirmation for
+			// another input field
+			type: Boolean,
+			default: false
+		},
+		matchString: {
+			// string that an input must match
+			// applied only if the mustMatchString boolean is true
+			type: String,
+			default: ''
+		},
 		hasErrors: {
 			// Boolean indicator whether input has errors
 			// Validation is handled on the parent component
@@ -337,8 +350,17 @@ export default {
 					  this.errMsgs.push(this.label + " is not a valid email address");
 					  return true;
 				  }
+				this.input = this.input.toLowerCase();
 			}
-			this.input = this.input.toLowerCase();
+			return false;
+		},
+		matchInvalid: function() {
+			if (this.mustMatchString) {
+				if (this.input !== this.matchString) {
+					this.errMsgs.push(this.label + " does not match");
+					return true;
+				}
+			}
 			return false;
 		},
 		runValidators: function() {
@@ -351,7 +373,8 @@ export default {
 				this.numMaxInvalid,
 				this.dateMinInvalid,
 				this.dateMaxInvalid,
-				this.emailInvalid
+				this.emailInvalid,
+				this.matchInvalid,
 			]
 			let invalid = false;
 			validators.forEach(v => {
@@ -463,4 +486,12 @@ export default {
 		height: 1.4em;
 		margin-right: .5em;
 	}
+	.form-control {
+		border-color: gray !important;
+		border-radius: 4px !important;
+	}
+	.form-control:focus{
+		border-color: var(--brand-teal-blue) !important;
+	}
+
 </style>

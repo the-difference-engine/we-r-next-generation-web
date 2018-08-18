@@ -23,6 +23,8 @@
 					:max-num="maxNum"
 					:min-date="minDate"
 					:max-date="maxDate"
+					:must-match-string="mustMatchString"
+					:match-string="matchString"
 					:pristine="pristine"
 					v-on:input="input = $event"
 					v-on:invalid="invalid = $event"
@@ -166,6 +168,19 @@ export default {
 		value: {
 			// input value
 			type: [String, Number, Boolean, Array],
+			default: ''
+		},
+		mustMatchString: {
+			// boolean to indicate if an input must match a string value
+			// e.g., in situation that input is a confirmation for
+			// another input field
+			type: Boolean,
+			default: false
+		},
+		matchString: {
+			// string that an input must match
+			// applied only if the mustMatchString boolean is true
+			type: String,
 			default: ''
 		},
 		hasErrors: {
