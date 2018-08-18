@@ -52,10 +52,10 @@
                 'col-md-3' : editFields.address,
                 'col-xs-12' : !editFields.address
                 }">
-                <p class="col-xs-12 mx-0 px-0">{{sessionInfo.address}}</p>
-                <p class="col-xs-12 mx-0 px-0">{{sessionInfo.address2}}</p>
-                <p class="col-xs-12 mx-0 px-0">{{sessionInfo.city}}, {{sessionInfo.state}} {{sessionInfo.zip_code}}</p>
-                <p class="col-xs-12 mx-0 px-0">{{sessionInfo.country}}</p>
+                <span class="col-xs-12 mx-0 px-0">{{sessionInfo.address1}}</span>
+                <span v-if="sessionInfo.address2" class="col-xs-12 mx-0 px-0">{{sessionInfo.address2}}</span>
+                <span class="col-xs-12 mx-0 px-0">{{sessionInfo.city}}, {{sessionInfo.state_province}} {{sessionInfo.zip_code}}</span>
+                <span class="col-xs-12 mx-0 px-0">{{getCountryName}}</span>
             </div>
             <div v-show="editFields.address" class="col-md-9 col-xs-12 mx-0 pr-0 align-top border-left">
                 <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
@@ -82,7 +82,6 @@
                     placeholder="Your Street Address, Line 2"
                     autocomplete="address-2"
                     :required="false"
-                    :min-length="2"
                     :max-length="100"
                     v-on:invalid="invalidFields.address2 = $event"
                 ></input-row-no-label>
@@ -106,13 +105,13 @@
                     :small="true"
                     pre-add-on-text="State"
                     add-on-color="var(--brand-sea-green-7)"
-                    v-model="profile.stateProvince"
+                    v-model="profile.state_province"
                     :readonly="!editFields.address"
                     placeholder="Your State or Province"
                     autocomplete="state province address-level1"
                     :min-length="2"
                     :max-length="100"
-                    v-on:invalid="invalidFields.stateProvince = $event"
+                    v-on:invalid="invalidFields.state_province = $event"
                 ></input-row-no-label>
                 </div>
                 <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
@@ -132,13 +131,13 @@
                     :small="true"
                     pre-add-on-text="Postal Code"
                     add-on-color="var(--brand-sea-green-7)"
-                    v-model="profile.zipCode"
+                    v-model="profile.zip_code"
                     :readonly="!editFields.address"
                     placeholder="Your Zip or Postal Code"
                     autocomplete="zip postal-code"
-                    :min-length="2"
+                    :min-length="5"
                     :max-length="15"
-                    v-on:invalid="invalidFields.zipCode = $event"
+                    v-on:invalid="invalidFields.zip_code = $event"
                 ></input-row-no-label>
                 </div>
             </div>
@@ -149,7 +148,7 @@
             <div class="align-middle">
                 <h4 class="my-0 py-0">Phone Number:
                 <span class="gray font-weight-light">
-                    {{ sessionInfo.phone }}
+                    {{ sessionInfo.phone_number }}
                     <span class="mx-4">|</span>
                 </span>
                 </h4>
@@ -157,7 +156,7 @@
             <div class="align-middle">
                 <small class="font-weight-bold align-middle">Edit</small>
                 <input type="checkbox" class="mx-3 align-middle" 
-                v-model="editFields.phone">
+                v-model="editFields.phone_number">
             </div>
             </div>
             <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
@@ -165,13 +164,13 @@
                 :small="true"
                 pre-add-on-text="New"
                 add-on-color="var(--brand-sea-green-7)"
-                v-model="profile.phone"
-                :readonly="!editFields.phone"
+                v-model="profile.phone_number"
+                :readonly="!editFields.phone_number"
                 placeholder="Your Phone Number"
                 autocomplete="phone"
-                :min-length="2"
+                :min-length="7"
                 :max-length="20"
-                v-on:invalid="invalidFields.phone = $event"
+                v-on:invalid="invalidFields.phone_number = $event"
             ></input-row-no-label>
             </div>
         </div>
@@ -200,7 +199,7 @@
                 :readonly="!editFields.email"
                 placeholder="Your Email"
                 autocomplete="email"
-                :min-length="2"
+                :min-length="5"
                 :max-length="100"
                 v-on:invalid="invalidFields.email = $event"
             ></input-row-no-label>
@@ -213,7 +212,7 @@
                 v-model="confirm.email"
                 :readonly="!editFields.email"
                 placeholder="Confirm Your Email"
-                :min-length="2"
+                :min-length="5"
                 :max-length="100"
                 v-on:invalid="invalidFields.emailConfirm = $event"
                 @input="confirmEmail"
@@ -247,7 +246,7 @@
                 v-model="profile.passwordOld"
                 :readonly="!editFields.password"
                 placeholder="Your Current Password"
-                v-on:invalid="invalidFields.password = $event"
+                v-on:invalid="invalidFields.passwordOld = $event"
             ></input-row-no-label>
             </div>
             <div class="col-xs-12 mx-0 px-0 input-group input-group-sm">
@@ -258,7 +257,7 @@
                 v-model="profile.password"
                 :readonly="!editFields.password"
                 placeholder="Your New Password"
-                :min-length="2"
+                :min-length="8"
                 :max-length="100"
                 v-on:invalid="invalidFields.password = $event"
             ></input-row-no-label>
@@ -271,7 +270,7 @@
                 v-model="confirm.password"
                 :readonly="!editFields.password"
                 placeholder="Confirm Your New Password"
-                :min-length="2"
+                :min-length="8"
                 :max-length="100"
                 v-on:invalid="invalidFields.passwordConfirm = $event"
                 @input="confirmPassword"
@@ -289,7 +288,7 @@
         <label class="my-5 btn col-xs-12" for="form_image">Choose a file</label>
         </div>
         <div class="col-xs-12 text-right my-5">
-        <button :disabled="checkErrors" class="btn" type="submit">Apply Changes</button>
+        <button :disabled="checkErrors || !checkEdits" class="btn" type="submit">Apply Changes</button>
         <div class="row mx-0 px-0 my-3">
             <small>*Only edited fields will submit. Empty fields will not update.</small>
         </div>
@@ -315,6 +314,10 @@ export default {
             type: Object,
             required: true,
         },
+        profileToSubmit: {
+            type: Object,
+            required: true,
+        },
         userImage: {
             type: String,
             default: "static/assets/crayons-min.jpg",
@@ -328,10 +331,11 @@ export default {
         return {
             setup: false, // flag to indicate components have loaded
             countriesJson: json,
+            countriesDict: {},
             editFields: {
                 name: false,
                 address: false,
-                phone: false,
+                phone_number: false,
                 email: false,
                 password: false
             },
@@ -350,19 +354,28 @@ export default {
                 city: false,
                 state: false,
                 country: false,
-                zipCode: false,
-                phone: false,
+                zip_code: false,
+                phone_number: false,
                 email: false,
                 emailConfirm: false,
                 emailMatch: false,
+                passwordOld: false,
                 password: false,
                 passwordConfirm: false,
                 passwordMatch: false,
             },
+            notRequired: [
+                "address2",
+            ],
         }
     },
     methods: {
-        confirmFields: function(field, confirm, label) {
+        countriesJsonToDict: function() {
+            for (let country in this.countriesJson) {
+                this.countriesDict[this.countriesJson[country]["value"]] = this.countriesJson[country]["text"];
+            }
+        },
+        confirmFieldsMatch: function(field, confirm, label) {
             if (this.setup) {
                 return (field != confirm) ? `Your ${label} and confirmation do not match`: "";
             }
@@ -379,7 +392,7 @@ export default {
             });
         },
         debouncedConfirmEmail: function() {
-            this.confirmErrors.email = this.confirmFields(
+            this.confirmErrors.email = this.confirmFieldsMatch(
                 this.profile.email,
                 this.confirm.email,
                 'email'
@@ -387,7 +400,7 @@ export default {
             this.invalidFields.emailMatch = this.confirmMatchBool(this.confirmErrors.email);
         },
         debouncedConfirmPassword: function() {
-            this.confirmErrors.password = this.confirmFields(
+            this.confirmErrors.password = this.confirmFieldsMatch(
                 this.profile.password,
                 this.confirm.password,
                 'password'
@@ -405,91 +418,117 @@ export default {
                 reader.readAsDataURL(input.files[0]);
             }
         },
-        getUpdated: function(isEdited, newVal, oldVal) {
+        getOldOrUpdatedVal: function(isEdited, newVal, oldVal) {
             newVal = (newVal === '') ? oldVal : newVal; // if newVal is blank, use oldVal
             return isEdited ? newVal : oldVal;
+        },
+        prepareSubmission: function() {
+            return new Promise((resolve, reject) => {
+                this.profileToSubmit.full_name = this.getOldOrUpdatedVal(
+                    this.editFields.name, 
+                    this.profile.name, 
+                    this.sessionInfo.full_name
+                );
+                this.profileToSubmit.address1 = this.getOldOrUpdatedVal(
+                    this.editFields.address, 
+                    this.profile.address1, 
+                    this.sessionInfo.address1
+                );
+                this.profileToSubmit.address2 = this.getOldOrUpdatedVal(
+                    this.editFields.address, 
+                    this.profile.address2, 
+                    this.sessionInfo.address2
+                );
+                this.profileToSubmit.city = this.getOldOrUpdatedVal(
+                    this.editFields.address, 
+                    this.profile.city, 
+                    this.sessionInfo.city
+                );
+                this.profileToSubmit.state_province = this.getOldOrUpdatedVal(
+                    this.editFields.address, 
+                    this.profile.state_province, 
+                    this.sessionInfo.state_province
+                );
+                this.profileToSubmit.country = this.getOldOrUpdatedVal(
+                    this.editFields.address, 
+                    this.profile.country, 
+                    this.sessionInfo.country
+                );
+                this.profileToSubmit.zip_code = this.getOldOrUpdatedVal(
+                    this.editFields.zip_code,
+                    this.profile.zip_code,
+                    this.sessionInfo.zip_code
+                );
+                this.profileToSubmit.phone_number = this.getOldOrUpdatedVal(
+                    this.editFields.phone_number,
+                    this.profile.phone_number,
+                    this.sessionInfo.phone_number
+                );
+                this.profileToSubmit.email = this.getOldOrUpdatedVal(
+                    this.editFields.email, 
+                    this.profile.email, 
+                    this.sessionInfo.email
+                );
+                this.profileToSubmit.change_password = this.editFields.password;
+                this.profileToSubmit.oldPassword = this.profile.passwordOld;
+                this.profileToSubmit.newPassword = this.profile.password;
+                resolve(true);
+            })
+        },
+        showError: function(errors) {
+            let text = (errors !== null) ? errors : "Please correct the errors in the form.";
+            swal({
+                type: "error",
+                title: "Oops ...",
+                text: text,
+                footer: "Your changes were not saved. Please try again."
+            });
         },
         submit: function(evt) {
             // confirm matches prior to submitting to prevent user
             // from submitting without typing anything in the confirmation fields
             this.confirmAllMatches()
             .then(res => {
-            if (this.checkErrors === false) {
-                localforage.getItem("X_TOKEN")
-                .then(session => {
-                    let name = this.getUpdated(
-                        this.editFields.name, 
-                        this.profile.name, 
-                        this.sessionInfo.name
-                    );
-                    let phone = this.getUpdated(
-                        this.editFields.phone,
-                        this.profile.phone,
-                        this.sessionInfo.phone
-                    );
-                    let email = this.getUpdated(
-                        this.editFields.email, 
-                        this.profile.email, 
-                        this.sessionInfo.email
-                    );
-                    let password = this.getUpdated(
-                        this.editFields.password, 
-                        this.profile.password, 
-                        this.profile.password
-                    );
-                    let address1 = this.getUpdated(
-                        this.editFields.address, 
-                        this.profile.address1, 
-                        this.sessionInfo.address1
-                    );
-                    let address2 = this.getUpdated(
-                        this.editFields.address, 
-                        this.profile.address2, 
-                        this.sessionInfo.address2
-                    );
-                    let city = this.getUpdated(
-                        this.editFields.address, 
-                        this.profile.city, 
-                        this.sessionInfo.city
-                    );
-                    let state = this.getUpdated(
-                        this.editFields.address, 
-                        this.profile.state, 
-                        this.sessionInfo.state
-                    );
-                    let country = this.getUpdated(
-                        this.editFields.address, 
-                        this.profile.country, 
-                        this.sessionInfo.country
-                    );
-                    let zip = this.getUpdated(
-                        this.editFields.zipCode,
-                        this.profile.zipCode,
-                        this.sessionInfo.zipCode
-                    );
-
-                    // axios.post(`/api/v1/profile/edit/${this.sessionInfo._id.$oid}`, {
-                    //   headers: { "x-token": session },
-                    //   params: {
-                    //     full_name: name,
-                    //     email: email,
-                    //     password: password
-                    //   }
-                    // })
-                    // .then(res => {
-                    //   this.sessionInfo = res.data;
-                    // })
-                    // .catch(err => {
-                    //   console.log(err);
-                    // });
+                if (this.checkErrors === false) {
+                    this.prepareSubmission()
+                    .then(res => {
+                        this.$store.dispatch("updateProfile", {
+                            profileId : this.sessionInfo._id.$oid,
+                            updatedProfile : this.profileToSubmit
+                        })
+                        .then(updated => {
+                            if (updated === true) {
+                                swal({
+                                    type: "success",
+                                    title: "Saved!",
+                                    text: "Your updates were successfully saved!"
+                                })
+                                .then(done => {
+                                    this.$router.go(this.$router.currentRoute);
+                                })
+                            } else {
+                                this.showError(updated);
+                            }
+                        })
                     })
-                    .catch(console.error);
-                }
+                } else { this.showError() }
             })
         },
     },
     computed: {
+        getCountryName: function() {
+            return this.countriesDict[this.profile.country];
+        },
+        checkEdits: function() {
+            for (let field in this.editFields) {
+                if (this.editFields[field]) {
+                    return true;
+                }
+            }
+            return false;
+        },
         checkErrors: function() {
+            this.confirmAllMatches();
             if (this.editFields.name) {
                 if (  this.invalidFields.name === true ||
                     this.invalidFields.nameConfirm === true ||
@@ -503,12 +542,12 @@ export default {
                     this.invalidFields.city === true ||
                     this.invalidFields.state === true ||
                     this.invalidFields.country === true ||
-                    this.invalidFields.zipCode === true ) {
+                    this.invalidFields.zip_code === true ) {
                 return true;
                 }
             }
-            if (this.editFields.phone) {
-                if (  this.invalidFields.phone === true ) {
+            if (this.editFields.phone_number) {
+                if (  this.invalidFields.phone_number === true ) {
                 return true;
                 }
             }
@@ -520,8 +559,12 @@ export default {
                 }
             }
             if (this.editFields.password) {
-                if (  this.invalidFields.password === true ||
+                if ( this.invalidFields.passwordOld === true ||  
+                    this.profile.passwordOld === '' ||  
+                    this.invalidFields.password === true ||
+                    this.profile.password === '' ||  
                     this.invalidFields.passwordConfirm === true ||
+                    this.profile.passwordConfirm === '' ||  
                     this.invalidFields.passwordMatch === true ) {
                 return true;
                 }
@@ -536,6 +579,7 @@ export default {
         this.confirmPassword = _.debounce(this.debouncedConfirmPassword, 1000);
     },
     mounted: function() {
+        this.countriesJsonToDict(); // convert json to dictionary
         // set flag to indicate input components have loaded
         setTimeout(() => {
         this.setup = true;

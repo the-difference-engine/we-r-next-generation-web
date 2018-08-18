@@ -3,6 +3,26 @@ import axios from 'axios'
 import localforage from '../sessionUtils'
 import swal from 'sweetalert2';
 
+let consoleErrors = function(error) {
+  // used to console any api response or request errors
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else if (error.request) {
+    // The request was made but no response was received
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // http.ClientRequest in node.js
+    console.log(error.request);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log('Error', error.message);
+  }
+  console.log(error.config);
+}
+
 export const login = ({commit}, {email, password, router, that}) =>
   axios.post(`/api/v1/sessions`, {email, password})
   .then(res => {
@@ -41,21 +61,45 @@ export const logout = ({commit}, {router}) =>
     }
   })
 
-export const signup = ({commit}, {name, email, password, that}) =>
-  axios.post(`/api/v1/profiles`, {name, email, password})
-  .then(() => {
-    that.signedUp = true
+export const signup = ({commit}, {newUser}) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/v1/profiles`, {
+      newUser: newUser
+    })
+    .then(() => {
+      resolve(true);
+    })
+    .catch(error => {
+      consoleErrors(error);
+      resolve(error.response.data);
+    })
   })
-  .catch(err => {
-    that.signUpErr = true
-    setTimeout(() => {that.signUpErr = false}, 3000)
-    console.error(err)
+}
+
+export const updateProfile = (
+  {commit}, {profileId, updatedProfile}
+) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem("X_TOKEN")
+    .then(session => {
+      axios.post(`/api/v1/profile/edit/${profileId}`, {
+        headers: { "x-token": session },
+        updatedProfile: updatedProfile
+      })
+      .then(res => {
+        resolve(true);
+      })
+      .catch(error => {
+        consoleErrors(error);
+        resolve(error.response.data);
+      })
+    })
   })
+}
 
 export const resetPassword = ({commit}, {email, that}) =>
   axios.put(`/api/v1/profiles/resetPassword`, {email})
   .then(res => {
-    console.log('password reset res data: ', res.data)
     that.requestMade = true
   })
   .catch(err => {
@@ -68,7 +112,6 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
   axios.put(`/api/v1/profiles/newPassword`, {resetToken, password})
   .then(res => {
     that.passwordSuccess = true
-    console.log('new pswd submission res data:', res.data)
   })
   .catch(err => {
     that.passwordFail = true
