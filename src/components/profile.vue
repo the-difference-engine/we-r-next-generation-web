@@ -3,12 +3,6 @@
   <div id="wrapper">
     <div class="row" id="boxHolder">
       <profile-sidebar></profile-sidebar>
-      <!-- <div class="boxes col" id="sideBar">
-        <h3 class="profileNav" v-on:click="changeStatus('profile')" v-bind:class="status.profile" id="profile">Profile</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('camp')" v-bind:class="status.camp" id="camp">Camp Application</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('volunteer')" v-bind:class="status.volunteer" id="volunteer">Volunteer Application</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('partner')" v-bind:class="status.partner" id="partner">Partner Application</h3>
-      </div> -->
       <div class="boxes col" id="main" v-show="this.status.profile === 'active'">
         <div id="mainHeader">
           <div id="titleDiv">
@@ -115,32 +109,6 @@ export default {
     };
   },
   methods: {
-    // changeStatus: function(link) {
-    //   if (link === 'profile') {
-    //     this.status.profile = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'camp') {
-    //     this.status.camp = 'active';
-    //     this.status.profile = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'volunteer') {
-    //     this.status.volunteer = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.profile = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'partner') {
-    //     this.status.partner = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.profile = 'inactive';
-    //   }
-    // },
     preview: function(event) {
       var input = event.target;
       if (input.files && input.files[0]) {
@@ -229,12 +197,6 @@ export default {
   border-radius: 12px;
   display: inline-block;
 }
-/* #sideBar {
-  width: 25%;
-  margin-right: 5%;
-  vertical-align: top;
-  padding-bottom: 15px;
-} */
 #main {
   width: 60%;
   height: 495px;
@@ -255,7 +217,6 @@ export default {
   margin-left: 10%;
 }
 #mainHeader {
-  /* border-bottom: 2px solid rgb(190, 190, 190); */
   display: flex;
   justify-content: space-between;
 }
@@ -297,19 +258,6 @@ img {
   padding-top: 15px;
   margin-right: 5%;
 }
-/* .profileNav {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-.profileNav:hover {
-  cursor: pointer;
-}
-.active {
-  background-color: rgb(140, 218, 192);
-}
-.inactive {
-  background-color: white;
-} */
 #password {
   white-space: nowrap;
   overflow: hidden;
@@ -362,12 +310,6 @@ img {
 #submit-button {
   margin-top: 5px;
 }
-/* span {
-    visibility: hidden;
-  }
-  .show {
-    visibility: visible;
-  } */
 input[type='text']:focus,
 #full_name:focus {
   border-color: rgb(140, 218, 192);
