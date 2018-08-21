@@ -341,7 +341,7 @@
 					})
                     .then(res => {
                       // redirect to application submitted page -- API returns application ID
-                      this.$router.push('/applications/' + res.data + '/submitted');
+                      this.$router.push('/applications/' + res.data._id.$oid + '/submitted');
                     })
                     .catch(console.error);
                 })
