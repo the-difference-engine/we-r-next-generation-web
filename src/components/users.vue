@@ -38,14 +38,20 @@
               <td v-if="user">{{ user.email }}</td>
               <td v-if="user">{{ user.registration_date }}</td>
               <td v-if="appState.userInfo.role === 'superadmin'">
-                <form>
+                <form class>
                   <div class="form-group">
                     <select class="form-control" id="exampleFormControlSelect1" @change="updateUserRole($event, user)" v-model="user.role" v-bind:placeholder="user.role">
                       <option>admin</option>
                       <option>user</option>
                     </select>
                   </div>
+
                 </form>
+              </td>
+              <td v-if="appState.userInfo.role === 'superadmin'">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-danger" v-on:click.self="userDelete(user)">Delete</button>
+                </div>
               </td>
               <td v-else-if="appState.userInfo.role === 'admin'">
                 <span v-if="user">{{ user.role }}</span>
@@ -147,6 +153,22 @@ export default {
           headers: { 'x-token': session },
           role: user.role
         });
+      });
+    },
+    userDelete: function(user) {
+      localforage.getItem('X_TOKEN').then(session => {
+        console.log('USER ID: ', user._id.$oid);
+        axios
+          .delete(`/api/v1/profiles/${user._id.$oid}`, {
+            headers: { 'x-token': session },
+            params: user._id
+          })
+          .then(res => {
+            setTimeout(() => {
+              this.$router.go(this.$router.currentRoute);
+            }, 1000);
+          })
+          .catch(console.error);
       });
     }
   },

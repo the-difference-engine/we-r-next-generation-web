@@ -1,17 +1,14 @@
 <template>
-  <div class="container-fluid mx-0 px-0" id="wrapper">
-    <div class="col-xs-12 col-md-11 mx-auto my-10">
-      <div class="row mx-0 px-0">
-        <div class="col-xs-11 col-sm-4 px-0 mb-5"
-          v-bind:class="{
-            'mx-0' : $mq === 'desktop' || $mq === 'other',
-            'mx-auto' : $mq === 'smartphone' || $mq === 'mobile' || $mq === 'tablet'
-          }">
-          <div class="boxes col-sm-10 col-md-9 mx-auto px-0">
-            <h3 class="profileNav" v-on:click="changeStatus('profile')" v-bind:class="status.profile" id="profile">Profile</h3>
-            <h3 class="profileNav" v-on:click="changeStatus('camp')" v-bind:class="status.camp" id="camp">Camp Application</h3>
-            <h3 class="profileNav" v-on:click="changeStatus('volunteer')" v-bind:class="status.volunteer" id="volunteer">Volunteer Application</h3>
-            <h3 class="profileNav" v-on:click="changeStatus('partner')" v-bind:class="status.partner" id="partner">Partner Application</h3>
+  <div id="wrapper">
+    <div class="row" id="boxHolder">
+      <profile-sidebar></profile-sidebar>
+      <div class="boxes col" id="main" v-show="this.status.profile === 'active'">
+        <div id="mainHeader">
+          <div id="titleDiv">
+            <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
+          </div>
+          <div id="editDiv">
+            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">Edit Profile</button>
           </div>
         </div>
         <div class="boxes col-xs-11 col-sm-8 p-3" 
@@ -129,30 +126,24 @@ export default {
       this.editLabel = this.editOptions[this.edit.toString()];
     }
   },
-  created: function() {
-    localforage.getItem("X_TOKEN")
-    .then(session => {
-      axios.get("/api/v1/profile/" + session, {
-        headers: { "x-token": session }
+  created() {
+    localforage
+      .getItem('X_TOKEN')
+      .then(session => {
+        this.sessionId = session;
+        axios
+          .get('/api/v1/profile/' + session, {
+            headers: { 'x-token': this.sessionId }
+          })
+          .then(response => {
+            this.sessionInfo = response.data;
+          })
+          .catch(e => {
+            this.errors = e;
+          });
       })
-      .then(response => {
-        this.sessionInfo = response.data;
-        this.profile.name = response.data.full_name;
-        this.profile.address1 = response.data.address1;
-        this.profile.address2 = response.data.address2;
-        this.profile.city = response.data.city;
-        this.profile.stateProvince = response.data.stateProvince;
-        this.profile.country = response.data.country;
-        this.profile.zipCode = response.data.zipCode;
-        this.profile.phone = response.data.phone;
-        this.profile.email = response.data.email;
-      })
-      .catch(e => {
-        this.errors = e;
-      });
-    })
-    .catch(err => console.error(err));
-  },
+      .catch(err => console.error(err));
+  }
 };
 </script>
 
@@ -164,31 +155,129 @@ export default {
 }
 .boxes {
   background-color: white;
-  border: 5px solid var(--brand-sea-green-7);
+  border: 5px solid rgb(140, 218, 192);
   border-radius: 12px;
+  display: inline-block;
 }
-button,
-.inputfile + label {
+#main {
+  width: 60%;
+  height: 495px;
+  justify-content: center;
+}
+#boxHolder {
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-top: 60px;
+}
+#mainMid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: start;
+  margin-left: 10%;
+}
+#mainHeader {
+  /* border-bottom: 2px solid rgb(190, 190, 190); */
+  display: flex;
+  justify-content: space-between;
+}
+.gray {
+  color: gray;
+}
+.bold {
+  font-weight: bold;
+}
+button {
   background-color: white;
-  color: var(--brand-sea-green);
+  color: rgb(113, 214, 180);
   font-weight: bolder;
-  border: 2px solid var(--brand-sea-green);
+  border: 2px solid rgb(113, 214, 180);
   border-radius: 7px;
 }
-button:hover[disabled="false"],
-.inputfile + label:hover {
-  color: var(--brand-sea-green-13);
-  border: 2px solid var(--brand-sea-green-16);
+button:hover {
+  color: rgb(10, 173, 119);
+  border: 2px solid rgb(32, 199, 143);
   background-color: white;
 }
-.profileNav {
-  padding-top: 15px;
-  padding-bottom: 15px;
+#image-section {
+  margin-right: 10%;
+  margin-top: 25px;
 }
-.profileNav:hover {
+img {
+  height: 300px;
+  border-radius: 10px;
+  display: block;
+}
+#userInfo {
+  display: inline-block;
+}
+#titleDiv {
+  display: inline-block;
+  margin-left: 5%;
+}
+#editDiv {
+  padding-top: 15px;
+  margin-right: 5%;
+}
+#password {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.light {
+  font-weight: lighter;
+}
+.inputs {
+  display: flex;
+}
+.input-caps {
+  background-color: rgb(140, 218, 192);
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: white;
+}
+.confirm-inputs {
+  margin-top: 5px;
+}
+#user-name {
+  margin-top: 0px;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile + label {
+  background-color: white;
+  color: rgb(113, 214, 180);
+  font-weight: bolder;
+  border: 2px solid rgb(113, 214, 180);
+  border-radius: 7px;
+  padding: 6px;
+  padding-left: 13px;
+  padding-right: 13px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+.inputfile + label:hover {
+  color: rgb(10, 173, 119);
+  border: 2px solid rgb(32, 199, 143);
   cursor: pointer;
 }
-.active {
+#submit-button {
+  margin-top: 5px;
+}
+input[type='text']:focus,
+#full_name:focus {
+  border-color: rgb(140, 218, 192);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(140, 218, 192);
+  outline: 0 none;
   background-color: var(--brand-sea-green-8);
 }
 .inactive {
