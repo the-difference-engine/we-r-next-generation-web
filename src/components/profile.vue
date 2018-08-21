@@ -8,7 +8,7 @@
             <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
           </div>
           <div id="editDiv">
-            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">Edit Profile</button>
+            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">{{editLabel}}</button>
           </div>
         </div>
         <hr class="col-xs-12 mx-auto px-0 my-5 gray">
@@ -133,8 +133,7 @@ export default {
 }
 .boxes {
   background-color: white;
-  border: 5px solid rgb(140, 218, 192);
-  /*border: 5px solid var(--brand-sea-green-7);*/
+  border: 5px solid var(--brand-sea-green-7);
   border-radius: 12px;
   display: inline-block;
 }
