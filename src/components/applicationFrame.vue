@@ -374,7 +374,7 @@
 				)
 			},
             orderedCamps(list) {
-                return _.orderBy(list, 'created_at', 'desc');
+                return _.orderBy(list, 'date_start', 'desc');
             },
 			getCamps: function() {
 				return new Promise(
@@ -387,6 +387,7 @@
 							})
 							.then(response => {
 								// sort camps then append to list with dates
+								console.log(response.data)
 								let camps = this.orderedCamps(response.data);
 								this.appState.camps = [];
 								for (let i = 0; i < camps.length; i++) {
