@@ -34,6 +34,12 @@ export default {
     --brand-bblue-fade-5: rgba(95, 170, 246, 0.5);
     --brand-bblue-fade-7: rgba(95, 170, 246, 0.7);
     --brand-bblue-fade-8: rgba(95, 170, 246, 0.8);
+    --brand-sea-green-7: #9CE2CA;
+    --brand-sea-green-8: #87DDC0;
+    --brand-sea-green-9: #73D7B5;   // lighter
+    --brand-sea-green: #71D6B4; // sea green base
+    --brand-sea-green-13: #39C595;  // darker
+    --brand-sea-green-16: #288A69;
 
     .btn-bblue {
       background-color: var(--brand-bblue);
@@ -43,6 +49,13 @@ export default {
     .bg-bblue {
       background-color: var(--brand-bblue);
     }
+    .gray, .grey {
+      color: gray;
+    }
+    .light-gray, .light-grey {
+      color: lightgray;
+    }
+
   }
 
   #app {
@@ -143,8 +156,11 @@ export default {
   .mb-5 {
     margin-bottom: 1.25rem !important;
   }
-  .mt-7{
+  .mt-7 {
     margin-top: 1.8rem;
+  }
+  .mt-10 {
+    margin-top: 3rem !important;
   }
   .px-0 {
     padding-right: 0;
@@ -213,6 +229,9 @@ export default {
     justify-content: center;
   }
 
+  .font-weight-light {
+    font-weight: lighter;
+  }
   .font-weight-bold {
     font-weight: bold;
   }
@@ -277,6 +296,13 @@ export default {
     border-color: var(--brand-danger);
     border-width: 1.5px;
   }
+  .border-bottom {
+    border-bottom: 0.75px solid gray;
+  }
+  .border-left {
+    border-left: 0.75px solid gray;
+  }
+
 
   .bg-primary {
     background-color: var(--brand-primary) !important;
@@ -292,6 +318,21 @@ export default {
   }
   .bg-warning {
     background-color: var(--brand-warning);
+  }
+
+  button:hover,
+  input[type="checkbox"]:hover,
+  input[type="radio"]:hover,
+  select:hover,
+  a:hover {
+    // apply pointer to all buttons, checkboxes, 
+    // radio options, select fields, and links
+    cursor: pointer;
+  }
+  button[disabled="true"]:hover,
+  a[disabled="true"]:hover {
+    // handle disabled attributes
+    cursor: not-allowed !important;
   }
 
   /* Scrollbar styles */

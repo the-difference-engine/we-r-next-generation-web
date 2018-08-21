@@ -1,6 +1,15 @@
 <template>
-    <div>
-        <div v-if="type=='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
+    <div class="row col-xs-12 px-0 mx-0">
+        <div v-if="type==='textarea'" class="row col-sm-12 my-2 mx-0 px-0">
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}">
+				{{preAddOnText}}
+			</span>
             <textarea class="form-control" rows=4 
 				v-model="inValEscaped" 
 				@change="validateInput"
@@ -10,7 +19,16 @@
 				:autocomplete="autocomplete"
 			></textarea>
         </div>
-		<div v-else-if="type=='select'" class="row col-sm-12 my-2 mx-0 px-0">
+		<div v-else-if="type==='select'" class="row col-sm-12 my-2 mx-0 px-0">
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}">
+				{{preAddOnText}}
+			</span>
 			<select class="col-sm-12 form-control"
 				:readonly="readonly"
 				:autocomplete="autocomplete"
@@ -21,12 +39,12 @@
 				<option v-for="choice in choices" 
 					v-bind:key="choice.value"
 					v-bind:value="choice.value"
-					:selected="choice.value == defaultValue ? true : false"
+					:selected="choice.value === defaultValue ? true : false"
 					>{{choice.text}}
 				</option>
 			</select>
 		</div>
-		<div v-else-if="type=='radio'" class="row col-sm-12 my-2 mx-0 px-1">
+		<div v-else-if="type==='radio'" class="row col-sm-12 my-2 mx-0 px-1">
 			<div v-for="choice in choices">
 				<input type="radio" 
 					class="form-control radio align-middle" 
@@ -38,6 +56,16 @@
 			</div>
 		</div>
         <div v-else class="row col-sm-12 my-2 mx-0 px-0">
+			<div class="input-group col-xs-12 mx-0 px-0">
+			<span v-if="preAddOnText != ''"
+				class="input-group-addon"
+				v-bind:style="{
+					backgroundColor: bgColor,
+					color: foreColor,
+					fontWeight: 'bold'
+				}"
+				>{{preAddOnText}}
+			</span>
             <input :type="type" 
 				v-bind:class="[{ 'checkbox' : isCheckbox() }]"
 				class="form-control" 
@@ -47,6 +75,7 @@
 				v-model="inValEscaped" 
 				@change="validateInput"
 				@blur="lostFocus">
+			</div>
         </div>
     </div>
 </template>
@@ -61,6 +90,18 @@ export default {
 			// input label
 			type: String,
 			required: true
+		},
+		preAddOnText: {
+			// include a Bootstrap add on prefix
+			// the prop value should be the string
+			// to include in the input prefix
+			type: String,
+			default: ''
+		},
+		addOnColor: {
+			// adapt the default color for add ons
+			type: String,
+			default: ''
 		},
 		type: {
 			// input type
@@ -204,7 +245,7 @@ export default {
 		value(val) {
 			this.input = val;
 			// run validators if the input field is not empty on setup
-			if (val == null || val == '') { } else {
+			if (val === null || val === '') { } else {
 				this.validateInput();
 			}
 		},
@@ -215,7 +256,7 @@ export default {
 			this.errMsgs = val;
 		},
 		pristine(val) {
-			if (val == true) {
+			if (val === true) {
 				this.clearValidators();
 			}
 			this.isPristine = val;
@@ -224,7 +265,7 @@ export default {
 	methods: {
 		requiredInvalid: function() {
 			if (this.required) {
-				if (this.input == null || this.input == '') {
+				if (this.input === null || this.input === '') {
 					this.errMsgs.push(this.label + " is required");
 					return true;
 				}
@@ -289,7 +330,17 @@ export default {
 			}
 			return false;
 		},
-
+		emailInvalid: function() {
+			if (this.type === 'email') {
+				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      			if (re.test(this.input) === false) {
+					  this.errMsgs.push(this.label + " is not a valid email address");
+					  return true;
+				  }
+			}
+			this.input = this.input.toLowerCase();
+			return false;
+		},
 		runValidators: function() {
 			this.errMsgs = [];
 			let validators = [
@@ -299,7 +350,8 @@ export default {
 				this.numMinInvalid,
 				this.numMaxInvalid,
 				this.dateMinInvalid,
-				this.dateMaxInvalid
+				this.dateMaxInvalid,
+				this.emailInvalid
 			]
 			let invalid = false;
 			validators.forEach(v => {
@@ -309,11 +361,17 @@ export default {
 		},
 		lostFocus: function() {
 			// run validators immediately on losing focus
+			if (typeof this.input === 'string') {
+				// trim string input values
+				this.input = this.input.trim();
+			}
 			this.isPristine = false;
-			this.runValidators();
+			if (this.readonly === false) {
+				this.runValidators();
+			}
 		},
 		validateInput: function() {
-			if (this.isPristine == false) {
+			if (this.isPristine === false && this.readonly === false) {
 				this.debouncedValidator();
 			}
 		},
@@ -333,7 +391,7 @@ export default {
 			return str.toUpperCase();
 		},
         isCheckbox: function() {
-            if (this.type == 'checkbox' || this.type == 'radio') {
+            if (this.type === 'checkbox' || this.type === 'radio') {
                 return true;
             }
             else {
@@ -347,7 +405,7 @@ export default {
 				return this.input;
 			},
 			set (value) {
-				if (typeof(value) == "string") {
+				if (typeof(value) === "string") {
 					this.input = this.escapeChars(value);
 					if (this.toUpper) {
 						this.input = this.setUpper(this.input);
@@ -358,6 +416,20 @@ export default {
 				}
 			}
 		},
+		bgColor: function() {
+			if (this.addOnColor != '') {
+				return this.addOnColor;
+			} else {
+				return "#eee";
+			}
+		},
+		foreColor: function() {
+			if (this.addOnColor != '') {
+				return "#fff"
+			} else {
+				return "#000"
+			}
+		}
 	},
 	mounted() {
 		// _.debounce is a function provided by lodash to limit how
