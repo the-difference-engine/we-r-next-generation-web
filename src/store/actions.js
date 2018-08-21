@@ -3,26 +3,6 @@ import axios from 'axios'
 import localforage from '../sessionUtils'
 import swal from 'sweetalert2';
 
-let consoleErrors = function(error) {
-  // used to console any api response or request errors
-  if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-  } else if (error.request) {
-    // The request was made but no response was received
-    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    // http.ClientRequest in node.js
-    console.log(error.request);
-  } else {
-    // Something happened in setting up the request that triggered an Error
-    console.log('Error', error.message);
-  }
-  console.log(error.config);
-}
-
 export const login = ({commit}, {email, password, router, that}) =>
   axios.post(`/api/v1/sessions`, {email, password})
   .then(res => {
@@ -70,7 +50,6 @@ export const signup = ({commit}, {newUser}) => {
       resolve(true);
     })
     .catch(error => {
-      consoleErrors(error);
       resolve(error.response.data);
     })
   })
@@ -90,7 +69,6 @@ export const updateProfile = (
         resolve(true);
       })
       .catch(error => {
-        consoleErrors(error);
         resolve(error.response.data);
       })
     })

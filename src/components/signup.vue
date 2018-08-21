@@ -243,7 +243,7 @@ export default {
               type: "success",
               title: "Welcome to WeRNextGeneration!",
               text:
-                "Check your email! A link to activate your profile has been sent to the email address you provided. Click through and confirm so you can login!"
+                "Check your email! A link to confirm your account has been sent to you!"
             });
           } else {
             this.showError(signedUp);
