@@ -20,6 +20,11 @@
                             <td class="font-weight-bold text-right">Current Status</td>
                             <td :class="application.status" class="status text-center">{{statusCap}}</td>
                         </tr>
+                        <tr>
+                            <td class="font-weight-bold text-right" colspan="2">
+                                <small>*Application signed on {{application.date_signed}}</small>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table v-if="typeCap == 'Camper'" class="table table-bordered table-hover">
