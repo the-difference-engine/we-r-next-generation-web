@@ -1,14 +1,7 @@
-
 <template>
   <div id="wrapper">
     <div class="row" id="boxHolder">
       <profile-sidebar></profile-sidebar>
-      <!-- <div class="boxes col" id="sideBar">
-        <h3 class="profileNav" v-on:click="changeStatus('profile')" v-bind:class="status.profile" id="profile">Profile</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('camp')" v-bind:class="status.camp" id="camp">Camp Application</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('volunteer')" v-bind:class="status.volunteer" id="volunteer">Volunteer Application</h3>
-        <h3 class="profileNav" v-on:click="changeStatus('partner')" v-bind:class="status.partner" id="partner">Partner Application</h3>
-      </div> -->
       <div class="boxes col" id="main" v-show="this.status.profile === 'active'">
         <div id="mainHeader">
           <div id="titleDiv">
@@ -18,202 +11,117 @@
             <button id="editButton" class="btn btn-primary" v-on:click="editInfo">Edit Profile</button>
           </div>
         </div>
-        <div v-show="edit === false" class="row">
-          <div>
-            <h1 class="bold userInfo" id="user-name">{{ sessionInfo.full_name }}</h1>
-            <h3 id="email" class="userInfo">Email: <span class="gray light">{{ sessionInfo.email }}</span></h3>
-          </div>
+        <hr class="col-xs-12 mx-auto px-0 my-5 gray">
+        <div v-show="edit === false" class="row mx-0 px-0 my-10">
+          <view-user-profile
+            :session-info="sessionInfo"
+            :user-image="userImage"
+          ></view-user-profile>
         </div>
-
-          <form v-on:submit.prevent="submit" v-show="edit == true" >
-            <div id="mainMid">
-              <div id="userInfo" class="col col-12">
-                <h3>Name:<span class="gray light">{{ sessionInfo.full_name }}</span></h3>
-                <div class="input-group input-group-sm mb-3 inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">New</span>
-                  </div>
-                  <input id="form_con_name" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <div class="input-group input-group-sm mb-3 inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">Confirm</span>
-                  </div>
-                  <input id="form_name" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <h3>Email:<span class="gray light">{{ sessionInfo.email }}</span></h3>
-                <div class="input-group input-group-sm mb-3 inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">New</span>
-                  </div>
-                  <input id="form_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">Confirm</span>
-                  </div>
-                  <input id="form_con_email" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <h3 id="password" class="userInfo input-group mb-3">Password:</h3>
-                <div class="input-group input-group-sm mb-3 inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">New</span>
-                  </div>
-                  <input id="form_password" type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <div class="input-group input-group-sm mb-3 inputs confirm-inputs" >
-                  <div class="input-group-prepend input-caps">
-                    <span class="input-group-text">Confirm</span>
-                  </div>
-                  <input id="form_con_password" type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                </div>
-
-                <button  id="submit-button" class="btn btn-primary submit-buttons" type="submit">Apply Changes</button>
-            </div>
-
-            <div id="image-section" class="col">
-              <img :src="userImage" alt="image not found">
-              <input type="file" name="file" id="form_image" class="inputfile" @change="preview" accept="image/*">
-              <label for="form_image">Choose a file</label>
-            </div>
-
-          </div>
-        </form>
+        <div v-show="edit === true" class="row mx-0 px-0">
+          <edit-user-profile
+            :session-info="sessionInfo"
+            :profile-to-submit="profileToSubmit"
+            :user-image="userImage"
+            :profile="profile"
+          ></edit-user-profile>
+        </div>
+        <div class="row mx-0 px-0">
+          <app-children></app-children>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import localforage from "../sessionUtils";
+import axios from "axios";
+import _ from 'lodash';
+import viewUserProfile from "./userProfile/viewProfile.vue";
+import editUserProfile from "./userProfile/editProfile.vue";
+import appChildren from "./applications/children.vue";
 import profileSidebar from './profileSidebar.vue';
-import localforage from '../sessionUtils';
-import axios from 'axios';
 export default {
-  name: 'profile',
+  name: "profile",
   components: {
+    viewUserProfile,
+    editUserProfile,
+    appChildren,
     profileSidebar
   },
   data() {
     return {
+      userStatus: ''
       sessionId: '',
-      sessionInfo: {},
-      userImage: 'static/assets/saturn1.jpg',
-      edit: false,
       errors: [],
+      sessionInfo: {},
+      profileToSubmit: {},
+      userImage: "static/assets/crayons-min.jpg",
       status: {
         profile: 'active',
         camp: 'inactive',
         volunteer: 'inactive',
         partner: 'inactive'
       },
-      userStatus: ''
+      edit: false,
+      editLabel: "Edit Profile",
+      editOptions: {
+        true: "Cancel Changes",
+        false: "Edit Profile"
+      },
+      profile: {
+        name: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state_province: "",
+        country: "",
+        zip_code: "",
+        phone_number: "",
+        email: "",
+        passwordOld: "",
+        password: ""
+      },
     };
   },
   methods: {
-    // changeStatus: function(link) {
-    //   if (link === 'profile') {
-    //     this.status.profile = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'camp') {
-    //     this.status.camp = 'active';
-    //     this.status.profile = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'volunteer') {
-    //     this.status.volunteer = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.profile = 'inactive';
-    //     this.status.partner = 'inactive';
-    //   }
-    //   if (link === 'partner') {
-    //     this.status.partner = 'active';
-    //     this.status.camp = 'inactive';
-    //     this.status.volunteer = 'inactive';
-    //     this.status.profile = 'inactive';
-    //   }
-    // },
-    preview: function(event) {
-      var input = event.target;
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = e => {
-          this.userImage = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
+    copySessionInfo: function() {
+      for (let key in this.sessionInfo) {
+        this.profileToSubmit[key] = this.sessionInfo[key];
       }
     },
-    submit: function(evt) {
-      this.errors = [];
-      if (evt.target.form_name.value !== evt.target.form_con_name.value) {
-        this.errors.push('Name does not match');
-      }
-      if (evt.target.form_email.value !== evt.target.form_con_email.value) {
-        this.errors.push('Email does not match');
-      }
-      if (
-        evt.target.form_password.value !== evt.target.form_con_password.value
-      ) {
-        this.errors.push('Password does not match');
-      }
-      if (this.errors.length === 0) {
-        localforage
-          .getItem('X_TOKEN')
-          .then(session => {
-            axios
-              .post(`/api/v1/profile/edit/${this.sessionInfo._id.$oid}`, {
-                headers: { 'x-token': session },
-                params: {
-                  full_name:
-                    evt.target.form_name.value.length !== 0
-                      ? evt.target.form_name.value
-                      : this.sessionInfo.full_name,
-                  email:
-                    evt.target.form_email.value.length !== 0
-                      ? evt.target.form_email.value
-                      : this.sessionInfo.email
-                }
-              })
-              .then(res => {
-                this.sessionInfo = res.data;
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          })
-          .catch(console.error);
-      }
-    },
-    editInfo() {
+    editInfo: function() {
       this.edit = !this.edit;
+      this.editLabel = this.editOptions[this.edit.toString()];
     }
   },
-  created() {
-    localforage
-      .getItem('X_TOKEN')
-      .then(session => {
-        this.sessionId = session;
-        axios
-          .get('/api/v1/profile/' + session, {
-            headers: { 'x-token': this.sessionId }
-          })
-          .then(response => {
-            this.sessionInfo = response.data;
-          })
-          .catch(e => {
-            this.errors = e;
-          });
+  created: function() {
+    localforage.getItem("X_TOKEN")
+    .then(session => {
+      axios.get("/api/v1/profile/" + session, {
+        headers: { "x-token": session }
       })
-      .catch(err => console.error(err));
-  }
+      .then(response => {
+        this.sessionInfo = response.data;
+        this.profile.name = response.data.full_name;
+        this.profile.address1 = response.data.address1;
+        this.profile.address2 = response.data.address2;
+        this.profile.city = response.data.city;
+        this.profile.state_province = response.data.state_province;
+        this.profile.country = response.data.country;
+        this.profile.zip_code = response.data.zip_code;
+        this.profile.phone_number = response.data.phone_number;
+        this.profile.email = response.data.email;
+        this.copySessionInfo();     // prepare object to submit (that will not overwrite existing session info)
+      })
+      .catch(e => {
+        this.errors = e;
+      });
+    })
+    .catch(err => console.error(err));
+  },
 };
 </script>
 
@@ -226,15 +134,10 @@ export default {
 .boxes {
   background-color: white;
   border: 5px solid rgb(140, 218, 192);
+  /*border: 5px solid var(--brand-sea-green-7);*/
   border-radius: 12px;
   display: inline-block;
 }
-/* #sideBar {
-  width: 25%;
-  margin-right: 5%;
-  vertical-align: top;
-  padding-bottom: 15px;
-} */
 #main {
   width: 60%;
   height: 495px;
@@ -255,7 +158,6 @@ export default {
   margin-left: 10%;
 }
 #mainHeader {
-  /* border-bottom: 2px solid rgb(190, 190, 190); */
   display: flex;
   justify-content: space-between;
 }
@@ -297,19 +199,6 @@ img {
   padding-top: 15px;
   margin-right: 5%;
 }
-/* .profileNav {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-.profileNav:hover {
-  cursor: pointer;
-}
-.active {
-  background-color: rgb(140, 218, 192);
-}
-.inactive {
-  background-color: white;
-} */
 #password {
   white-space: nowrap;
   overflow: hidden;
@@ -362,16 +251,24 @@ img {
 #submit-button {
   margin-top: 5px;
 }
-/* span {
-    visibility: hidden;
-  }
-  .show {
-    visibility: visible;
-  } */
 input[type='text']:focus,
 #full_name:focus {
   border-color: rgb(140, 218, 192);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(140, 218, 192);
-  outline: 0 none;
+  outline: 0 none; 
+}
+button,
+.inputfile + label {
+  background-color: white;
+  color: var(--brand-sea-green);
+  font-weight: bolder;
+  border: 2px solid var(--brand-sea-green);
+  border-radius: 7px;
+}
+button:hover[disabled="false"],
+.inputfile + label:hover {
+  color: var(--brand-sea-green-13);
+  border: 2px solid var(--brand-sea-green-16);
+  background-color: white;
 }
 </style>

@@ -41,21 +41,43 @@ export const logout = ({commit}, {router}) =>
     }
   })
 
-export const signup = ({commit}, {name, email, password, that}) =>
-  axios.post(`/api/v1/profiles`, {name, email, password})
-  .then(() => {
-    that.signedUp = true
+export const signup = ({commit}, {newUser}) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`/api/v1/profiles`, {
+      newUser: newUser
+    })
+    .then(() => {
+      resolve(true);
+    })
+    .catch(error => {
+      resolve(error.response.data);
+    })
   })
-  .catch(err => {
-    that.signUpErr = true
-    setTimeout(() => {that.signUpErr = false}, 3000)
-    console.error(err)
+}
+
+export const updateProfile = (
+  {commit}, {profileId, updatedProfile}
+) => {
+  return new Promise((resolve, reject) => {
+    localforage.getItem("X_TOKEN")
+    .then(session => {
+      axios.post(`/api/v1/profile/edit/${profileId}`, {
+        headers: { "x-token": session },
+        updatedProfile: updatedProfile
+      })
+      .then(res => {
+        resolve(true);
+      })
+      .catch(error => {
+        resolve(error.response.data);
+      })
+    })
   })
+}
 
 export const resetPassword = ({commit}, {email, that}) =>
   axios.put(`/api/v1/profiles/resetPassword`, {email})
   .then(res => {
-    console.log('password reset res data: ', res.data)
     that.requestMade = true
   })
   .catch(err => {
@@ -68,7 +90,6 @@ export const submitNewPassword = ({commit}, {password, resetToken, that}) =>
   axios.put(`/api/v1/profiles/newPassword`, {resetToken, password})
   .then(res => {
     that.passwordSuccess = true
-    console.log('new pswd submission res data:', res.data)
   })
   .catch(err => {
     that.passwordFail = true

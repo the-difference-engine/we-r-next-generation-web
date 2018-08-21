@@ -6,6 +6,8 @@
 			<div class="row col-sm-12 mx-0 px-0">
 				<input-field-only :type=type
 					:label="label"
+					:pre-add-on-text="preAddOnText"
+					:add-on-color="addOnColor"
 					v-model="input"
 					:defaultValue="defaultValue"
 					:placeholder="placeholder"
@@ -21,6 +23,8 @@
 					:max-num="maxNum"
 					:min-date="minDate"
 					:max-date="maxDate"
+					:must-match-string="mustMatchString"
+					:match-string="matchString"
 					:pristine="pristine"
 					v-on:input="input = $event"
 					v-on:invalid="invalid = $event"
@@ -54,6 +58,18 @@ export default {
 			// input label
 			type: String,
 			required: true
+		},
+		preAddOnText: {
+			// include a Bootstrap add on prefix
+			// the prop value should be the string
+			// to include in the input prefix
+			type: String,
+			default: ''
+		},
+		addOnColor: {
+			// adapt the default color for add ons
+			type: String,
+			default: ''
 		},
 		type: {
 			// input type
@@ -152,6 +168,19 @@ export default {
 		value: {
 			// input value
 			type: [String, Number, Boolean, Array],
+			default: ''
+		},
+		mustMatchString: {
+			// boolean to indicate if an input must match a string value
+			// e.g., in situation that input is a confirmation for
+			// another input field
+			type: Boolean,
+			default: false
+		},
+		matchString: {
+			// string that an input must match
+			// applied only if the mustMatchString boolean is true
+			type: String,
 			default: ''
 		},
 		hasErrors: {

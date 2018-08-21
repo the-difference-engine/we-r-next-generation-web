@@ -6,6 +6,8 @@
             ]">
 			<input-field-only :type=type
 				:label="label"
+				:pre-add-on-text="preAddOnText"
+				:add-on-color="addOnColor"
 				:value="rowInput"
 				:defaultValue="defaultValue"
 				:placeholder="placeholder"
@@ -21,6 +23,8 @@
 				:max-num="maxNum"
 				:min-date="minDate"
 				:max-date="maxDate"
+				:must-match-string="mustMatchString"
+				:match-string="matchString"
 				:pristine="pristine"
 				v-on:input="rowInput = $event"
 				v-on:invalid="invalid = $event"
@@ -37,7 +41,9 @@
                 <small>{{helpText}}</small>
             </div>
 			<div v-if="invalid" class="col-sm-12 has-error px-0">
-				<label v-for="e in errMsgs" class="row col-sm-12 control-label">{{e}}</label>
+				<div v-for="e in errMsgs" class="row mx-0">
+					<label class="control-label">{{e}}</label>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -56,6 +62,18 @@ export default {
 			// input label
 			type: String,
 			required: true
+		},
+		preAddOnText: {
+			// include a Bootstrap add on prefix
+			// the prop value should be the string
+			// to include in the input prefix
+			type: String,
+			default: ''
+		},
+		addOnColor: {
+			// adapt the default color for add ons
+			type: String,
+			default: ''
 		},
 		type: {
 			// input type
@@ -157,6 +175,19 @@ export default {
 			type: [String, Number, Boolean, Array],
 			default: ''
 		},
+		mustMatchString: {
+			// boolean to indicate if an input must match a string value
+			// e.g., in situation that input is a confirmation for
+			// another input field
+			type: Boolean,
+			default: false
+		},
+		matchString: {
+			// string that an input must match
+			// applied only if the mustMatchString boolean is true
+			type: String,
+			default: ''
+		},
 		hasErrors: {
 			// Boolean indicator whether input has errors
 			// Validation is handled on the parent component
@@ -214,7 +245,7 @@ export default {
     },
     methods: {
         isNumber: function() {
-            if (this.type == 'number' || this.type == 'checkbox') {
+            if (this.type === 'number' || this.type === 'checkbox') {
                 return true;
             }
             else {
