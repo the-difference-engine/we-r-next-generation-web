@@ -27,9 +27,10 @@ export default {
     --brand-primary-fade-8: rgba(66, 139, 202, 0.8);
     --brand-success: #5cb85c;
     --brand-info:    #5bc0de;
-    --brand-warning: #f0ad4e;
+    --brand-warning: #ff9327;
     --light-light-orange: #fae6c9;
     --brand-danger:  #d9534f;
+    --brand-teal-blue: #7ddbd4;
     --brand-bblue: #5FAAF6;
     --brand-bblue-fade-5: rgba(95, 170, 246, 0.5);
     --brand-bblue-fade-7: rgba(95, 170, 246, 0.7);
@@ -45,6 +46,11 @@ export default {
       background-color: var(--brand-bblue);
       color: white;
       border-color: var(--brand-primary);
+    }
+    .btn-teal {
+      background-color: var(--brand-teal-blue) !important;
+      color: white !important;
+      border: none;
     }
     .bg-bblue {
       background-color: var(--brand-bblue);
@@ -181,6 +187,14 @@ export default {
   .py-0 {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+  }
+  .py-5 {
+    padding-top: 2.0rem !important;
+    padding-bottom: 2.0rem !important;
+  }
+  .py-10 {
+    padding-top: 3.0rem !important;
+    padding-bottom: 3.0rem !important;
   }
   .pr-0 {
     padding-right: 0;
