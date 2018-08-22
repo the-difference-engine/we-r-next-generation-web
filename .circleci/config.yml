@@ -43,7 +43,7 @@ jobs:
 
       # Save dependency cache
       - save_cache:
-          key: v1-dep-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
+          key: v1-dep-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
           paths:
               - node_modules
 
@@ -64,7 +64,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
+          key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
           paths:
               - dist
 
@@ -76,7 +76,7 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_SHA1}
+            key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
 
         - run:
             name: Deploy to S3
