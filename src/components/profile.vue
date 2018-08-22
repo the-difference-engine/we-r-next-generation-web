@@ -35,16 +35,15 @@
 </template>
 
 <script>
-
-import localforage from "../sessionUtils";
-import axios from "axios";
+import localforage from '../sessionUtils';
+import axios from 'axios';
 import _ from 'lodash';
-import viewUserProfile from "./userProfile/viewProfile.vue";
-import editUserProfile from "./userProfile/editProfile.vue";
-import appChildren from "./applications/children.vue";
+import viewUserProfile from './userProfile/viewProfile.vue';
+import editUserProfile from './userProfile/editProfile.vue';
+import appChildren from './applications/children.vue';
 import profileSidebar from './profileSidebar.vue';
 export default {
-  name: "profile",
+  name: 'profile',
   components: {
     viewUserProfile,
     editUserProfile,
@@ -53,12 +52,12 @@ export default {
   },
   data() {
     return {
-      userStatus: ''
+      userStatus: '',
       sessionId: '',
       errors: [],
       sessionInfo: {},
       profileToSubmit: {},
-      userImage: "static/assets/crayons-min.jpg",
+      userImage: 'static/assets/crayons-min.jpg',
       status: {
         profile: 'active',
         camp: 'inactive',
@@ -66,24 +65,24 @@ export default {
         partner: 'inactive'
       },
       edit: false,
-      editLabel: "Edit Profile",
+      editLabel: 'Edit Profile',
       editOptions: {
-        true: "Cancel Changes",
-        false: "Edit Profile"
+        true: 'Cancel Changes',
+        false: 'Edit Profile'
       },
       profile: {
-        name: "",
-        address1: "",
-        address2: "",
-        city: "",
-        state_province: "",
-        country: "",
-        zip_code: "",
-        phone_number: "",
-        email: "",
-        passwordOld: "",
-        password: ""
-      },
+        name: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state_province: '',
+        country: '',
+        zip_code: '',
+        phone_number: '',
+        email: '',
+        passwordOld: '',
+        password: ''
+      }
     };
   },
   methods: {
@@ -98,30 +97,32 @@ export default {
     }
   },
   created: function() {
-    localforage.getItem("X_TOKEN")
-    .then(session => {
-      axios.get("/api/v1/profile/" + session, {
-        headers: { "x-token": session }
+    localforage
+      .getItem('X_TOKEN')
+      .then(session => {
+        axios
+          .get('/api/v1/profile/' + session, {
+            headers: { 'x-token': session }
+          })
+          .then(response => {
+            this.sessionInfo = response.data;
+            this.profile.name = response.data.full_name;
+            this.profile.address1 = response.data.address1;
+            this.profile.address2 = response.data.address2;
+            this.profile.city = response.data.city;
+            this.profile.state_province = response.data.state_province;
+            this.profile.country = response.data.country;
+            this.profile.zip_code = response.data.zip_code;
+            this.profile.phone_number = response.data.phone_number;
+            this.profile.email = response.data.email;
+            this.copySessionInfo(); // prepare object to submit (that will not overwrite existing session info)
+          })
+          .catch(e => {
+            this.errors = e;
+          });
       })
-      .then(response => {
-        this.sessionInfo = response.data;
-        this.profile.name = response.data.full_name;
-        this.profile.address1 = response.data.address1;
-        this.profile.address2 = response.data.address2;
-        this.profile.city = response.data.city;
-        this.profile.state_province = response.data.state_province;
-        this.profile.country = response.data.country;
-        this.profile.zip_code = response.data.zip_code;
-        this.profile.phone_number = response.data.phone_number;
-        this.profile.email = response.data.email;
-        this.copySessionInfo();     // prepare object to submit (that will not overwrite existing session info)
-      })
-      .catch(e => {
-        this.errors = e;
-      });
-    })
-    .catch(err => console.error(err));
-  },
+      .catch(err => console.error(err));
+  }
 };
 </script>
 
@@ -254,7 +255,7 @@ input[type='text']:focus,
 #full_name:focus {
   border-color: rgb(140, 218, 192);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(140, 218, 192);
-  outline: 0 none; 
+  outline: 0 none;
 }
 button,
 .inputfile + label {
@@ -264,7 +265,7 @@ button,
   border: 2px solid var(--brand-sea-green);
   border-radius: 7px;
 }
-button:hover[disabled="false"],
+button:hover[disabled='false'],
 .inputfile + label:hover {
   color: var(--brand-sea-green-13);
   border: 2px solid var(--brand-sea-green-16);

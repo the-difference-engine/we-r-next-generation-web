@@ -106,7 +106,7 @@ export default {
           if (this.editing) {
             console.log(this.formData);
             axios
-              .put(`/api/v1/friends/${this.formData._id.$oid}`, {
+              .put(`/api/v1/admin/friends/${this.formData._id.$oid}`, {
                 headers: { 'x-token': session },
                 params: this.formData
               })
@@ -135,7 +135,6 @@ export default {
   },
 
   created() {
-    console.log('IN CREATED');
     axios
       .get('/api/v1/friends')
       .then(response => {
