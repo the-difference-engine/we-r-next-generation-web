@@ -150,7 +150,7 @@ export default {
       localforage.getItem('X_TOKEN').then(session => {
         axios.put(`/api/v1/profiles/${user._id.$oid}`, {
           headers: { 'x-token': session },
-          role: user.role
+          params: { role: user.role }
         });
       });
     },
