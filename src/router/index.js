@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { sessionCheck } from '../sessionUtils'
+import {
+  sessionCheck
+} from '../sessionUtils'
 
 import adminApplications from '@/components/adminApplications'
 import adminNavbar from '@/components/adminNavbar'
@@ -40,6 +42,7 @@ import successEditSingle from '@/components/successEditSingle'
 import users from '@/components/users'
 import wernxgFooter from '@/components/wernxgFooter'
 import wernxgHeader from '@/components/wernxgHeader'
+import wrngFriends from '@/components/wrngFriends'
 import homeEdit from '@/components/homeEdit'
 import adminApp from '@/components/adminApp'
 
@@ -93,45 +96,42 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck,
-      children: [
-        {
-          path: ':appType',
-          name: 'appType',
-          components: {
-            default: appType
-          },
-          children: [
-            {
-              path: '1',
-              name: 'page-1',
-              components: {
-                default: appPage1
-              }
-            },
-            {
-              path: '2',
-              name: 'page-2',
-              components: {
-                default: appPage2
-              }
-            },
-            {
-              path: '3',
-              name: 'page-3',
-              components: {
-                default: appPage3
-              }
-            },
-            {
-              path: 'confirm',
-              name: 'appConfirm',
-              components: {
-                default: appConfirm
-              }
-            }
-          ]
+      children: [{
+        path: ':appType',
+        name: 'appType',
+        components: {
+          default: appType
         },
-      ],
+        children: [{
+            path: '1',
+            name: 'page-1',
+            components: {
+              default: appPage1
+            }
+          },
+          {
+            path: '2',
+            name: 'page-2',
+            components: {
+              default: appPage2
+            }
+          },
+          {
+            path: '3',
+            name: 'page-3',
+            components: {
+              default: appPage3
+            }
+          },
+          {
+            path: 'confirm',
+            name: 'appConfirm',
+            components: {
+              default: appConfirm
+            }
+          }
+        ]
+      }, ],
     },
     {
       path: '/forgotPassword',
@@ -245,6 +245,16 @@ export default new Router({
       }
     },
     {
+      path: '/friends',
+      name: 'Friends',
+      components: {
+        default: wrngFriends,
+        header: wernxgHeader,
+        footer: wernxgFooter
+      },
+      beforeEnter: sessionCheck
+    },
+    {
       path: '/admin/users',
       name: 'View Users',
       components: {
@@ -303,8 +313,7 @@ export default new Router({
         footer: wernxgFooter
       },
       beforeEnter: sessionCheck,
-      children: [
-        {
+      children: [{
           path: 'create',
           name: 'campCreate',
           components: {
