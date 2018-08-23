@@ -164,7 +164,9 @@ export default {
             return this.camp.name + " (" + this.camp.date_start + " to " + this.camp.date_end + ")";
         },
         emailLower: function() {
-            return this.application.email.toLowerCase();
+            if ('email' in this.application) {
+                return this.application.email.toLowerCase();
+            }
         },
         countryName: function() {
             return this.countriesDict[this.application.country];
@@ -178,20 +180,9 @@ export default {
                     'headers': { 'x-token': session }
                 })
                 .then(response => {
-                    this.waiver = response.data.waiver_form;
-                    this.appId = response.data.application;
-                    axios.get('/api/v1/applications/' + this.appId, {
-                        'headers': { 'x-token': session }
-                    })
-                    .then(application => {
-                        this.application = application.data;
-                        this.$store.dispatch('campSessionGet', {
-                            camp_id: this.application.camp,
-                        })
-                        .then(campRes => {
-                            this.camp = campRes;
-                        })
-                    })
+                    this.waiver = response.data.waiver.waiver_form;
+                    this.application = response.data.application;
+                    this.camp = this.application.camp_data;
                     this.countriesJsonToDict();
                 })
                 .catch()

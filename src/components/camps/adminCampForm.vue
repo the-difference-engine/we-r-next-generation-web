@@ -118,8 +118,6 @@ export default {
                 limit: 10,
                 status: 'Active',
                 created_by: '',
-                created_at: new Date(),
-                updated_at: new Date()
             },
             invalidFields: {
                 name: false,
