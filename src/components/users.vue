@@ -41,6 +41,7 @@
                 <form class>
                   <div class="form-group">
                     <select class="form-control" id="exampleFormControlSelect1" @change="updateUserRole($event, user)" v-model="user.role" v-bind:placeholder="user.role">
+                      <option>superadmin</option>
                       <option>admin</option>
                       <option>user</option>
                     </select>
