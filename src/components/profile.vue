@@ -1,14 +1,13 @@
 <template>
-  <div id="wrapper">
-    <div class="row" id="boxHolder">
-      <profile-sidebar></profile-sidebar>
-      <div class="boxes col" id="main" v-show="this.status.profile === 'active'">
-        <div id="mainHeader">
-          <div id="titleDiv">
-            <h2 id="mainTitle" class="text-left gray">Profile Page</h2>
-          </div>
-          <div id="editDiv">
-            <button id="editButton" class="btn btn-primary" v-on:click="editInfo">{{editLabel}}</button>
+  <div class="container-fluid mx-0 px-0" id="wrapper">
+    <div class="col-xs-12 col-md-11 mx-auto my-10">
+      <div class="boxes col-xs-11 mx-auto p-3">
+        <div class="row mx-0 px-0">
+          <div class="col-xs-7 mx-0 px-0 align-middle">
+            <h2 class="text-left gray my-0 py-0">Profile Page</h2>
+          </div><!-- Comment to remove white space for align-middle class!
+          --><div class="col-xs-5 mx-0 px-0 align-middle">
+            <button class="btn float-right" v-on:click="editInfo">{{editLabel}}</button>
           </div>
         </div>
         <hr class="col-xs-12 mx-auto px-0 my-5 gray">
@@ -41,29 +40,18 @@ import _ from 'lodash';
 import viewUserProfile from './userProfile/viewProfile.vue';
 import editUserProfile from './userProfile/editProfile.vue';
 import appChildren from './applications/children.vue';
-import profileSidebar from './profileSidebar.vue';
 export default {
   name: 'profile',
   components: {
     viewUserProfile,
     editUserProfile,
-    appChildren,
-    profileSidebar
+    appChildren
   },
   data() {
     return {
-      userStatus: '',
-      sessionId: '',
-      errors: [],
       sessionInfo: {},
       profileToSubmit: {},
       userImage: 'static/assets/crayons-min.jpg',
-      status: {
-        profile: 'active',
-        camp: 'inactive',
-        volunteer: 'inactive',
-        partner: 'inactive'
-      },
       edit: false,
       editLabel: 'Edit Profile',
       editOptions: {
@@ -91,7 +79,7 @@ export default {
         this.profileToSubmit[key] = this.sessionInfo[key];
       }
     },
-    editInfo: function() {
+    editInfo() {
       this.edit = !this.edit;
       this.editLabel = this.editOptions[this.edit.toString()];
     }
@@ -136,126 +124,6 @@ export default {
   background-color: white;
   border: 5px solid var(--brand-sea-green-7);
   border-radius: 12px;
-  display: inline-block;
-}
-#main {
-  width: 60%;
-  height: 495px;
-  justify-content: center;
-}
-#boxHolder {
-  margin-left: 30px;
-  margin-right: 30px;
-  padding-top: 60px;
-}
-#mainMid {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  text-align: start;
-  margin-left: 10%;
-}
-#mainHeader {
-  display: flex;
-  justify-content: space-between;
-}
-.gray {
-  color: gray;
-}
-.bold {
-  font-weight: bold;
-}
-button {
-  background-color: white;
-  color: rgb(113, 214, 180);
-  font-weight: bolder;
-  border: 2px solid rgb(113, 214, 180);
-  border-radius: 7px;
-}
-button:hover {
-  color: rgb(10, 173, 119);
-  border: 2px solid rgb(32, 199, 143);
-  background-color: white;
-}
-#image-section {
-  margin-right: 10%;
-  margin-top: 25px;
-}
-img {
-  height: 300px;
-  border-radius: 10px;
-  display: block;
-}
-#userInfo {
-  display: inline-block;
-}
-#titleDiv {
-  display: inline-block;
-  margin-left: 5%;
-}
-#editDiv {
-  padding-top: 15px;
-  margin-right: 5%;
-}
-#password {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.light {
-  font-weight: lighter;
-}
-.inputs {
-  display: flex;
-}
-.input-caps {
-  background-color: rgb(140, 218, 192);
-  padding: 5px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  color: white;
-}
-.confirm-inputs {
-  margin-top: 5px;
-}
-#user-name {
-  margin-top: 0px;
-}
-.inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.inputfile + label {
-  background-color: white;
-  color: rgb(113, 214, 180);
-  font-weight: bolder;
-  border: 2px solid rgb(113, 214, 180);
-  border-radius: 7px;
-  padding: 6px;
-  padding-left: 13px;
-  padding-right: 13px;
-  margin-bottom: 0px;
-  margin-top: 5px;
-}
-.inputfile + label:hover {
-  color: rgb(10, 173, 119);
-  border: 2px solid rgb(32, 199, 143);
-  cursor: pointer;
-}
-#submit-button {
-  margin-top: 5px;
-}
-input[type='text']:focus,
-#full_name:focus {
-  border-color: rgb(140, 218, 192);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(140, 218, 192);
-  outline: 0 none;
 }
 button,
 .inputfile + label {
