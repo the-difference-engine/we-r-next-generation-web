@@ -6,10 +6,6 @@ jobs:
     parallelism: 1
     shell: /bin/bash --login
     
-    environment:
-      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
-      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-    
     # Look at changing this imagehttps://circleci.com/docs/2.0/circleci-images/
     docker:
       - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
@@ -17,7 +13,6 @@ jobs:
 
     steps:
       - checkout
-      - run: mkdir -p "${CIRCLE_ARTIFACTS}" "${CIRCLE_TEST_REPORTS}"
       # This is based on your 1.0 configuration file or project settings
       - run:
           working_directory: ~/the-difference-engine/we-r-next-generation-web
@@ -26,10 +21,8 @@ jobs:
       # Restore the dependency cache
       - restore_cache:
           keys:
-          # This branch if available
-          - "v1-dep-${CIRCLE_BRANCH}-"
-          # Default branch if not
-          - v1-dep-master
+          # Gets cache if package.json has not changed
+          - v1-dep-{{ checksum "package.json" }}
 
       - run: if [ -z "${NODE_ENV:-}" ]; then export NODE_ENV=test; fi
       - run: export PATH="~/the-difference-engine/we-r-next-generation-web/node_modules/.bin:$PATH"
@@ -41,7 +34,7 @@ jobs:
 
       # Save dependency cache
       - save_cache:
-          key: "v1-dep-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+          key: v1-dep-{{ checksum "package.json" }}
           paths:
               - node_modules
 
@@ -62,7 +55,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: "v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+          key: v1-dist-{{ epoch }}
           paths:
               - dist
 
@@ -74,7 +67,7 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: "v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+            key: v1-dist-{{ epoch }}
 
         - run:
             name: Deploy to S3
