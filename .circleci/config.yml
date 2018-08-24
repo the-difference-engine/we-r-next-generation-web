@@ -55,7 +55,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: v1-dist-{{ epoch }}
+          key: v1-dist-{{ .Branch }}-{{ .Revision }}
           paths:
               - dist
 
@@ -67,7 +67,7 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: v1-dist-{{ epoch }}
+            key: v1-dist-{{ .Branch }}-{{ .Revision }}
 
         - run:
             name: Deploy to S3
