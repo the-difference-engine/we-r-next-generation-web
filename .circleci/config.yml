@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - checkout
-      - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+      - run: mkdir -p "${CIRCLE_ARTIFACTS}" "${CIRCLE_TEST_REPORTS}"
       # This is based on your 1.0 configuration file or project settings
       - run:
           working_directory: ~/the-difference-engine/we-r-next-generation-web
@@ -27,11 +27,9 @@ jobs:
       - restore_cache:
           keys:
           # This branch if available
-          - v1-dep-${CIRCLE_BRANCH}-
+          - "v1-dep-${CIRCLE_BRANCH}-"
           # Default branch if not
-          - v1-dep-master-
-          # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
-          - v1-dep-
+          - v1-dep-master
 
       - run: if [ -z "${NODE_ENV:-}" ]; then export NODE_ENV=test; fi
       - run: export PATH="~/the-difference-engine/we-r-next-generation-web/node_modules/.bin:$PATH"
@@ -43,7 +41,7 @@ jobs:
 
       # Save dependency cache
       - save_cache:
-          key: v1-dep-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          key: "v1-dep-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
           paths:
               - node_modules
 
@@ -64,7 +62,7 @@ jobs:
 
       # Cache the dist folder for the deploy job
       - save_cache:
-          key: v1-dist-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          key: "v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
           paths:
               - dist
 
@@ -76,11 +74,11 @@ jobs:
         # Restore cache from the build job which contains the
         # dist folder that needs to be deployed
         - restore_cache:
-            key: v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
+            key: "v1-dist-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
 
         - run:
             name: Deploy to S3
-            command: aws --region us-east-2 s3 cp dist s3://wrng --recursive
+            command: aws --region us-east-2 s3 sync dist s3://wrng --delete
 
 workflows:
   version: 2
