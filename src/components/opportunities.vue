@@ -61,7 +61,6 @@
       .then(res => {
         this.pageContent = res.data
       })
-      .catch(console.log)
     },
   }
 </script>

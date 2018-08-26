@@ -54,6 +54,7 @@ export default {
     }
     .bg-bblue {
       background-color: var(--brand-bblue);
+      color: white;
     }
     .gray, .grey {
       color: gray;

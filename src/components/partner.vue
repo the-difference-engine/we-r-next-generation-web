@@ -57,11 +57,6 @@
             formData.append('file', this.file[0]);
             formData.append('upload_preset', this.cloudinary.uploadPreset);
             formData.append('tags', 'gs-vue,gs-vue-uploaded');
-            // For debug purpose only
-            // Inspects the content of formData
-            for(var pair of formData.entries()) {
-                console.log(pair[0]+', '+pair[1]);
-            }
             axios.post(this.clUrl, formData).then(res => {
               let url = res.data.secure_url
               let urlToSave = ''
@@ -77,7 +72,6 @@
                 }
               localforage.getItem('X_TOKEN')
               .then(session => {
-                console.log('URL TO BE SENT', urlToSave)
                 axios.post('/api/v1/applications', {
                   headers: { 'x-token': session },
                   params: {

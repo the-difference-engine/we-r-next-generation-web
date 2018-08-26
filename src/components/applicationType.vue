@@ -41,7 +41,7 @@
                 // when the route update flag is set from the parent
                 // run context setup
                 handler: function(val, oldVal) {
-                    if (val == true) {
+                    if (val === true) {
                         this.getType()
                         .then(res => {
                             this.contextSetup()
@@ -74,16 +74,20 @@
                         } else {
                             this.appType = appType;
                         }
-                        if (this.appType == 'camper') {
+                        if (this.appType === 'camper') {
                             // setup camper application context
                             this.setupCamper()
                             .then(res => { resolve(true) });
-                        } else if (this.appType == 'volunteer') {
+                        } else if (this.appType === 'volunteer') {
                             // setup volunteer application context
                             this.setupVolunteer()
                             .then(res => { resolve(true) });
+                        } else if (this.appType === 'partner') {
+                            // setup partner application context
+                            this.setupPartner()
+                            .then(res => { resolve(true) });
                         } else {
-                            // not camper or volunteer --> redirect to applications
+                            // not valid type --> redirect to applications
                             this.$router.push('/applications');
                             resolve(false);
                         }
@@ -97,6 +101,8 @@
                         this.routePage2 = '/application/camper/2';
                         this.routeWaiver = '/application/camper/3';
                         this.routeConfirm = '/application/camper/confirm';
+                        this.formPages = 3;
+                        this.pagesComplete = [false, false, false];
                         this.formFieldList.push(
                             {
                                 "childName": false,
@@ -132,6 +138,8 @@
                         this.routePage2 = '/application/volunteer/2';
                         this.routeWaiver = '/application/volunteer/3';
                         this.routeConfirm = '/application/volunteer/confirm';
+                        this.formPages = 3;
+                        this.appContext.pagesComplete = [false, false, false];
                         this.formFieldList.push(
                             {
                                 "address1": false,
@@ -157,13 +165,44 @@
                     }
                 )
             },
+            setupPartner: function() {
+                return new Promise(
+                    (resolve, reject) => {
+                        this.startRoute = '/application/partner/1';
+                        this.routePage2 = '/application/partner/2';
+                        this.routeConfirm = '/application/partner/confirm';
+                        this.routeWaiver = this.routeConfirm;
+                        this.formPages = 2;
+                        this.appContext.pagesComplete = [false, false];
+                        this.formFieldList.push(
+                            {
+                                "companyName": false,
+                                "companyUrl": false,
+                                "companyLogo": false,
+                                "address1": false,
+                                "address2": false,
+                                "city": false,
+                                "stateProvince": false,
+                                "zipCode": false,
+                                "country": false,
+                                "phoneNumber": false,
+                            },
+                            {
+                                "companyDescription": false,
+                                "companyNote": false,
+                            },
+                        );
+                        this.notRequired.push("address2", "companyUrl");
+                        resolve(true);
+                    }
+                )
+            },
             contextSetup: function() {
                 return new Promise(
                     (resolve, reject) => {
                         this.appContext.appType = this.appType;
                         this.$emit('appType', this.appType);
                         this.appContext.formPages = this.formPages;
-                        this.appContext.pagesComplete = this.pagesComplete;
                         this.appContext.startRoute = this.startRoute;
                         this.appContext.routePage2 = this.routePage2;
                         this.appContext.routeWaiver = this.routeWaiver;
@@ -181,11 +220,11 @@
                     let invalid = false;
                     let complete = true;
                     let appWaiver = null;
-                    if (this.appType == 'camper') {
+                    if (this.appType === 'camper') {
                         // the waiver key in local storage will change
-                        // dpending on the waiver type
+                        // depending on the waiver type
                         appWaiver = this.appState.waiverCamper;
-                    } else {
+                    } else if (this.appType === 'volunteer') {
                         appWaiver = this.appState.waiverVolunteer;
                     }
                     for (let key in this.formFieldList[pageIdx]) {
@@ -194,7 +233,7 @@
                                 if (this.formFieldList[pageIdx][key][item]) {
                                     invalid = true;
                                     complete = false;
-                                } else if (appWaiver[key][item] == null || appWaiver[key][item] == '') {
+                                } else if (appWaiver[key][item] === null || appWaiver[key][item] === '') {
                                     if (!this.notRequired.includes(key)) {
                                         complete = false;
                                     }
@@ -205,11 +244,11 @@
                             if (this.formFieldList[pageIdx][key]) {
                                 invalid = true;
                                 complete = false;
-                            } else if (typeof(this.appState[key]) != "undefined" && (this.appState[key] == null || this.appState[key] == '')) {
+                            } else if (typeof(this.appState[key]) != "undefined" && (this.appState[key] === null || this.appState[key] === '')) {
                                 if (!this.notRequired.includes(key)) {
                                     complete = false;
                                 }
-                            } else if (typeof(this.appState[key]) == "undefined" && (appWaiver[key] == null || appWaiver[key] == '')) {
+                            } else if (typeof(this.appState[key]) === "undefined" && (appWaiver[key] === null || appWaiver[key] === '')) {
                                 if (!this.notRequired.includes(key)) {
                                     complete = false;
                                 }
@@ -226,7 +265,7 @@
                 for (let page = 0; page < this.appContext.formPages; page++) {
                     let results = this.pageValidator(page); // results = [invalid, complete]
                     if (typeof(results) != "undefined") {
-                        if (page == this.appContext.formCurrPage) {
+                        if (page === this.appContext.formCurrPage) {
                             this.appContext.formInvalid = results[0];
                             this.appContext.formComplete = results[1];
                         }
@@ -238,11 +277,21 @@
             },
         },
         computed: {
-            appState() {
-                return this.$store.state.applicationData;
+            appState: {
+                get: function() {
+                    return this.$store.state.applicationData;
+                },
+                set: function(value) {
+                    this.$store.commit('APPLICATION', value);
+                }
             },
-            appContext() {
-                return this.$store.state.applicationContext;
+            appContext: {
+                get: function() {
+                    return this.$store.state.applicationContext;
+                },
+                set: function(value) {
+                    this.$store.commit('APPCONTEXT', value);
+                }
             },
             dataReady: function() {
                 return this.appContext.dataReady;

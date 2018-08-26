@@ -26,7 +26,7 @@
           ></edit-user-profile>
         </div>
         <div class="row mx-0 px-0">
-          <app-children></app-children>
+          <all-apps-submitted></all-apps-submitted>
         </div>
       </div>
     </div>
@@ -39,13 +39,13 @@ import axios from "axios";
 import _ from 'lodash';
 import viewUserProfile from "./userProfile/viewProfile.vue";
 import editUserProfile from "./userProfile/editProfile.vue";
-import appChildren from "./applications/children.vue";
+import allAppsSubmitted from "./applications/appsSubmitted.vue";
 export default {
   name: "profile",
   components: {
     viewUserProfile,
     editUserProfile,
-    appChildren,
+    allAppsSubmitted,
   },
   data() {
     return {

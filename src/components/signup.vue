@@ -232,7 +232,6 @@ export default {
       });
     },
     signup: function(evt) {
-      console.log(this.formHasErrors());
       if (this.formHasErrors() === false) {
         this.$store.dispatch("signup", {
           newUser: this.newUser

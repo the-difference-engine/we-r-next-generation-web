@@ -125,7 +125,6 @@
         name: 'adminCampSingle',
         methods: {
             campUpdate: function(evt) {
-                console.log("Camp Update Method");
                 this.$store.dispatch('campSessionUpdate', {
                     updated_camp: this.camp,
                     camp_id: this.camp_id,
@@ -135,29 +134,23 @@
                 this.editCamp();
             },
             campGet: function() {
-                console.log("Get Camp Method");
                 this.$store.dispatch('campSessionGet', {
                     camp_id: this.$route.params.id,
                 })
                 .then(data => {
-                    console.log("Received camp data", data)
                     this.camp = data;
                     this.camp_id = this.camp._id.$oid
-                    console.log("Camp Now:", this.camp);
                 })
             },
             applicantsGet: function() {
-                console.log("Get Applicants Method");
                 this.$store.dispatch('campSessionGetApplicants', {
                     camp_id: this.$route.params.id,
                 })
                 .then(data => {
-                    console.log("Received applicant data", data)
                     this.applicants = data;
                 })
             },
             editCamp: function() {
-                console.log("Edit Camp Method");
                 this.disable_edits = !this.disable_edits;
                 if (this.edit_btn == "Edit") {
                     this.edit_btn = "Disable Edit";

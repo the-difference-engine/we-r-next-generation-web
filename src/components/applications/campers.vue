@@ -1,7 +1,7 @@
 <template>
     <div v-if="campApps.length > 0" class="container-fluid mx-0">
         <hr class="col-xs-12 mx-auto px-0 my-5 gray">
-        <h4 class="text-left gray font-weight-bold">Children who may attend camp</h4>
+        <h4 class="text-left gray font-weight-bold">Submitted Camper Applications</h4>
         <table class="table">
             <thead>
                 <tr>
@@ -28,7 +28,7 @@
                     </td>
                     <td>
                         <div v-for="app in child" v-bind:key="app._id.$oid">
-                            {{app.status}}
+                            {{app.status | statusCap}}
                         </div>
                     </td>
                 </tr>
@@ -37,41 +37,25 @@
     </div>
 </template>
 <script>
-import localforage from "../../sessionUtils";
-import axios from "axios";
-import _ from 'lodash';
 export default {
-    name: "appChildren",
-    data() {
-        return {
-            applications: [],
-            campApps: [],
-            children: [],
-        }
+    name: "camperAppsList",
+    props: {
+        campApps: {
+            type: Array,
+            required: true
+        },
+        children: {
+            type: Object,
+            required: true
+        },
     },
-    created: function() {
-        localforage.getItem("X_TOKEN")
-        .then(session => {
-            axios.get("/api/v1/profile/applications", {
-                headers: { "x-token": session }
-            })
-            .then(response => {
-                this.applications = response.data;  // store all applications
-                // divide camper and volunteer applications
-                this.campApps = _.filter(this.applications, function(app) {
-                    return app.type === 'camper';
-                });
-                // group applications by child name - sort by name and app date
-                let children = _.groupBy(this.campApps, function(app) {
-                    return app.childName[0].toLowerCase();  // all lower case because sort is case sensitive
-                });
-                let sortedChildren = _.sortBy(_.keys(children));
-                _.forEach(sortedChildren, function(child) {
-                    children[child] = _.orderBy(children[child], ['date_signed'], ['desc'])
-                });
-                this.children = children;
-            })
-        })
+    filters: {
+        statusCap: function(status) {
+            if (!status) return '';
+            status = status.toString().replace('_', ' ');
+            return status[0].toUpperCase() + status.slice(1);
+        },
     },
 }
 </script>
+

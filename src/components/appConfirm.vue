@@ -23,6 +23,17 @@
                     </div>
                 </div>
             </div>
+            <div class="row mx-0 px-0" v-if="appContext.appType === 'partner'">
+                <div class="row col-xs-12 my-2 mx-0 px-0">
+                    {{appState.companyName}}
+                </div>
+                <div class="row col-xs-12 my-2 mx-0 px-0">
+                    {{appState.companyUrl}}
+                </div>
+                <div class="row col-xs-12 my-2 mx-0 px-0">
+                    {{appState.companyLogo}}
+                </div>
+            </div>
             <div class="row col-xs-12 my-2 mx-0 px-0">
                 <input-label-div-large label="Street Address 1"></input-label-div-large>
                 <div class="col-md-9 mx-0 px-0 align-middle text-left">
@@ -68,7 +79,7 @@
         </div>
         <hr class="my-6">
         <div class="row my-6 mx-0 px-0">
-            <div class="row col-xs-12 my-2 mx-0 px-0">
+            <div v-if="appContext.appType !== 'partner'" class="row col-xs-12 my-2 mx-0 px-0">
                 <input-label-div-large label="Selected Camp"></input-label-div-large>
                 <div class="col-md-9 mx-0 px-0 align-middle text-left">
                     {{appState.chosenCampName}}
@@ -98,9 +109,28 @@
                     </div>
                 </div>
             </div>
+            <div v-if="appContext.appType == 'partner'"
+                class="row col-xs-12 my-6 mx-0 px-0">
+                <div class="col-md-10 my-6 mx-0 px-0 align-middle">
+                    <div class="row mx-0 px-0">
+                        <h4 class="font-weight-bold text-left">Provide a description about your organization that you would like to show on our website:</h4>
+                    </div>
+                    <div class="row mx-0 px-0 text-left">
+                        {{appState.companyDescription}}
+                    </div>
+                </div>
+                <div class="col-md-10 my-6 mx-0 px-0 align-middle">
+                    <div class="row mx-0 px-0">
+                        <h4 class="font-weight-bold text-left">Tell us more information about how and why you would like to partner with our organization:</h4>
+                    </div>
+                    <div class="row mx-0 px-0 text-left">
+                        {{appState.companyNote}}
+                    </div>
+                </div>
+            </div>
         </div>
         <hr class="my-6">
-        <div ref="waiver" class="row waiver mx-auto px-0">
+        <div v-if="appContext.appType !== 'partner'" ref="waiver" class="row waiver mx-auto px-0">
             <div class="row col-xs-12 my-6 mx-0 px-0">
                 <h3 ref="waiverTitle">{{waiver.title}}</h3>
             </div>
@@ -202,7 +232,6 @@
 import inputLabelDivLarge from "./forms/inputLabelDivLarge";
 import inputLabelDivSmall from "./forms/inputLabelDivSmall";
 import swal from 'sweetalert2';
-import json from '../json/countries.json';
 export default {
 	name: "appConfirm",
 	components: {
@@ -212,24 +241,23 @@ export default {
 	props: {
 		formFieldList: {
 			type: Array,
-		}
+        },
 	},
 	data() {
 		return {
-            formCurrPage: 3,
 			isPrevious: true,
 			isNext: false,
-			prevRoute: "/application/camper/3",
-			nextRoute: "",
             readonly: true,
-            waiver: {},
-            countries_json: json,
+            waiver: {
+                header: [],
+                items: [],
+                initials: [],
+            },
             componentReady: false,
 		};
     },
 	methods: {
         verifyPermission: function() {
-            // cannot access page if form incomplete
             if (!this.appContext.canSubmit) {
                 swal({
                     title: 'Permission Denied',
@@ -237,28 +265,43 @@ export default {
                     type: 'warning'
                 })
                 this.$router.push(this.appContext.startRoute);
+            } else {
+                this.setWaiverForSumbit();
+                this.$emit('submitClick');
             }
         },
 		contextSetup: function() {
-            this.appContext.formCurrPage = this.formCurrPage;
             this.appContext.isPrevious = this.isPrevious;
             this.appContext.isNext = this.isNext;
-            this.appContext.nextRoute = this.nextRoute;
-            this.appContext.prevRoute = this.prevRoute;
+            this.appContext.nextRoute = "";
+            if (this.appContext.appType !== 'partner') {
+                this.appContext.formCurrPage = 3;
+                this.appContext.prevRoute = this.appContext.routeWaiver;
+            } else {
+                this.appContext.formCurrPage = 2;
+                this.appContext.prevRoute = this.appContext.routePage2;
+            }
         },
         waiverSetup: function() {
             // determine whether to use camper or volunteer waiver
             return new Promise(
                 (resolve, reject) => {
-                    if (this.appContext.appType == 'camper') {
+                    if (this.appContext.appType === 'camper') {
                         this.waiver = this.appState.waiverCamper;
                     }
-                    else {
+                    else if (this.appContext.appType === 'volunteer') {
                         this.waiver = this.appState.waiverVolunteer;
                     }
                     resolve(true);
                 }
             )
+        },
+        setWaiverForSumbit: function() {
+            if (this.appContext.appType !== 'partner') {
+                this.appState.waiverForm = this.$refs.waiver.innerHTML;
+            } else {
+                this.appState.waiverForm = {}
+            }
         },
 		getDateAsString() {
 			// initializes today's date as readable string
@@ -283,8 +326,7 @@ export default {
 			return month + " " + day + ", " + year;
         },
         submitClick: function() {
-            this.appState.waiverForm = this.$refs.waiver.innerHTML;
-            this.$emit('submitClick');
+            this.verifyPermission();
         }
     },
 	computed: {
@@ -296,16 +338,21 @@ export default {
 				this.$store.commit("APPLICATION", value);
 			}
 		},
-		appContext() {
-			return this.$store.state.applicationContext;
+		appContext: {
+            get: function() {
+                return this.$store.state.applicationContext;
+            },
+            set: function(value) {
+				this.$store.commit("APPCONTEXT", value);
+            }
 		},
 		profile() {
 			return this.$store.state.userInfo;
         },
     },
 	created: function() {
-        this.verifyPermission();
         this.contextSetup();
+        this.$emit('updateData');
         this.$store.watch(
             (state) => {
                 // when the parent loads saved application data to state
