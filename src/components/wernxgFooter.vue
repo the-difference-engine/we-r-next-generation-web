@@ -12,6 +12,7 @@
               <li><router-link to="/login">Login</router-link></li>
               <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y2Q2Y3R7WK46C">Donate</a></li>
               <li><router-link to="/faq">FAQ</router-link></li>
+              <li><router-link to="/friends">Friends of WRNG</router-link></li>
             </ul>
           </div>
           <div id="footer_center" class="col-sm-12 col-lg-4">
@@ -43,48 +44,47 @@
 </template>
 
 <script>
-  export default {
-    name: 'wernxgFooter',
-    data () {
-      return {
-
-      }
-    }
+export default {
+  name: 'wernxgFooter',
+  data() {
+    return {};
   }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  a{
-    color: black;
-  }
+a {
+  color: black;
+}
 
-  /*Footer Styling*/
-  .footer{
-    background-color:#CAC8C8;
-    color: white;
-    height: auto;
-    width: 100%;
-  }
+/*Footer Styling*/
+.footer {
+  background-color: #cac8c8;
+  color: white;
+  height: auto;
+  width: 100%;
+}
 
-  #footer_center>a, #footer_left>ul>li>a{
-    color:white;
-  }
+#footer_center > a,
+#footer_left > ul > li > a {
+  color: white;
+}
 
-  #footer_left>ul{
-    columns: 2;
-    -webkit-columns: 2;
-    -moz-columns: 2;
-    list-style: none;
-    margin-left:-40px;
-  }
+#footer_left > ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style: none;
+  margin-left: -40px;
+}
 
-  #footer_right{
-    vertical-align: bottom;
-    text-align: center;
-  }
+#footer_right {
+  vertical-align: bottom;
+  text-align: center;
+}
 
-  #footer_bottom{
-    text-align: center;
-  }
+#footer_bottom {
+  text-align: center;
+}
 </style>
