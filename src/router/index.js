@@ -252,7 +252,6 @@ export default new Router({
         header: wernxgHeader,
         footer: wernxgFooter
       },
-      beforeEnter: sessionCheck
     },
     {
       path: '/admin/users',
