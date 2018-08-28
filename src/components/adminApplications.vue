@@ -139,16 +139,7 @@ export default {
     getApplications: function (evt) {
       this.$store.dispatch('getApplications', {type: this.appType})
       .then(data => {
-        console.log('data from get all apps: ', data)
         this.applications = data.applications
-        let length = 0;
-        for (let key in this.applications) {
-          console.log('EACH', key);
-          console.log('NAME', key.name);
-          length++;
-        }
-        console.log('ALL APPS', data.applications);
-        console.log('LENGTH', length);
         this.appType = data.type
         this.currAppType = data.type
       }).catch(err => console.error(err))
@@ -308,9 +299,7 @@ export default {
   created() {
     this.$store.dispatch('getApplications', {type: this.appType})
     .then(data => {
-      console.log('all apps data on created: ', data)
         this.applications = data.applications
-        console.log('LOGGED TYPE', data.type)
         this.appType = data.type
       }).catch(err => console.error(err))
     this.$store.dispatch('campSessionsGetAll', {    // get all camp sessions to ascribe a camp label over camp id

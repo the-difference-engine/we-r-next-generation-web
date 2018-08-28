@@ -52,6 +52,12 @@ export const state = {
       },
     ],
     campsIdx: {},
+    
+    companyName: '',
+    companyLogo: '',
+    companyUrl: '',
+    companyDescription: '',
+    companyNote: '',
 
     waiverForm: '',
 

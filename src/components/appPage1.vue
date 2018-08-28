@@ -41,6 +41,45 @@
                 </div>
             </div>
         </div>
+        <div class="row mx-0 px-0" v-if="appContext.appType === 'partner'">
+            <div class="row col-xs-12 my-2 mx-0 px-0">
+                <input-row label="Company Name" type="text"
+                    v-model="appState.companyName"
+                    placeholder="Company Name"
+                    autocomplete="organization"
+                    :min-length="2"
+                    :max-length="100"
+                    help-text="Your company name will appear on our site and promotional material, as it is written here."
+                    :pristine="appContext.formPristine"
+                    v-on:input="emitChange"
+                    v-on:invalid="invalidFields.companyName = $event"
+                ></input-row>
+            </div>
+            <div class="row col-xs-12 my-2 mx-0 px-0">
+                <input-row label="Company Website" type="url"
+                    v-model="appState.companyUrl"
+                    placeholder="http://www.example.com"
+                    autocomplete="url"
+                    :required="false"
+                    :max-length="100"
+                    help-text="If provided, we will provide a link to your organization's website on our website."
+                    :pristine="appContext.formPristine"
+                    v-on:input="emitChange"
+                    v-on:invalid="invalidFields.companyUrl = $event"
+                ></input-row>
+            </div>
+            <div class="row col-xs-12 my-2 mx-0 px-0">
+                <input-row label="Company Logo" type="photo"
+                    v-model="appState.companyLogo"
+                    placeholder="*.jpg, *.png, *.bmp"
+                    :max-length="255"
+                    help-text="Please provide a logo so we can feature your organization!"
+                    :pristine="appContext.formPristine"
+                    v-on:input="emitChange"
+                    v-on:invalid="invalidFields.companyLogo = $event"
+                ></input-row>
+            </div>
+        </div>
         <div class="row col-xs-12 my-2 mx-0 px-0">
             <input-row label="Street Address 1" type="text"
                 v-model="appState.address1"
@@ -174,7 +213,6 @@
                     }
                 ],
                 countries_json: json,
-                countries_idx: {}
             }
         },
         watch: {
@@ -209,14 +247,12 @@
                     this.appContext.formDirty = true;
                 }
             },
-            indexCountries: function() {
-                for (let c in this.countries_json) {
-                    this.countries_idx[this.countries_json[c]['value']] = this.countries_json[c]['text'];
-                }
-            },
             selectCountry: function(value) {
-                this.appState.countryName = this.countries_idx[value];
-                this.emitChange();
+                this.$store.dispatch('getCountryNameFromKey', value)
+                .then(name => {
+                    this.appState.countryName = name;
+                    this.emitChange();
+                })
             },
         },
         computed: {
@@ -229,7 +265,6 @@
         },
         created: function() {
             this.invalidFields = this.formFieldList[this.formCurrPage];
-            this.indexCountries();
         },
 		beforeMount: function() {
             this.contextSetup();

@@ -96,19 +96,24 @@
 		},
 		methods: {
 			blankAppState: function() {
+				let countryName = '';
+				this.$store.dispatch('getCountryNameFromKey', this.profile.country)
+				.then(name => {
+					countryName = name;
+				})
                 // resets all app state fields to original blank state
 				return {
 					childName: '',
 					childAge: '',
 					childGender: '',
-					address1: '',
-					address2: '',
-					city: '',
-					stateProvince: '',
-					zipCode: '',
-					country: '',
-					countryName: '',
-					phoneNumber: '',
+					address1: this.profile.address1,
+					address2: this.profile.address2,
+					city: this.profile.city,
+					stateProvince: this.profile.state_province,
+					zipCode: this.profile.zip_code,
+					country: this.profile.country,
+					countryName: countryName,
+					phoneNumber: this.profile.phone_number,
 					bioCamper: '',
 					bioVolunteer: '',
 					chosenCamp: '',
@@ -120,6 +125,13 @@
 						},
 					],
 					campsIdx: {},
+
+					// company data fields
+					companyName: '',
+					companyLogo: '',
+					companyUrl: '',
+					companyDescription: '',
+					companyNote: '',
 
 					waiverForm: '',
 
@@ -172,7 +184,11 @@
 						this.appContext.formDirty = false;
 						this.appContext.formInvalid = false;
 						this.appContext.formComplete = false;
-						this.appContext.pagesComplete = [false, false, false];
+						if (this.appContext.appType !== 'partner') {
+							this.appContext.pagesComplete = [false, false, false];
+						} else {
+							this.appContext.pagesComplete = [false, false];
+						}
 						this.appContext.canSubmit = false;
 						resolve(true);
 					}
@@ -263,6 +279,16 @@
 					});
 				})
 			},
+			getTodayDate: function() {
+				let today = new Date();
+				let day = this.doubleDigitDate(today.getDate());
+				let month = this.doubleDigitDate(today.getMonth() + 1);
+				let year = today.getFullYear();
+				return year + '-' + month + '-' + day;
+			},
+			doubleDigitDate: function(num) {
+				return num < 10 ? '0' + num : num;
+			},
 			constCamperApp: function() {
 				return {
 					profileId: this.profile._id.$oid,
@@ -304,40 +330,72 @@
 					status: 'submitted'
 				}
 			},
+			constPartnerApp: function() {
+				return {
+					profileId: this.profile._id.$oid,
+					companyName: this.appState.companyName,
+					email: this.profile.email,
+					address_line_1: this.appState.address1,
+					address_line_2: this.appState.address2,
+					city: this.appState.city,
+					state_province: this.appState.stateProvince,
+					zip_code: this.appState.zipCode,
+					country: this.appState.country,
+					phone_number: this.appState.phoneNumber,
+					companyLogo: this.appState.companyLogo,
+					companyUrl: this.appState.companyUrl,
+					bio: this.appState.companyDescription,
+					appNote: this.appState.companyNote,
+					date_signed: this.getTodayDate(),
+					type: 'partner',
+					status: 'submitted'
+				}
+			},
 			getApplication: function() {
-				if (this.appContext.appType == 'camper') {
+				if (this.appContext.appType === 'camper') {
 					return this.constCamperApp();
-				} else {
+				} else if (this.appContext.appType === 'volunteer') {
 					return this.constVolunteerApp();
+				} else {
+					return this.constPartnerApp();
 				}
 			},
 			constWaiver: function() {
-				if (this.appContext.appType == 'camper') {
+				if (this.appContext.appType === 'camper') {
 					return {
 						applicant: this.profile._id.$oid,
 						waiver_form: this.appState.waiverForm,
 						signed_by: this.appState.waiverCamper.signature,
 						signed_date: this.appState.waiverCamper.signedDate
 					}
-				} else {
+				} else if (this.appContext.appType === 'volunteer') {
 					return {
 						applicant: this.profile._id.$oid,
 						waiver_form: this.appState.waiverForm,
 						signed_by: this.appState.waiverVolunteer.signature,
 						signed_date: this.appState.waiverVolunteer.signedDate
 					}
+				} else {
+					// application type is a partner; there is no waiver
+					return {}
 				}
+			},
+			submitRoute: function() {
+				return (this.appContext.appType !== 'partner') ? '/api/v1/applications/waiver' : '/api/v1/applications'
+			},
+			submitParams: function() {
+				return (this.appContext.appType !== 'partner') ? {
+					application: this.getApplication(),
+					waiver: this.constWaiver()
+				} : this.getApplication()
 			},
 			submitClick: function() {
 				// submit form to database
 				localforage.getItem('X_TOKEN')
 				.then(session => {
-					axios.post('/api/v1/applications/waiver', {
+					axios.post(this.submitRoute(), {
 						headers: {'x-token': session},
-						params: {
-							application: this.getApplication(),
-							waiver: this.constWaiver()
-						}
+						params: this.submitParams()
 					})
                     .then(res => {
                       // redirect to application submitted page -- API returns application ID
@@ -387,7 +445,6 @@
 							})
 							.then(response => {
 								// sort camps then append to list with dates
-								console.log(response.data)
 								let camps = this.orderedCamps(response.data);
 								this.appState.camps = [];
 								for (let i = 0; i < camps.length; i++) {
@@ -475,13 +532,13 @@
                 // check if all form pages are complete
                 let complete = true;
                 for (let page in this.appContext.pagesComplete) {
-                    if (this.appContext.pagesComplete[page] == false) {
+                    if (this.appContext.pagesComplete[page] === false) {
                         complete = false;
                         break;
                     }
                 }
                 this.appContext.canSubmit = complete;
-            }
+			},
         },
 	    beforeRouteUpdate(to, from, next) {
 			this.routeSetup()

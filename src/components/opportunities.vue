@@ -86,8 +86,7 @@ export default {
       .get('/api/v1/resources/applicationsPage')
       .then(res => {
         this.pageContent = res.data;
-      })
-      .catch(console.log);
+      }).catch(console.log);
   }
 };
 </script>

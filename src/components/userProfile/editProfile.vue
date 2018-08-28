@@ -494,7 +494,7 @@ export default {
                     .then(res => {
                         this.$store.dispatch("updateProfile", {
                             profileId : this.sessionInfo._id.$oid,
-                            updatedProfile : this.profileToSubmit
+                            params : this.profileToSubmit
                         })
                         .then(updated => {
                             if (updated === true) {

@@ -32,6 +32,7 @@
                                     Page 2
                                 </li>
                                 <li class="col-md-3 nav-link"
+                                    v-if="appContext.appType !== 'partner'"
                                     v-on:click.prevent.stop="waiverClick"
                                     v-bind:class="{ 
                                         active: this.appContext.formCurrPage === 2,
@@ -98,6 +99,7 @@
                         Page 2
                     </li>
                     <li class="col-md-3 nav-link"
+                        v-if="appContext.appType !== 'partner'"
                         v-on:click.prevent.stop="waiverClick"
                         v-bind:class="{ 
                             active: this.appContext.formCurrPage === 2,
@@ -205,8 +207,13 @@ export default {
         },
     },
     computed: {
-        appContext() {
-            return this.$store.state.applicationContext;
+        appContext: {
+            get: function() {
+                return this.$store.state.applicationContext;
+            },
+            set: function() {
+                    this.$store.commit('APPCONTEXT', value);
+            }
         },
         page1: function() {
             return this.appContext.formCurrPage === 0;
@@ -267,12 +274,6 @@ export default {
         visibility: visible;
         background-color: var(--light-light-orange);
     }
-    /* .sticky {
-        margin-top: 0;
-        display: block;
-
-        position: sticky;
-    } */
 </style>
 
 

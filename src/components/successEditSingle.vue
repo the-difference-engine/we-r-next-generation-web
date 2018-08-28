@@ -196,7 +196,6 @@ export default {
             headers: { 'x-token': session_token },
             params: this.editedStory
           })
-          .catch(console.log);
       });
       if (this.camperFile.length != 0) {
         let camperFormData = this.fromInput(this.camperFile);

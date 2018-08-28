@@ -2,6 +2,7 @@ import * as types from './types'
 import axios from 'axios'
 import localforage from '../sessionUtils'
 import swal from 'sweetalert2';
+import { COUNTRIES } from '../json/countries.js';
 
 export const login = ({commit}, {email, password, router, that}) =>
   axios.post(`/api/v1/sessions`, {email, password})
@@ -339,3 +340,10 @@ export const campSessionsGetAll = ({commit}, {field_name, order}) => {
   })
 }
 
+// Helper Function to Convert a Country Key to a Country Name
+export const getCountryNameFromKey = ({commit}, key) => {
+  return new Promise((resolve, reject) => {
+    let name = (key !== undefined && COUNTRIES.hasOwnProperty(key)) ? COUNTRIES[key] : '';
+    resolve(name);
+  })
+}

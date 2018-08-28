@@ -346,11 +346,22 @@ export default {
 		emailInvalid: function() {
 			if (this.type === 'email') {
 				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      			if (re.test(this.input) === false) {
-					  this.errMsgs.push(this.label + " is not a valid email address");
-					  return true;
-				  }
 				this.input = this.input.toLowerCase();
+				return this.matchRegexPattern(re, " is not a valid email address");
+			}
+			return false;
+		},
+		urlInvalid: function() {
+			if (this.type === 'url' && this.input != '') {
+				var re = /^(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))$/;
+				this.input = this.input.toLowerCase();
+				return this.matchRegexPattern(re, " is not a valid website address");
+			}
+		},
+		matchRegexPattern: function(rePattern, errMsg) {
+			if (rePattern.test(this.input) === false) {
+				this.errMsgs.push(this.label + errMsg);
+				return true;
 			}
 			return false;
 		},
@@ -374,6 +385,7 @@ export default {
 				this.dateMinInvalid,
 				this.dateMaxInvalid,
 				this.emailInvalid,
+				this.urlInvalid,
 				this.matchInvalid,
 			]
 			let invalid = false;
