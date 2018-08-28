@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto my-4">
     <div class="row col-sm-12">
-      <h1>Thank you for your Application</h1>
+      <h1>Thank you for your application</h1>
       <div class="row col-sm-12 my-4 text-left">
         <p>Your application submitted successfully. Our staff and leadership team will review your application and contact you about next steps or if we need any further information.</p>
         <p v-if="typeCap !== 'Partner'">Please print and save a copy of the signed waiver for your records.</p>
@@ -79,7 +79,9 @@
                                 <td>{{application.companyUrl}}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="text-center px-2">{{application.companyLogo}}</td>
+                                <td colspan="2" class="text-center px-2">
+                                    <img class="img-fluid" :src="application.companyLogo" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -154,9 +156,6 @@
                         </tr>
                     </tbody>
                 </table>
-
-
-
             </div>
         </div>
       </div>
@@ -206,7 +205,7 @@ export default {
             return this.capAppKey('childName');
         },
         fullNameCap: function() {
-            if ('full_name' in this.application) {
+            if (this.application.full_name) {
                 let names = this.application.full_name.split(" ");
                 for (name in names) {
                     names[name] = this.capWord(names[name]);
@@ -221,7 +220,7 @@ export default {
             return this.camp.name + " (" + this.camp.date_start + " to " + this.camp.date_end + ")";
         },
         emailLower: function() {
-            if ('email' in this.application) {
+            if (this.application.email) {
                 return this.application.email.toLowerCase();
             }
         },
@@ -282,5 +281,8 @@ export default {
     .not_approved {
         background-color: var(--brand-danger);
         border-color: darkslategrey;
+    }
+    img {
+        width:100%;
     }
 </style>
