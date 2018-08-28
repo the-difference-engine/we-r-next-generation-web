@@ -79,9 +79,11 @@
       <h1>Partners</h1>
     </div>
     <div class='row' id='partners-images center-block'>
-      <div v-for="(partner, index) in homePageData.partners" :key="index" v-bind:style="{width: Math.floor(100/homePageData.partners.length) + '%'}" class="partners">
-        <img :src="partner" :alt="'partner image 1' + index" class="fit-image"/>
-      </div>
+      <carousel :perPage="3" :loop="true" :speed="5000" :autoplay="true">
+        <slide v-for="partner in homePagePartners" :key="partner._id.$oid">
+          <img :src="partner.companyLogo" v-bind:style="{width: '50%'}"/>
+        </slide>
+      </carousel>
     </div>
   </div>
 </div>
@@ -101,13 +103,15 @@
       return {
         homePageData: {
           sStories: [{text:''}]
-        }
+        },
+        homePagePartners: {}
       }
     },
     created() {
       axios.get('/api/v1/resources/homepage')
       .then(res => {
-        this.homePageData = res.data
+        this.homePageData = res.data.dataObj,
+        this.homePagePartners = res.data.partners
       })
       .catch(console.log)
     }

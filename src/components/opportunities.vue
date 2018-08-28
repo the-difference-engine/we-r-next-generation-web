@@ -10,7 +10,7 @@
           <p>{{ pageContent.camper.caption }}</p>
           <p>{{ pageContent.camper.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="/application/camper/1">Sign up a Camper</router-link>
+            <button v-on:click.self="noLoginClick('/application/camper/1')" class="btn btn-primary appButtons">Sign up a Camper</button>
           </div>
         </div>
       </div>
@@ -23,7 +23,7 @@
           <p>{{ pageContent.volunteer.caption }}</p>
           <p>{{ pageContent.volunteer.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link id="volunteer" class="btn btn-primary appButtons" to="application/volunteer/1">Volunteer</router-link>
+            <button v-on:click.self="noLoginClick('/application/volunteer/1')" class="btn btn-primary appButtons">Volunteer</button>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
           <p>{{ pageContent.partner.caption }}</p>
           <p>{{ pageContent.partner.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="application/partner/1">Become a Partner</router-link>
+            <button v-on:click.self="noLoginClick('/application/partner/1')" class="btn btn-primary appButtons">Become a Partner</button>
           </div>
         </div>
       </div>
@@ -45,62 +45,86 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  export default {
-    name: 'opportunities',
-    data () {
-      return {
-        pageContent: {camper: {imgSrc: ""},
-                      volunteer: {imgSrc: ""},
-                      partner: {imgSrc: ""}},
-
+import axios from 'axios';
+import swal from 'sweetalert2';
+import localforage from '../sessionUtils';
+export default {
+  name: 'opportunities',
+  data() {
+    return {
+      pageContent: {
+        camper: { imgSrc: '' },
+        volunteer: { imgSrc: '' },
+        partner: { imgSrc: '' }
       }
-    },
-    created() {
-      axios.get('/api/v1/resources/applicationsPage')
+    };
+  },
+  methods: {
+    noLoginClick: async function(value) {
+      let session = await localforage.getItem('X_TOKEN');
+      if (session) {
+        this.$router.push(value);
+      } else {
+        swal({
+          title: 'Please register',
+          text:
+            'You must be registered with the site to fill out an application.  You are being redirected now.',
+          type: 'info',
+          showCloseButton: true,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Sign Up'
+        }).then(res => {
+          if (res.value) {
+            this.$router.push('/signup');
+          }
+        });
+      }
+    }
+  },
+  created() {
+    axios
+      .get('/api/v1/resources/applicationsPage')
       .then(res => {
-        this.pageContent = res.data
-      })
-    },
+        this.pageContent = res.data;
+      }).catch(console.log);
   }
+};
 </script>
 
 <style scoped>
+p {
+  font-size: larger;
+}
 
-  p {
-    font-size: larger
-  }
+h3 {
+  margin-top: 0;
+  font-weight: bolder;
+}
+#subtitle {
+  margin-top: 10px;
+}
 
-  h3{
-    margin-top: 0;
-    font-weight: bolder;
-  }
-  #subtitle {
-    margin-top: 10px;
-  }
+.opportunity {
+  margin-bottom: 50px;
+  margin-top: 45px;
+}
 
-  .opportunity{
-    margin-bottom: 50px;
-    margin-top: 45px;
-  }
+.caption {
+  text-align: justify;
+}
 
-  .caption{
-    text-align: justify
-  }
-
-  #getInvolved {
-    background-color:#7DDBD4;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 4%;
-    border: none;
-  }
-  .appButtons {
-    background-color: #5FAAF6;
-    border-color: #5FAAF6;
-  }
-  .button-wrapper {
-    text-align: center;
-  }
-
+#getInvolved {
+  background-color: #7ddbd4;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4%;
+  border: none;
+}
+.appButtons {
+  background-color: #5faaf6;
+  border-color: #5faaf6;
+}
+.button-wrapper {
+  text-align: center;
+}
 </style>
