@@ -36,7 +36,7 @@
           <p>{{ pageContent.partner.caption }}</p>
           <p>{{ pageContent.partner.callToAct }}</p>
           <div class="button-wrapper">
-            <router-link class="btn btn-primary appButtons" to="/partner">Become a Partner</router-link>
+            <router-link class="btn btn-primary appButtons" to="application/partner/1">Become a Partner</router-link>
           </div>
         </div>
       </div>
