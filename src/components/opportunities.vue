@@ -85,7 +85,7 @@ export default {
     axios
       .get('/api/v1/resources/applicationsPage')
       .then(res => {
-        this.pageContent = res.data;
+        this.pageContent = res.data.dataObj;
       }).catch(console.log);
   }
 };
