@@ -36,7 +36,7 @@
           <p>{{ pageContent.partner.caption }}</p>
           <p>{{ pageContent.partner.callToAct }}</p>
           <div class="button-wrapper">
-            <button v-on:click.self="noLoginClick('/partner')" class="btn btn-primary appButtons">Become a Partner</button>
+            <button v-on:click.self="noLoginClick('/application/partner/1')" class="btn btn-primary appButtons">Become a Partner</button>
           </div>
         </div>
       </div>
